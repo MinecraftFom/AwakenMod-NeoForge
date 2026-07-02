@@ -1,4 +1,4 @@
-package com.fomdev.awaken.api;
+package com.fomdev.awaken.util;
 
 public class Util
 {

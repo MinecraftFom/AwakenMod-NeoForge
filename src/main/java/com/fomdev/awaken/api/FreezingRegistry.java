@@ -1,6 +1,7 @@
 package com.fomdev.awaken.api;
 
 import com.fomdev.awaken.event.RegisterEvent;
+import com.fomdev.awaken.util.Util;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;

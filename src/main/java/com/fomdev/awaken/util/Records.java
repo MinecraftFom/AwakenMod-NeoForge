@@ -4,6 +4,8 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
+import java.awt.*;
+
 public class Records
 {
     public record AttributeHolder
@@ -21,6 +23,23 @@ public class Records
         )
         {
             this(attr, amount, AttributeModifier.Operation.ADD_VALUE, new EquipmentSlot[]{slots});
+        }
+    }
+
+    public record ColorHolder
+            (
+                    Color frontStart,
+                    Color frontEnd,
+                    Color backStart,
+                    Color backEnd
+            )
+    {
+        public ColorHolder(
+                Color front,
+                Color end
+        )
+        {
+            this(front, front, end, end);
         }
     }
 }

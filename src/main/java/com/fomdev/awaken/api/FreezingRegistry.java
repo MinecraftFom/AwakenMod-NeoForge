@@ -34,8 +34,6 @@ public class FreezingRegistry<T extends Registry>
         this.key = key;
 
         this.frozen = false;
-
-        bus.addListener(this::onRegister);
     }
 
     public void attach(

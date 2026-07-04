@@ -23,9 +23,7 @@ public class TooltipColorEvents
         if (stack.is(Items.AIR))
             return;
 
-        CompoundTag tag = NBTUtil.getModTag(stack);
-
-        AwakenQuality quality = NBTUtil.deserializeQuality(tag);
+        AwakenQuality quality = NBTUtil.deserializeQuality(stack);
         if (quality == null)
             return;
 

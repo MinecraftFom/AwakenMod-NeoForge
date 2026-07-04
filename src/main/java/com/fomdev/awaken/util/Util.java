@@ -1,27 +1,33 @@
 package com.fomdev.awaken.util;
 
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.EquipmentUser;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class Util
 {
     public static List<ItemStack> getStacks(
-            Player player
+            EquipmentUser user
     )
     {
-        ItemStack main = player.getItemBySlot(EquipmentSlot.MAINHAND);
-        ItemStack off = player.getItemBySlot(EquipmentSlot.OFFHAND);
-        ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD);
-        ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
-        ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
-        ItemStack feet = player.getItemBySlot(EquipmentSlot.FEET);
+        return getStacks(Constants.ALL_SLOTS, user);
+    }
 
-        return Stream.of(main, off, helmet, chest, legs, feet).filter(s -> !s.is(Items.AIR)).toList();
+    public static List<ItemStack> getStacks(
+            EquipmentSlot[] slots,
+            EquipmentUser entity
+    )
+    {
+        List<ItemStack> stacks = new ArrayList<>();
+
+        for (EquipmentSlot slot: slots)
+            stacks.add(entity.getItemBySlot(slot));
+
+        return stacks.stream().filter(s -> !s.is(Items.AIR)).toList();
     }
 
     public static String format(

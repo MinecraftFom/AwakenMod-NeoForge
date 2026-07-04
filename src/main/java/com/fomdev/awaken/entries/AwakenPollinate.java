@@ -1,9 +1,11 @@
 package com.fomdev.awaken.entries;
 
 import com.fomdev.awaken.api.Registry;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.neoforged.neoforge.common.util.INBTSerializable;
@@ -11,14 +13,14 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class AwakenPollinate extends Registry
 {
-    private final MobEffectInstance effect;
+    protected final Holder<MobEffect> effect;
     private final EquipmentSlot[] slots;
     private final TriggerTarget target;
     private final TriggerType type;
 
     public AwakenPollinate(
             String id,
-            MobEffectInstance effect,
+            Holder<MobEffect> effect,
             EquipmentSlot[] slots,
             TriggerTarget target,
             TriggerType type
@@ -32,26 +34,21 @@ public abstract class AwakenPollinate extends Registry
         this.type = type;
     }
 
-    public abstract double getAmount(
+    public abstract MobEffectInstance getEffect(
             int level
     );
-
-    public final MobEffectInstance getEffect()
-    {
-        return this.effect;
-    }
 
     public final EquipmentSlot[] getSlots()
     {
         return this.slots;
     }
 
-    public TriggerTarget getTarget()
+    public final TriggerTarget getTarget()
     {
         return this.target;
     }
 
-    public TriggerType getType()
+    public final TriggerType getType()
     {
         return this.type;
     }

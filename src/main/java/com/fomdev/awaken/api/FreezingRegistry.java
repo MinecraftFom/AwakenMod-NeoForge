@@ -78,13 +78,12 @@ public class FreezingRegistry<T extends Registry>
     )
     {
         logger.info("> Running step 'freeze registry'");
-        logger.info("> Recognized {} registries, proceeding", registryTable.size());
-
-        logger.info("> Detailed data: (TYPE: {}, OWNER: {})", key, bus);
 
         NeoForge.EVENT_BUS.post(new RegisterEvent<>(key, this));
-        frozen = true;
 
+        frozen = true;
+        logger.info("> Recognized {} registries, proceeding", registryTable.size());
+        logger.info("> Detailed data: (TYPE: {}, OWNER: {}, FROZEN: TRUE)", key, bus);
         logger.info("> Frozen registry {} on FML-Common-Setup", key);
     }
 }

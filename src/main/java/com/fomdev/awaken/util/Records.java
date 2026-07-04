@@ -1,13 +1,35 @@
 package com.fomdev.awaken.util;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
 import java.awt.*;
+import java.util.List;
 
 public class Records
 {
+    public record AwakenDescriberComponent
+            (
+                    String infix,
+                    String prefix,
+                    String suffix
+            )
+    {}
+
+    public record AwakenPollinateComponent
+            (
+                    List<CompoundTag> data
+            )
+    {}
+
+    public record AwakenQualityComponent
+            (
+                    String key
+            )
+    {}
+
     public record AttributeHolder
             (
                     Attribute attr,

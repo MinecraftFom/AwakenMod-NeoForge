@@ -8,7 +8,12 @@ displayName = "Awaken" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://docs.neoforge.net/docs/misc/updatechecker/
 #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
 displayURL="https://github.com/MinecraftFom/AwakenMod-NeoForge"
-authors = "Owner: FomsDev(fomdev)\nProgram: Fom477\nDesign: Fom477, modic_M, Sixawns, SukISU117\nArt: modic_M, Sixawns"
+authors = '''
+Owner: FomsDev(fomdev)
+Program: Fom477
+Design: Fom477, modic_M, Sixawns, SukISU117
+Art: modic_M, Sixawns
+'''
 
 description = '''Wake before you Awake!'''
 

@@ -10,6 +10,12 @@ import java.util.List;
 
 public class Records
 {
+    public record AwakenAspectComponent
+            (
+                    List<CompoundTag> data
+            )
+    {}
+
     public record AwakenDescriberComponent
             (
                     String infix,
@@ -27,6 +33,18 @@ public class Records
     public record AwakenQualityComponent
             (
                     String key
+            )
+    {}
+
+    public record AwakenSpiritualComponent
+            (
+                    String key
+            )
+    {}
+
+    public record AwakenSporeComponent
+            (
+                    List<CompoundTag> data
             )
     {}
 

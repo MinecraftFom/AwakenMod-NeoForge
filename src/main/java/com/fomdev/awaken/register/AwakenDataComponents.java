@@ -17,6 +17,21 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class AwakenDataComponents
 {
+    public static final Codec<Records.AwakenAspectComponent> AWAKEN_ASPECT_CODEC =
+            RecordCodecBuilder.create(
+                    inst ->
+                            inst
+                                    .group(
+                                            CompoundTag.CODEC.listOf()
+                                                    .fieldOf("aspect")
+                                                    .forGetter(Records.AwakenAspectComponent::data)
+                                    )
+                                    .apply(
+                                            inst,
+                                            Records.AwakenAspectComponent::new
+                                    )
+            );
+
     public static final Codec<Records.AwakenDescriberComponent> AWAKEN_DESCRIBER_CODEC =
             RecordCodecBuilder.create(
                     inst ->
@@ -72,6 +87,43 @@ public class AwakenDataComponents
                                     )
             );
 
+    public static final Codec<Records.AwakenSpiritualComponent> AWAKEN_SPIRITUAL_CODEC =
+            RecordCodecBuilder.create(
+                    inst ->
+                            inst
+                                    .group(
+                                            Codec.STRING
+                                                    .fieldOf("spiritual")
+                                                    .forGetter(Records.AwakenSpiritualComponent::key)
+                                    )
+                                    .apply(
+                                            inst,
+                                            Records.AwakenSpiritualComponent::new
+                                    )
+            );
+
+    public static final Codec<Records.AwakenSporeComponent> AWAKEN_SPORE_CODEC =
+            RecordCodecBuilder.create(
+                    inst ->
+                            inst
+                                    .group(
+                                            CompoundTag.CODEC.listOf()
+                                                    .fieldOf("spore")
+                                                    .forGetter(Records.AwakenSporeComponent::data)
+                                    )
+                                    .apply(
+                                            inst,
+                                            Records.AwakenSporeComponent::new
+                                    )
+            );
+
+    public static final StreamCodec<ByteBuf, Records.AwakenAspectComponent> AWAKEN_ASPECT_STREAM_CODEC =
+            StreamCodec.composite(
+                    ByteBufCodecs.COMPOUND_TAG.apply(ByteBufCodecs.list()),
+                    Records.AwakenAspectComponent::data,
+                    Records.AwakenAspectComponent::new
+            );
+
     public static final StreamCodec<ByteBuf, Records.AwakenDescriberComponent> AWAKEN_DESCRIBER_STREAM_CODEC =
             StreamCodec.composite(
                     ByteBufCodecs.STRING_UTF8,
@@ -97,10 +149,33 @@ public class AwakenDataComponents
                     Records.AwakenQualityComponent::new
             );
 
+    public static final StreamCodec<ByteBuf, Records.AwakenSpiritualComponent> AWAKEN_SPIRITUAL_STREAM_CODEC =
+            StreamCodec.composite(
+                    ByteBufCodecs.STRING_UTF8,
+                    Records.AwakenSpiritualComponent::key,
+                    Records.AwakenSpiritualComponent::new
+            );
+
+    public static final StreamCodec<ByteBuf, Records.AwakenSporeComponent> AWAKEN_SPORE_STREAM_CODEC =
+            StreamCodec.composite(
+                    ByteBufCodecs.COMPOUND_TAG.apply(ByteBufCodecs.list()),
+                    Records.AwakenSporeComponent::data,
+                    Records.AwakenSporeComponent::new
+            );
+
     public static final DeferredRegister.DataComponents COMPONENT_REGISTER =
             DeferredRegister.createDataComponents(
                     Registries.DATA_COMPONENT_TYPE,
                     Awaken.MODID
+            );
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Records.AwakenAspectComponent>> AWAKEN_ASPECT_STORAGE =
+            COMPONENT_REGISTER.registerComponentType(
+                    "awaken_aspect",
+                    builder ->
+                            builder
+                                    .persistent(AWAKEN_ASPECT_CODEC)
+                                    .networkSynchronized(AWAKEN_ASPECT_STREAM_CODEC)
             );
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Records.AwakenDescriberComponent>> AWAKEN_DESCRIBER_STORAGE =
@@ -128,6 +203,24 @@ public class AwakenDataComponents
                             builder
                                     .persistent(AWAKEN_QUALITY_CODEC)
                                     .networkSynchronized(AWAKEN_QUALITY_STREAM_CODEC)
+            );
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Records.AwakenSpiritualComponent>> AWAKEN_SPIRITUAL_STORAGE =
+            COMPONENT_REGISTER.registerComponentType(
+                    "awaken_spiritual",
+                    builder ->
+                            builder
+                                    .persistent(AWAKEN_SPIRITUAL_CODEC)
+                                    .networkSynchronized(AWAKEN_SPIRITUAL_STREAM_CODEC)
+            );
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Records.AwakenSporeComponent>> AWAKEN_SPORE_STORAGE =
+            COMPONENT_REGISTER.registerComponentType(
+                    "awaken_spore",
+                    builder ->
+                            builder
+                                    .persistent(AWAKEN_SPORE_CODEC)
+                                    .networkSynchronized(AWAKEN_SPORE_STREAM_CODEC)
             );
 
     public static void register(

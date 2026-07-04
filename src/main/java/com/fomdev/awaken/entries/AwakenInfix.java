@@ -3,11 +3,11 @@ package com.fomdev.awaken.entries;
 import com.fomdev.awaken.api.Registry;
 import com.fomdev.awaken.util.Records;
 
-public class AwakenTitle extends Registry
+public class AwakenInfix extends Registry
 {
     private final Records.AttributeHolder attribute;
 
-    public AwakenTitle(
+    public AwakenInfix(
             String id,
             Records.AttributeHolder attribute
     )

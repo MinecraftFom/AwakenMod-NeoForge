@@ -3,14 +3,59 @@ package com.fomdev.awaken.util;
 import com.fomdev.awaken.entries.*;
 import com.fomdev.awaken.register.AwakenDataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class NBTUtil
 {
+    public static List<AwakenPollinate.PollinateInstance> deserializePollinates(
+            ItemStack stack
+    )
+    {
+        CompoundTag tag = getModTag(stack);
+        return deserializePollinates(tag);
+    }
+
+    private static List<AwakenPollinate.PollinateInstance> deserializePollinates(
+            CompoundTag tag
+    )
+    {
+        if (!tag.contains("pollinate"))
+            return List.of();
+
+        List<AwakenPollinate.PollinateInstance> instances = new ArrayList<>();
+        ListTag list = tag.getList("pollinate", 10);
+        for (Tag t: list)
+        {
+            if (!(t instanceof CompoundTag cpt))
+                continue;
+
+            AwakenPollinate pollinate = AwakenRegistries.AWAKEN_POLLINATE.getRegistry(ResourceLocation.parse(cpt.getString("id")));
+            if (pollinate == null)
+                continue;
+
+            int level = cpt.getInt("level");
+            instances.add(new AwakenPollinate.PollinateInstance(pollinate, level));
+        }
+
+        return instances;
+    }
+
     public static AwakenPrefix deserializePrefix(
+            ItemStack stack
+    )
+    {
+        CompoundTag tag = getModTag(stack);
+        return deserializePrefix(tag);
+    }
+
+    private static AwakenPrefix deserializePrefix(
             CompoundTag tag
     )
     {
@@ -21,6 +66,14 @@ public class NBTUtil
     }
 
     public static AwakenQuality deserializeQuality(
+            ItemStack stack
+    )
+    {
+        CompoundTag tag = getModTag(stack);
+        return deserializeQuality(tag);
+    }
+
+    private static AwakenQuality deserializeQuality(
             CompoundTag tag
     )
     {
@@ -31,6 +84,14 @@ public class NBTUtil
     }
 
     public static AwakenSpiritual deserializeSpiritual(
+            ItemStack stack
+    )
+    {
+        CompoundTag tag = getModTag(stack);
+        return deserializeSpiritual(tag);
+    }
+
+    private static AwakenSpiritual deserializeSpiritual(
             CompoundTag tag
     )
     {
@@ -40,7 +101,49 @@ public class NBTUtil
         return AwakenRegistries.AWAKEN_SPIRIT.getRegistry(ResourceLocation.parse(tag.getString("spiritual")));
     }
 
+    public static List<AwakenSpore.SporeInstance> deserializeSpores(
+            ItemStack stack
+    )
+    {
+        CompoundTag tag = getModTag(stack);
+        return deserializeSpores(tag);
+    }
+
+    private static List<AwakenSpore.SporeInstance> deserializeSpores(
+            CompoundTag tag
+    )
+    {
+        if (!tag.contains("spore"))
+            return List.of();
+
+        List<AwakenSpore.SporeInstance> instances = new ArrayList<>();
+        ListTag list = tag.getList("spore", 9);
+
+        for (Tag t: list)
+        {
+            if (!(t instanceof CompoundTag cpt))
+                continue;
+
+           AwakenSpore spore = AwakenRegistries.AWAKEN_SPORE.getRegistry(ResourceLocation.parse(cpt.getString("id")));
+            if (spore == null)
+                continue;
+
+            int level = cpt.getInt("level");
+            instances.add(new AwakenSpore.SporeInstance(spore, level));
+        }
+
+        return instances;
+    }
+
     public static AwakenSuffix deserializeSuffix(
+            ItemStack stack
+    )
+    {
+        CompoundTag tag = getModTag(stack);
+        return deserializeSuffix(tag);
+    }
+
+    private static AwakenSuffix deserializeSuffix(
             CompoundTag tag
     )
     {
@@ -51,6 +154,14 @@ public class NBTUtil
     }
 
     public static AwakenTitle deserializeTitle(
+            ItemStack stack
+    )
+    {
+        CompoundTag tag = getModTag(stack);
+        return deserializeTitle(tag);
+    }
+
+    private static AwakenTitle deserializeTitle(
             CompoundTag tag
     )
     {
@@ -60,7 +171,7 @@ public class NBTUtil
         return AwakenRegistries.AWAKEN_TITLE.getRegistry(ResourceLocation.parse(tag.getString("title")));
     }
 
-    public static CompoundTag getModTag(
+    private static CompoundTag getModTag(
             ItemStack stack
     )
     {
@@ -68,10 +179,17 @@ public class NBTUtil
         if (storage == null)
             stack.set(AwakenDataComponents.AWAKEN_DATA_STORAGE.get(), new AwakenDataComponents.AwakenDataStorage(new CompoundTag()));
 
-        return Objects.requireNonNull(stack.get(AwakenDataComponents.AWAKEN_DATA_STORAGE.get()), "Meet an unexpected error. The storage shouldn't be null").tag();
+        storage = stack.get(AwakenDataComponents.AWAKEN_DATA_STORAGE.get());
+        if (storage == null)
+            throw new IllegalStateException(
+                    "Unable to initialize storage."
+                    + "Stack: " + stack
+            );
+
+        return Objects.requireNonNull(storage, "Meet an unexpected error. The storage shouldn't be null").tag();
     }
 
-    public static void serializePrefix(
+    private static void serializePrefix(
             CompoundTag tag,
             AwakenPrefix prefix
     )
@@ -79,7 +197,7 @@ public class NBTUtil
         tag.putString("prefix", prefix.getLocation().toString());
     }
 
-    public static void serializeQuality(
+    private static void serializeQuality(
             CompoundTag tag,
             AwakenQuality quality
     )
@@ -87,7 +205,7 @@ public class NBTUtil
         tag.putString("quality", quality.getLocation().toString());
     }
 
-    public static void serializeSpiritual(
+    private static void serializeSpiritual(
             CompoundTag tag,
             AwakenSpiritual spiritual
     )
@@ -95,7 +213,7 @@ public class NBTUtil
         tag.putString("spiritual", spiritual.getLocation().toString());
     }
 
-    public static void serializeSuffix(
+    private static void serializeSuffix(
             CompoundTag tag,
             AwakenSuffix suffix
     )
@@ -103,7 +221,7 @@ public class NBTUtil
         tag.putString("suffix", suffix.getLocation().toString());
     }
 
-    public static void serializeTitle(
+    private static void serializeTitle(
             CompoundTag tag,
             AwakenTitle title
     )

@@ -1,8 +1,12 @@
 package com.fomdev.awaken.util;
 
 import com.fomdev.awaken.entries.*;
+import com.fomdev.awaken.register.AwakenDataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+
+import java.util.Objects;
 
 public class NBTUtil
 {
@@ -54,6 +58,17 @@ public class NBTUtil
             return null;
 
         return AwakenRegistries.AWAKEN_TITLE.getRegistry(ResourceLocation.parse(tag.getString("title")));
+    }
+
+    public static CompoundTag getModTag(
+            ItemStack stack
+    )
+    {
+        AwakenDataComponents.AwakenDataStorage storage = stack.get(AwakenDataComponents.AWAKEN_DATA_STORAGE.get());
+        if (storage == null)
+            stack.set(AwakenDataComponents.AWAKEN_DATA_STORAGE.get(), new AwakenDataComponents.AwakenDataStorage(new CompoundTag()));
+
+        return Objects.requireNonNull(stack.get(AwakenDataComponents.AWAKEN_DATA_STORAGE.get()), "Meet an unexpected error. The storage shouldn't be null").tag();
     }
 
     public static void serializePrefix(

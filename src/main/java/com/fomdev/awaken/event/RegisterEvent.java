@@ -2,6 +2,7 @@ package com.fomdev.awaken.event;
 
 import com.fomdev.awaken.api.FreezingRegistry;
 import com.fomdev.awaken.api.Registry;
+import com.fomdev.awaken.init.Awaken;
 import net.minecraft.resources.ResourceKey;
 import net.neoforged.bus.api.Event;
 
@@ -15,8 +16,8 @@ public final class RegisterEvent<T extends Registry> extends Event
             FreezingRegistry<T> parent
     )
     {
+        Awaken.LOGGER.info("Started registry");
         this.key = key;
-
         this.parent = parent;
     }
 
@@ -32,6 +33,8 @@ public final class RegisterEvent<T extends Registry> extends Event
             T object
     )
     {
+        Awaken.LOGGER.error("Registering registry {}:{}", modid, object.id());
+
         return parent.register(
                 modid,
                 object

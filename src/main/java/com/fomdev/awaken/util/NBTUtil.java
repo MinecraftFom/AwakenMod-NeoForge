@@ -3,229 +3,119 @@ package com.fomdev.awaken.util;
 import com.fomdev.awaken.entries.*;
 import com.fomdev.awaken.register.AwakenDataComponents;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class NBTUtil
 {
+    public static AwakenInfix deserializeInfix(
+            ItemStack stack
+    )
+    {
+        Records.AwakenDescriberComponent desc = deserializeDescriber(stack);
+        if (desc == null)
+            return null;
+
+        if (desc.infix() == null)
+            return null;
+
+        return AwakenRegistries.AWAKEN_INFIX.getRegistry(ResourceLocation.parse(desc.infix()));
+    }
+
     public static List<AwakenPollinate.PollinateInstance> deserializePollinates(
             ItemStack stack
     )
     {
-        CompoundTag tag = getModTag(stack);
-        return deserializePollinates(tag);
-    }
-
-    private static List<AwakenPollinate.PollinateInstance> deserializePollinates(
-            CompoundTag tag
-    )
-    {
-        if (!tag.contains("pollinate"))
+        if (stack.is(Items.AIR))
             return List.of();
 
-        List<AwakenPollinate.PollinateInstance> instances = new ArrayList<>();
-        ListTag list = tag.getList("pollinate", 10);
-        for (Tag t: list)
+        Records.AwakenPollinateComponent component = stack.get(AwakenDataComponents.AWAKEN_POLLINATE_STORAGE.get());
+        if (component == null)
+            return List.of();
+
+        if (component.data().isEmpty())
+            return List.of();
+
+        List<AwakenPollinate.PollinateInstance> pollinates = new ArrayList<>();
+
+        for (CompoundTag tag: component.data())
         {
-            if (!(t instanceof CompoundTag cpt))
+            if (!tag.contains("id") || !tag.contains("level"))
                 continue;
 
-            AwakenPollinate pollinate = AwakenRegistries.AWAKEN_POLLINATE.getRegistry(ResourceLocation.parse(cpt.getString("id")));
-            if (pollinate == null)
+            AwakenPollinate pollinate = AwakenRegistries.AWAKEN_POLLINATE.getRegistry(ResourceLocation.parse(tag.getString("id")));
+            int level = tag.getInt("level");
+
+            if (pollinate == null || level <= 0)
                 continue;
 
-            int level = cpt.getInt("level");
-            instances.add(new AwakenPollinate.PollinateInstance(pollinate, level));
+            pollinates.add(new AwakenPollinate.PollinateInstance(pollinate, level));
         }
 
-        return instances;
+        return pollinates;
     }
 
     public static AwakenPrefix deserializePrefix(
             ItemStack stack
     )
     {
-        CompoundTag tag = getModTag(stack);
-        return deserializePrefix(tag);
-    }
-
-    private static AwakenPrefix deserializePrefix(
-            CompoundTag tag
-    )
-    {
-        if (!tag.contains("prefix"))
+        Records.AwakenDescriberComponent desc = deserializeDescriber(stack);
+        if (desc == null)
             return null;
 
-        return AwakenRegistries.AWAKEN_PREFIX.getRegistry(ResourceLocation.parse(tag.getString("prefix")));
-    }
-
-    public static AwakenQuality deserializeQuality(
-            ItemStack stack
-    )
-    {
-        CompoundTag tag = getModTag(stack);
-        return deserializeQuality(tag);
-    }
-
-    private static AwakenQuality deserializeQuality(
-            CompoundTag tag
-    )
-    {
-        if (!tag.contains("quality"))
+        if (desc.prefix() == null)
             return null;
 
-        return AwakenRegistries.AWAKEN_QUALITY.getRegistry(ResourceLocation.parse(tag.getString("quality")));
-    }
-
-    public static AwakenSpiritual deserializeSpiritual(
-            ItemStack stack
-    )
-    {
-        CompoundTag tag = getModTag(stack);
-        return deserializeSpiritual(tag);
-    }
-
-    private static AwakenSpiritual deserializeSpiritual(
-            CompoundTag tag
-    )
-    {
-        if (!tag.contains("spiritual"))
-            return null;
-
-        return AwakenRegistries.AWAKEN_SPIRIT.getRegistry(ResourceLocation.parse(tag.getString("spiritual")));
-    }
-
-    public static List<AwakenSpore.SporeInstance> deserializeSpores(
-            ItemStack stack
-    )
-    {
-        CompoundTag tag = getModTag(stack);
-        return deserializeSpores(tag);
-    }
-
-    private static List<AwakenSpore.SporeInstance> deserializeSpores(
-            CompoundTag tag
-    )
-    {
-        if (!tag.contains("spore"))
-            return List.of();
-
-        List<AwakenSpore.SporeInstance> instances = new ArrayList<>();
-        ListTag list = tag.getList("spore", 9);
-
-        for (Tag t: list)
-        {
-            if (!(t instanceof CompoundTag cpt))
-                continue;
-
-           AwakenSpore spore = AwakenRegistries.AWAKEN_SPORE.getRegistry(ResourceLocation.parse(cpt.getString("id")));
-            if (spore == null)
-                continue;
-
-            int level = cpt.getInt("level");
-            instances.add(new AwakenSpore.SporeInstance(spore, level));
-        }
-
-        return instances;
+        return AwakenRegistries.AWAKEN_PREFIX.getRegistry(ResourceLocation.parse(desc.prefix()));
     }
 
     public static AwakenSuffix deserializeSuffix(
             ItemStack stack
     )
     {
-        CompoundTag tag = getModTag(stack);
-        return deserializeSuffix(tag);
-    }
-
-    private static AwakenSuffix deserializeSuffix(
-            CompoundTag tag
-    )
-    {
-        if (!tag.contains("suffix"))
+        Records.AwakenDescriberComponent desc = deserializeDescriber(stack);
+        if (desc == null)
             return null;
 
-        return AwakenRegistries.AWAKEN_SUFFIX.getRegistry(ResourceLocation.parse(tag.getString("suffix")));
+        if (desc.suffix() == null)
+            return null;
+
+        return AwakenRegistries.AWAKEN_SUFFIX.getRegistry(ResourceLocation.parse(desc.suffix()));
     }
 
-    public static AwakenTitle deserializeTitle(
+    public static AwakenQuality deserializeQuality(
             ItemStack stack
     )
     {
-        CompoundTag tag = getModTag(stack);
-        return deserializeTitle(tag);
-    }
-
-    private static AwakenTitle deserializeTitle(
-            CompoundTag tag
-    )
-    {
-        if (!tag.contains("title"))
+        if (stack.is(Items.AIR))
             return null;
 
-        return AwakenRegistries.AWAKEN_TITLE.getRegistry(ResourceLocation.parse(tag.getString("title")));
+        Records.AwakenQualityComponent component = stack.get(AwakenDataComponents.AWAKEN_QUALITY_STORAGE.get());
+        if (component == null)
+            return null;
+
+        if (component.key() == null)
+            return null;
+
+        return AwakenRegistries.AWAKEN_QUALITY.getRegistry(ResourceLocation.parse(component.key()));
     }
 
-    private static CompoundTag getModTag(
+    private static Records.AwakenDescriberComponent deserializeDescriber(
             ItemStack stack
     )
     {
-        AwakenDataComponents.AwakenDataStorage storage = stack.get(AwakenDataComponents.AWAKEN_DATA_STORAGE.get());
-        if (storage == null)
-            stack.set(AwakenDataComponents.AWAKEN_DATA_STORAGE.get(), new AwakenDataComponents.AwakenDataStorage(new CompoundTag()));
+        if (stack.is(Items.AIR))
+            return null;
 
-        storage = stack.get(AwakenDataComponents.AWAKEN_DATA_STORAGE.get());
-        if (storage == null)
-            throw new IllegalStateException(
-                    "Unable to initialize storage."
-                    + "Stack: " + stack
-            );
+        Records.AwakenDescriberComponent component = stack.get(AwakenDataComponents.AWAKEN_DESCRIBER_STORAGE.get());
+        if (component == null)
+            stack.set(AwakenDataComponents.AWAKEN_DESCRIBER_STORAGE.get(), new Records.AwakenDescriberComponent(null, null, null));
 
-        return Objects.requireNonNull(storage, "Meet an unexpected error. The storage shouldn't be null").tag();
-    }
-
-    private static void serializePrefix(
-            CompoundTag tag,
-            AwakenPrefix prefix
-    )
-    {
-        tag.putString("prefix", prefix.getLocation().toString());
-    }
-
-    private static void serializeQuality(
-            CompoundTag tag,
-            AwakenQuality quality
-    )
-    {
-        tag.putString("quality", quality.getLocation().toString());
-    }
-
-    private static void serializeSpiritual(
-            CompoundTag tag,
-            AwakenSpiritual spiritual
-    )
-    {
-        tag.putString("spiritual", spiritual.getLocation().toString());
-    }
-
-    private static void serializeSuffix(
-            CompoundTag tag,
-            AwakenSuffix suffix
-    )
-    {
-        tag.putString("suffix", suffix.getLocation().toString());
-    }
-
-    private static void serializeTitle(
-            CompoundTag tag,
-            AwakenTitle title
-    )
-    {
-        tag.putString("title", title.getLocation().toString());
+        component = stack.get(AwakenDataComponents.AWAKEN_DESCRIBER_STORAGE.get());
+        return component;
     }
 }

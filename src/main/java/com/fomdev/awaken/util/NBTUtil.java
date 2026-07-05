@@ -12,6 +12,38 @@ import java.util.List;
 
 public class NBTUtil
 {
+    public static List<AwakenAspect.AspectInstance> deserializeAspects(
+            ItemStack stack
+    )
+    {
+        if (stack.is(Items.AIR))
+            return List.of();
+
+        Records.AwakenAspectComponent component = stack.get(AwakenDataComponents.AWAKEN_ASPECT_STORAGE.get());
+        if (component == null)
+            return List.of();
+
+        if (component.data().isEmpty())
+            return List.of();
+
+        List<AwakenAspect.AspectInstance> instances = new ArrayList<>();
+        for (CompoundTag tag: component.data())
+        {
+            if (!tag.contains("id") || !tag.contains("level"))
+                continue;
+
+            AwakenAspect aspect = AwakenRegistries.AWAKEN_ASPECT.getRegistry(ResourceLocation.parse(tag.getString("id")));
+            int level = tag.getInt("level");
+
+            if (aspect == null)
+                continue;
+
+            instances.add(new AwakenAspect.AspectInstance(aspect, level));
+        }
+
+        return instances;
+    }
+
     public static AwakenInfix deserializeInfix(
             ItemStack stack
     )
@@ -102,6 +134,56 @@ public class NBTUtil
             return null;
 
         return AwakenRegistries.AWAKEN_QUALITY.getRegistry(ResourceLocation.parse(component.key()));
+    }
+
+    public static AwakenSpiritual deserializeSpiritual(
+            ItemStack stack
+    )
+    {
+        if (stack.is(Items.AIR))
+            return null;
+
+        Records.AwakenSpiritualComponent component = stack.get(AwakenDataComponents.AWAKEN_SPIRITUAL_STORAGE.get());
+        if (component == null)
+            return null;
+
+        if (component.key() == null)
+            return null;
+
+        return AwakenRegistries.AWAKEN_SPIRIT.getRegistry(ResourceLocation.parse(component.key()));
+    }
+
+    public static List<AwakenSpore.SporeInstance> deserializeSpores(
+            ItemStack stack
+    )
+    {
+        if (stack.is(Items.AIR))
+            return List.of();
+
+        Records.AwakenSporeComponent component = stack.get(AwakenDataComponents.AWAKEN_SPORE_STORAGE.get());
+        if (component == null)
+            return List.of();
+
+        if (component.data().isEmpty())
+            return List.of();
+
+        List<AwakenSpore.SporeInstance> spores = new ArrayList<>();
+
+        for (CompoundTag tag: component.data())
+        {
+            if (!tag.contains("id") || !tag.contains("level"))
+                continue;
+
+            AwakenSpore spore = AwakenRegistries.AWAKEN_SPORE.getRegistry(ResourceLocation.parse(tag.getString("id")));
+            int level = tag.getInt("level");
+
+            if (spore == null || level <= 0)
+                continue;
+
+            spores.add(new AwakenSpore.SporeInstance(spore, level));
+        }
+
+        return spores;
     }
 
     private static Records.AwakenDescriberComponent deserializeDescriber(

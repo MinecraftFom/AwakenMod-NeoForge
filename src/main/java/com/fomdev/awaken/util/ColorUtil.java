@@ -1,6 +1,8 @@
 package com.fomdev.awaken.util;
 
 import com.fomdev.awaken.entries.AwakenQuality;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 import net.neoforged.neoforge.client.event.RenderTooltipEvent;
 
 import java.awt.*;
@@ -21,6 +23,13 @@ public class ColorUtil
         event.setBackgroundEnd(holder.frontEnd().getRGB());
         event.setBorderStart(holder.backStart().getRGB());
         event.setBorderEnd(holder.backEnd().getRGB());
+    }
+
+    public static Style colorStyle(
+            Color color
+    )
+    {
+        return Style.EMPTY.withColor(TextColor.fromRgb(color.getRGB()));
     }
 
     public static Color opposite(

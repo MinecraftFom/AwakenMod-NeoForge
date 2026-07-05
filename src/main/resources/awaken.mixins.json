@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.fomdev.awaken.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins":
+  [
+    "MixinEnchantment"
+  ],
+  "client":
+  [
+  ],
+  "injectors":
+  {
+    "defaultRequire": 1
+  },
+  "overwrites":
+  {
+    "requireAnnotations": true
+  }
+}

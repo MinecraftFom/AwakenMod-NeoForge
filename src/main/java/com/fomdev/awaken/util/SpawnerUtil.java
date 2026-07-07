@@ -1,7 +1,6 @@
 package com.fomdev.awaken.util;
 
-import com.fomdev.awaken.init.Awaken;
-import com.fomdev.awaken.register.AwakenAttachmentTypes;
+import com.fomdev.awaken.register.data.AwakenAttachmentTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;

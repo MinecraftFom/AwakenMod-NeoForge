@@ -97,15 +97,43 @@ public abstract class AwakenPollinate extends Registry
 
     public enum TriggerTarget
     {
-        DAMAGER,
-        SELF,
-        TARGET
+        DAMAGER("tooltip.triggertarget.damager.name"),
+        SELF("tooltip.triggertarget.self.name"),
+        TARGET("tooltip.triggertarget.target.name");
+
+        private final String unlocalized;
+
+        TriggerTarget(
+                String unlocalized
+        )
+        {
+            this.unlocalized = unlocalized;
+        }
+
+        public final String getUnlocalized()
+        {
+            return this.unlocalized;
+        }
     }
 
     public enum TriggerType
     {
-        CONTINUE,
-        DAMAGE,
-        HURT
+        CONTINUE("tooltip.triggertype.continue.name"),
+        DAMAGE("tooltip.triggertype.damage.name"),
+        HURT("tooltip.triggertype.hurt.name");
+
+        private final String unlocalized;
+
+        TriggerType(
+                String unlocalized
+        )
+        {
+            this.unlocalized = unlocalized;
+        }
+
+        public final String getUnlocalized()
+        {
+            return this.unlocalized;
+        }
     }
 }

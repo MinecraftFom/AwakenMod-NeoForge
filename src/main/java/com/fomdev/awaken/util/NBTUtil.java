@@ -1,7 +1,7 @@
 package com.fomdev.awaken.util;
 
 import com.fomdev.awaken.entries.*;
-import com.fomdev.awaken.register.AwakenDataComponents;
+import com.fomdev.awaken.register.data.AwakenDataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;

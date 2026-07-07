@@ -1,4 +1,4 @@
-package com.fomdev.awaken.register;
+package com.fomdev.awaken.register.data;
 
 import com.fomdev.awaken.init.Awaken;
 import com.mojang.serialization.Codec;

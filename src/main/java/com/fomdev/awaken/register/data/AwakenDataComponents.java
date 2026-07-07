@@ -1,4 +1,4 @@
-package com.fomdev.awaken.register;
+package com.fomdev.awaken.register.data;
 
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.util.Records;
@@ -8,7 +8,6 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.bus.api.IEventBus;

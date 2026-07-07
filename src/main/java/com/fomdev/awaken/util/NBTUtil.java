@@ -193,11 +193,6 @@ public class NBTUtil
         if (stack.is(Items.AIR))
             return null;
 
-        Records.AwakenDescriberComponent component = stack.get(AwakenDataComponents.AWAKEN_DESCRIBER_STORAGE.get());
-        if (component == null)
-            stack.set(AwakenDataComponents.AWAKEN_DESCRIBER_STORAGE.get(), new Records.AwakenDescriberComponent(null, null, null));
-
-        component = stack.get(AwakenDataComponents.AWAKEN_DESCRIBER_STORAGE.get());
-        return component;
+        return stack.get(AwakenDataComponents.AWAKEN_DESCRIBER_STORAGE.get());
     }
 }

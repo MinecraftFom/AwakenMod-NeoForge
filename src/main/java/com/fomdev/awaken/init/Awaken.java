@@ -1,8 +1,10 @@
 package com.fomdev.awaken.init;
 
 import com.fomdev.awaken.entries.AwakenRegistries;
-import com.fomdev.awaken.register.AwakenAttachmentTypes;
-import com.fomdev.awaken.register.AwakenDataComponents;
+import com.fomdev.awaken.register.blocks.AwakenBlockEntities;
+import com.fomdev.awaken.register.blocks.AwakenBlocks;
+import com.fomdev.awaken.register.data.AwakenAttachmentTypes;
+import com.fomdev.awaken.register.data.AwakenDataComponents;
 import com.fomdev.awaken.register.awaken.AwakenPollinates;
 import com.fomdev.awaken.register.awaken.AwakenQualities;
 import com.mojang.logging.LogUtils;
@@ -23,6 +25,8 @@ public class Awaken
     )
     {
         AwakenRegistries.register(bus);
+        AwakenBlocks.register(bus);
+        AwakenBlockEntities.register(bus);
         AwakenAttachmentTypes.register(bus);
         AwakenDataComponents.register(bus);
 

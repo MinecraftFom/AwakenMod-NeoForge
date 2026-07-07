@@ -1,7 +1,6 @@
 package com.fomdev.awaken.enchant;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class EnchantManager

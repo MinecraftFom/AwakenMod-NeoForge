@@ -33,6 +33,11 @@ public class AwakenSuffix extends Registry
         return this.factor;
     }
 
+    public Attribute getTarget()
+    {
+        return this.target;
+    }
+
     public boolean should(
             Attribute attribute
     )

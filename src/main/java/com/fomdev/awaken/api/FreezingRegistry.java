@@ -19,11 +19,11 @@ public class FreezingRegistry<T extends Registry>
 {
     private final Logger logger;
 
-    private final Map<ResourceLocation, T> registryTable;
-    private final ResourceKey<net.minecraft.core.Registry<T>> key;
-    private IEventBus bus;
+    protected final Map<ResourceLocation, T> registryTable;
+    protected final ResourceKey<net.minecraft.core.Registry<T>> key;
+    protected IEventBus bus;
 
-    private boolean frozen;
+    protected boolean frozen;
 
     public FreezingRegistry(
             ResourceKey<net.minecraft.core.Registry<T>> key
@@ -73,7 +73,7 @@ public class FreezingRegistry<T extends Registry>
         return registryTable.put(location, object);
     }
 
-    private void onRegister(
+    protected void onRegister(
             FMLCommonSetupEvent event
     )
     {

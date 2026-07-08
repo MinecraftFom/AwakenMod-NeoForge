@@ -3,8 +3,6 @@ package com.fomdev.awaken.util;
 import com.fomdev.awaken.entries.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.TooltipFlag;
 
 import java.util.ArrayList;
@@ -53,7 +51,10 @@ public class TooltipUtil
                                             ": "
                                     )
                                     .append(
-                                            infix.getAttribute().attr().getRegisteredName()
+                                            Component
+                                                    .translatable(
+                                                            infix.getAttribute().attr().value().getDescriptionId()
+                                                    )
                                     )
                     );
             components
@@ -124,7 +125,8 @@ public class TooltipUtil
                                                     "tooltip.pollinate.when.info",
                                                     LocaleUtil.localizeTrigger(pollinate.getPollinate().getType()),
                                                     LocaleUtil.localizeTarget(pollinate.getPollinate().getTarget()),
-                                                    pollinate.getPollinate().getEffect(pollinate.getLevel()).getDescriptionId()
+                                                    Component.translatable(pollinate.getPollinate().getEffect(pollinate.getLevel()).getDescriptionId()).getString(),
+                                                    Util.castTickToString(pollinate.getPollinate().getEffect(pollinate.getLevel()).getDuration())
                                             )
                             )
             );
@@ -179,8 +181,7 @@ public class TooltipUtil
                     );
             components
                     .addAll(
-                            translateEffects(prefix.effects()
-                            )
+                            translateEffects(prefix.effects())
                     );
             components
                     .add(
@@ -295,7 +296,7 @@ public class TooltipUtil
                             Component
                                     .translatable(
                                             "tooltip.spore.attribute.info",
-                                            spore.getSpore().getAttribute().getRegisteredName(),
+                                            Component.translatable(spore.getSpore().getAttribute().value().getDescriptionId()).getString(),
                                             "" + spore.getSpore().getAmount(spore.getLevel())
                                     )
                     );
@@ -342,7 +343,7 @@ public class TooltipUtil
                             Component
                                     .translatable(
                                             "tooltip.suffix.attribute.info",
-                                            suffix.getTarget().getRegisteredName(),
+                                            Component.translatable(suffix.getTarget().value().getDescriptionId()).getString(),
                                             "" + suffix.factor()
                                     )
                     );
@@ -372,7 +373,7 @@ public class TooltipUtil
     {
         List<Component> components = new ArrayList<>();
         for (MobEffectInstance instance: instances)
-            components.add(Component.empty().append(Component.translatable("tooltip.effect.whenhold.info", instance.getDescriptionId(), instance.getAmplifier())));
+            components.add(Component.empty().append(Component.translatable("tooltip.effect.whenhold.info", Component.translatable(instance.getDescriptionId()).getString(), Util.castTickToString(instance.getAmplifier()))));
 
         return components;
     }

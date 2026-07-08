@@ -64,6 +64,7 @@ public class AwakenLevelEvents
         float level = NBTUtil.deserializeAwakenLevel(player);
         AwakenLevel awakenLevel = AwakenRegistries.AWAKEN_LEVEL.getLevel(level);
         int lvl = AwakenRegistries.AWAKEN_LEVEL.getLevel(awakenLevel);
-        NBTUtil.addAwakenLevel(player, -random.nextInt((int) level / (10 * lvl)));
+        int factor = (int) level / (10 * lvl);
+        NBTUtil.addAwakenLevel(player, -random.nextInt(factor <= 0? 1: factor));
     }
 }

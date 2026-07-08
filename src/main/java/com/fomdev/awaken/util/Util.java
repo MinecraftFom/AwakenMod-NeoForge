@@ -10,6 +10,30 @@ import java.util.List;
 
 public class Util
 {
+    public static String castTickToString(
+            int tick
+    )
+    {
+        int seconds = tick / 20;
+        int minutes = seconds / 60;
+        int hours = minutes / 60;
+
+        if (hours != 0)
+        {
+            int mins = minutes - hours * 60;
+            int secs = seconds - minutes * 60;
+            return "(" + hours + ":" + mins + ":" + secs + ")";
+        }
+
+        if (minutes != 0)
+        {
+            int secs = seconds - minutes * 60;
+            return "(" + minutes + ":" + secs + ")";
+        }
+
+        return "(" + seconds + "s)";
+    }
+
     public static List<ItemStack> getStacks(
             EquipmentUser user
     )

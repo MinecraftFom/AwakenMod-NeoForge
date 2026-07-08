@@ -6,27 +6,27 @@ import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.util.NBTUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
-@EventBusSubscriber(modid = Awaken.MODID, value = Dist.DEDICATED_SERVER)
+@EventBusSubscriber(modid = Awaken.MODID)
 public class DifficultyEvents
 {
     @SubscribeEvent
     public static void onLevelDayPassed(
-            LevelTickEvent event
+            LevelTickEvent.Post event
     )
     {
         if (!(event.getLevel() instanceof ServerLevel level))
             return;
 
-        if (level.getDayTime() % 24000 == 0) // A new day
+        long dayTime = level.getDayTime() - 1;
+        if (dayTime % 24000 == 0) // A new day
         {
-            int day = Math.toIntExact(level.getDayTime() / 24000);
+            int day = Math.toIntExact(dayTime / 24000);
             if (day == 0)
                 return; // The first day has no difficulty
 
@@ -59,13 +59,13 @@ public class DifficultyEvents
 
             float currentDifficulty = DifficultyManager.getLevelDifficulty(level);
             float dimedValue = randValue * DifficultyManager.getDimensionFactor(level);
-            DifficultyManager.setLevelDifficulty(level, currentDifficulty + dimedValue * 100);
+            DifficultyManager.setLevelDifficulty(level, currentDifficulty + dimedValue);
         }
     }
 
     @SubscribeEvent
     public static void onSendData(
-            LevelTickEvent event
+            LevelTickEvent.Post event
     )
     {
         if (!(event.getLevel() instanceof ServerLevel level))

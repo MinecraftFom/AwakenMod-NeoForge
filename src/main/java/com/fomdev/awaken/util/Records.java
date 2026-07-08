@@ -1,5 +1,6 @@
 package com.fomdev.awaken.util;
 
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -56,14 +57,14 @@ public class Records
 
     public record AttributeHolder
             (
-                    Attribute attr,
+                    Holder<Attribute> attr,
                     double amount,
                     AttributeModifier.Operation operation,
                     EquipmentSlot[] slot
             )
     {
         public AttributeHolder(
-                Attribute attr,
+                Holder<Attribute> attr,
                 double amount,
                 EquipmentSlot slots
         )

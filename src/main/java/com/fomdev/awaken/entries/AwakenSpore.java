@@ -1,6 +1,7 @@
 package com.fomdev.awaken.entries;
 
 import com.fomdev.awaken.api.Registry;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -11,12 +12,12 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class AwakenSpore extends Registry
 {
-    private final Attribute attribute;
+    private final Holder<Attribute> attribute;
     private final EquipmentSlot[] suitable;
 
     public AwakenSpore(
             String id,
-            Attribute attribute,
+            Holder<Attribute> attribute,
             EquipmentSlot[] suitable
     )
     {
@@ -30,7 +31,7 @@ public abstract class AwakenSpore extends Registry
             int level
     );
 
-    public final Attribute getAttribute()
+    public final Holder<Attribute> getAttribute()
     {
         return this.attribute;
     }

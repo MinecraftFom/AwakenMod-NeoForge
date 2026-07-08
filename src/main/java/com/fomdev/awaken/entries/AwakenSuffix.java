@@ -1,19 +1,20 @@
 package com.fomdev.awaken.entries;
 
 import com.fomdev.awaken.api.Registry;
+import net.minecraft.core.Holder;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 
 public class AwakenSuffix extends Registry
 {
     private final int durability;
     private final double factor;
-    private final Attribute target;
+    private final Holder<Attribute> target;
 
     public AwakenSuffix(
             String id,
             int durability,
             double factor,
-            Attribute target
+            Holder<Attribute> target
     )
     {
         super(id);
@@ -33,13 +34,13 @@ public class AwakenSuffix extends Registry
         return this.factor;
     }
 
-    public Attribute getTarget()
+    public Holder<Attribute> getTarget()
     {
         return this.target;
     }
 
     public boolean should(
-            Attribute attribute
+            Holder<Attribute> attribute
     )
     {
         return this.target == attribute;

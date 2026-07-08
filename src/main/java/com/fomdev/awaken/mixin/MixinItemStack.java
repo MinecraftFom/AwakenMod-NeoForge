@@ -127,7 +127,7 @@ public abstract class MixinItemStack implements DataComponentHolder
 
         if (infix != null && prefix != null && suffix != null)
         {
-            list.addAll(TooltipUtil.castInfixTooltip(flag, infix));
+            list.addAll(TooltipUtil.castInfixTooltip(flag, infix, (float) (quality != null? quality.getFactor() * suffix.factor(): suffix.factor())));
             list.addAll(TooltipUtil.castPrefixTooltip(flag, prefix));
             list.addAll(TooltipUtil.castSuffixTooltip(flag, suffix));
         }

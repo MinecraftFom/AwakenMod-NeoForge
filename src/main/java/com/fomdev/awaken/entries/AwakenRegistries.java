@@ -2,6 +2,7 @@ package com.fomdev.awaken.entries;
 
 import com.fomdev.awaken.api.FreezingRegistry;
 import com.fomdev.awaken.init.Awaken;
+import com.fomdev.awaken.level.AwakenLevelRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -31,7 +32,7 @@ public class AwakenRegistries
 
     public static final FreezingRegistry<AwakenAspect> AWAKEN_ASPECT = new FreezingRegistry<>(RES_AWAKEN_ASPECT);
     public static final FreezingRegistry<AwakenInfix> AWAKEN_INFIX = new FreezingRegistry<>(RES_AWAKEN_INFIX);
-    public static final FreezingRegistry<AwakenLevel> AWAKEN_LEVEL = new FreezingRegistry<>(RES_AWAKEN_LEVEL);
+    public static final AwakenLevelRegistry AWAKEN_LEVEL = new AwakenLevelRegistry(RES_AWAKEN_LEVEL);
     public static final FreezingRegistry<AwakenPollinate> AWAKEN_POLLINATE = new FreezingRegistry<>(RES_AWAKEN_POLLINATE);
     public static final FreezingRegistry<AwakenPrefix> AWAKEN_PREFIX = new FreezingRegistry<>(RES_AWAKEN_PREFIX);
     public static final FreezingRegistry<AwakenQuality> AWAKEN_QUALITY = new FreezingRegistry<>(RES_AWAKEN_QUALITY);

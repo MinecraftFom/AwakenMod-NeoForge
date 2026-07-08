@@ -1,13 +1,17 @@
 package com.fomdev.awaken.util;
 
-import com.fomdev.awaken.entries.AwakenInfix;
-import com.fomdev.awaken.entries.AwakenPrefix;
-import com.fomdev.awaken.entries.AwakenQuality;
-import com.fomdev.awaken.entries.AwakenSuffix;
+import com.fomdev.awaken.entries.*;
 import net.minecraft.network.chat.Component;
 
 public class LocaleUtil
 {
+    public static Component localizeAwakenLevel(
+            AwakenLevel level
+    )
+    {
+        return Component.translatable("level." + level.id() + ".name");
+    }
+
     public static Component localizeInfix(
             AwakenInfix infix
     )

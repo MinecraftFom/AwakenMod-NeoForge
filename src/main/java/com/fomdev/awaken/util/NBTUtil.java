@@ -1,9 +1,11 @@
 package com.fomdev.awaken.util;
 
 import com.fomdev.awaken.entries.*;
+import com.fomdev.awaken.register.data.AwakenAttachmentTypes;
 import com.fomdev.awaken.register.data.AwakenDataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
@@ -12,6 +14,14 @@ import java.util.List;
 
 public class NBTUtil
 {
+    public static void addAwakenLevel(
+            Player player,
+            float amount
+    )
+    {
+        serializeAwakenLevel(player, deserializeAwakenLevel(player) + amount);
+    }
+
     public static List<AwakenAspect.AspectInstance> deserializeAspects(
             ItemStack stack
     )
@@ -42,6 +52,19 @@ public class NBTUtil
         }
 
         return instances;
+    }
+
+    public static float deserializeAwakenLevel(
+            Player player
+    )
+    {
+        Records.AwakenLevelComponent data = player.getExistingDataOrNull(AwakenAttachmentTypes.PLAYER_AWAKEN_LEVEL_ATTACHMENT);
+        if (data == null)
+            serializeAwakenLevel(player, 0.0F);
+
+        data = player.getExistingDataOrNull(AwakenAttachmentTypes.PLAYER_AWAKEN_LEVEL_ATTACHMENT);
+        assert data != null;
+        return data.level();
     }
 
     public static AwakenInfix deserializeInfix(
@@ -184,6 +207,14 @@ public class NBTUtil
         }
 
         return spores;
+    }
+
+    public static void serializeAwakenLevel(
+            Player player,
+            float level
+    )
+    {
+        player.setData(AwakenAttachmentTypes.PLAYER_AWAKEN_LEVEL_ATTACHMENT, new Records.AwakenLevelComponent(level));
     }
 
     private static Records.AwakenDescriberComponent deserializeDescriber(

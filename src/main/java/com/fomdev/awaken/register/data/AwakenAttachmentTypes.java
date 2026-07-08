@@ -44,6 +44,13 @@ public class AwakenAttachmentTypes
                     Awaken.MODID
             );
 
+    public static final Supplier<AttachmentType<Float>> PLAYER_ADDITIONAL_HEALTH =
+            REGISTER.register("additional_health",
+                    () -> AttachmentType.builder(() -> 0.0F)
+                            .serialize(Codec.FLOAT)
+                            .build()
+            );
+
     public static final Supplier<AttachmentType<Records.AwakenLevelComponent>> PLAYER_AWAKEN_LEVEL_ATTACHMENT =
             REGISTER.register("awaken_level",
                     () -> AttachmentType.builder(() -> new Records.AwakenLevelComponent(0.0F))

@@ -16,6 +16,12 @@ public class Records
             )
     {}
 
+    public record AwakenLevelComponent
+            (
+                    Float level
+            )
+    {}
+
     public record AwakenDescriberComponent
             (
                     String infix,

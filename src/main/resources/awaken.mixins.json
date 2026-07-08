@@ -6,7 +6,10 @@
   "mixins":
   [
     "MixinEnchantment",
-    "MixinItemStack"
+    "MixinItemStack",
+    "MixinLivingEntity",
+    "MixinMob",
+    "MixinPlayer"
   ],
   "client":
   [

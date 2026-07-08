@@ -13,6 +13,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
+
 public class AwakenDataGUI implements LayeredDraw.Layer
 {
     @Override
@@ -23,12 +25,12 @@ public class AwakenDataGUI implements LayeredDraw.Layer
         if (player == null) return;
 
         String diffText = Component.translatable("gui.difficulty.info").getString() + ": " + ClientDifficultyManager.getDifficulty();
-        graphics.drawString(minecraft.font, diffText, 10, 10, 0xFFFFFF, true);
+        graphics.drawString(minecraft.font, diffText, 10, 10, Color.RED.getRGB(), true);
 
         float data = NBTUtil.deserializeAwakenLevel(player);
         AwakenLevel level = AwakenRegistries.AWAKEN_LEVEL.getLevel(data);
 
         String levelText = Component.translatable("gui.level.info").getString() + ": " + (level == null? "None": LocaleUtil.localizeAwakenLevel(level) + " (" + data + ")");
-        graphics.drawString(minecraft.font, levelText, 10, 20, 0xFFFFFF, true);
+        graphics.drawString(minecraft.font, levelText, 10, 20, Color.CYAN.getRGB(), true);
     }
 }

@@ -8,17 +8,20 @@ public class AwakenLevel extends Registry
 {
     private final Color color;
     private final Double min;
+    private final Float health;
 
     public AwakenLevel(
             String id,
             Color color,
-            Double min
+            Double min,
+            Float health
     )
     {
         super(id);
 
         this.color = color;
         this.min = min;
+        this.health = health;
     }
 
     public Color getColor()
@@ -29,5 +32,10 @@ public class AwakenLevel extends Registry
     public Double getMin()
     {
         return this.min;
+    }
+
+    public Float getHealth()
+    {
+        return this.health;
     }
 }

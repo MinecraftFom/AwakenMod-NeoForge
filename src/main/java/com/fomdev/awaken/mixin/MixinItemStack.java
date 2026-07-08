@@ -59,18 +59,7 @@ public abstract class MixinItemStack implements DataComponentHolder
     private void customDurability(CallbackInfoReturnable<Integer> cir)
     {
         ItemStack self = (ItemStack) (Object) this;
-        AwakenPrefix prefix = NBTUtil.deserializePrefix(self);
-        AwakenSuffix suffix = NBTUtil.deserializeSuffix(self);
-        AwakenQuality quality = NBTUtil.deserializeQuality(self);
-
-        int origin = cir.getReturnValue();
-        if (prefix != null)
-            origin += prefix.addition();
-
-        if (suffix != null)
-            origin += suffix.addition();
-
-        cir.setReturnValue((int) (origin * (quality == null? 1: quality.getFactor())));
+        cir.setReturnValue(self.getItem().getMaxDamage(self));
     }
 
     @Inject(method = "getHoverName", at = @At("RETURN"), cancellable = true)

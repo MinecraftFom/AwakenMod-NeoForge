@@ -14,19 +14,75 @@ public class TooltipUtil
 {
     public static List<Component> castInfixTooltip(
             TooltipFlag flag,
-            AwakenInfix infix
+            AwakenInfix infix,
+            float factor
     )
     {
         List<Component> components = new ArrayList<>();
-        components.add(Component.empty().append(Component.translatable("tooltip.infix.info")).append(": ").append(LocaleUtil.localizeInfix(infix)));
+        components
+                .add(
+                        Component
+                                .empty()
+                                .append(
+                                        Component
+                                                .translatable(
+                                                        "tooltip.infix.info"
+                                                )
+                                )
+                                .append(
+                                        ": "
+                                )
+                                .append(
+                                        LocaleUtil.localizeInfix(infix)
+                                )
+                );
 
         if (flag.hasShiftDown())
         {
-            components.add(Component.empty().append(Component.translatable("tooltip.infix.attribute.info")).append(": ").append(infix.getAttribute().attr().getDescriptionId()));
-            components.add(Component.empty().append(translateOperation(infix.getAttribute().operation())).append("" + infix.getAttribute().amount()));
-            components.addAll(translateSlots(infix.getAttribute().slot()));
+            components
+                    .add(
+                            Component
+                                    .empty()
+                                    .append(
+                                            Component
+                                                    .translatable(
+                                                            "tooltip.infix.attribute.info"
+                                                    )
+                                    )
+                                    .append(
+                                            ": "
+                                    )
+                                    .append(
+                                            infix.getAttribute().attr().getRegisteredName()
+                                    )
+                    );
+            components
+                    .add(
+                            Component
+                                    .empty()
+                                    .append(
+                                            LocaleUtil.localizeOperation(
+                                                    infix.getAttribute().operation()
+                                            )
+                                    )
+                                    .append(
+                                            factor <= 0
+                                                    ? "" + infix.getAttribute().amount()
+                                                    : infix.getAttribute().amount() * factor + " [" + infix.getAttribute().amount() + " * " + factor + "]"
+                                    )
+                    );
+            components
+                    .addAll(
+                            LocaleUtil.localizeSlots(infix.getAttribute().slot())
+                    );
         } else
-            components.add(Component.translatable("tooltip.hold_shift.info"));
+            components
+                    .add(
+                            Component
+                                    .translatable(
+                                            "tooltip.hold_shift.info"
+                                    )
+                    );
 
         return components;
     }
@@ -37,15 +93,65 @@ public class TooltipUtil
     )
     {
         List<Component> components = new ArrayList<>();
-        components.add(Component.empty().append(Component.translatable("tooltip.prefix.info")).append(": ").append(LocaleUtil.localizePrefix(prefix)));
+        components
+                .add(
+                        Component
+                                .empty()
+                                .append(
+                                        Component
+                                                .translatable(
+                                                        "tooltip.prefix.info"
+                                                )
+                                )
+                                .append(
+                                        ": "
+                                )
+                                .append(
+                                        LocaleUtil.localizePrefix(prefix)
+                                )
+                );
 
         if (flag.hasShiftDown())
         {
-            components.add(Component.empty().append(Component.translatable("tooltip.prefix.effect.info")).append(": "));
-            components.addAll(translateEffects(prefix.effects()));
-            components.add(Component.empty().append(Component.translatable("tooltip.durability.additional.info", prefix.addition())));
+            components
+                    .add(
+                            Component
+                                    .empty()
+                                    .append(
+                                            Component
+                                                    .translatable(
+                                                            "tooltip.prefix.effect.info"
+                                                    )
+                                    )
+                                    .append(
+                                            ": "
+                                    )
+                    );
+            components
+                    .addAll(
+                            translateEffects(prefix.effects()
+                            )
+                    );
+            components
+                    .add(
+                            Component
+                                    .empty()
+                                    .append(
+                                            Component
+                                                    .translatable(
+                                                            "tooltip.durability.additional.info",
+                                                            prefix.addition()
+                                                    )
+                                    )
+                    );
         } else
-            components.add(Component.translatable("tooltip.hold_shift.info"));
+            components
+                    .add(
+                            Component
+                                    .translatable(
+                                            "tooltip.hold_shift.info"
+                                    )
+                    );
 
         return components;
     }
@@ -56,12 +162,50 @@ public class TooltipUtil
     )
     {
         List<Component> components = new ArrayList<>();
-        components.add(Component.empty().append(Component.translatable("tooltip.quality.info")).append(": ").append(LocaleUtil.localizeQuality(quality)));
+        components
+                .add(
+                        Component
+                                .empty()
+                                .append(
+                                        Component
+                                                .translatable(
+                                                        "tooltip.quality.info"
+                                                )
+                                )
+                                .append(
+                                        ": "
+                                )
+                                .append(
+                                        LocaleUtil.localizeQuality(quality)
+                                )
+                );
 
         if (flag.hasShiftDown())
-            components.add(Component.empty().append(Component.translatable("tooltip.quality.factor.info")).append(": ").append("" + quality.getFactor()));
+            components
+                    .add(
+                            Component
+                                    .empty()
+                                    .append(
+                                            Component
+                                                    .translatable(
+                                                            "tooltip.quality.factor.info"
+                                                    )
+                                    )
+                                    .append(
+                                            ": "
+                                    )
+                                    .append(
+                                            "" + quality.getFactor()
+                                    )
+                    );
         else
-            components.add(Component.translatable("tooltip.hold_shift.info"));
+            components
+                    .add(
+                            Component
+                                    .translatable(
+                                            "tooltip.hold_shift.info"
+                                    )
+                    );
 
         return components;
     }
@@ -72,14 +216,51 @@ public class TooltipUtil
     )
     {
         List<Component> components = new ArrayList<>();
-        components.add(Component.empty().append(Component.translatable("tooltip.suffix.info")).append(": ").append(LocaleUtil.localizeSuffix(suffix)));
+        components
+                .add(
+                        Component
+                                .empty()
+                                .append(
+                                        Component
+                                                .translatable(
+                                                        "tooltip.suffix.info"
+                                                )
+                                )
+                                .append(
+                                        ": "
+                                )
+                                .append(
+                                        LocaleUtil.localizeSuffix(suffix)
+                                )
+                );
 
         if (flag.hasShiftDown())
         {
-            components.add(Component.translatable("tooltip.suffix.attribute.info", suffix.getTarget().getDescriptionId(), "" + suffix.factor()));
-            components.add(Component.translatable("tooltip.durability.additional.info", suffix.addition()));
+            components
+                    .add(
+                            Component
+                                    .translatable(
+                                            "tooltip.suffix.attribute.info",
+                                            suffix.getTarget().getRegisteredName(),
+                                            "" + suffix.factor()
+                                    )
+                    );
+            components
+                    .add(
+                            Component
+                                    .translatable(
+                                            "tooltip.durability.additional.info",
+                                            suffix.addition()
+                                    )
+                    );
         } else
-            components.add(Component.translatable("tooltip.hold_shift.info"));
+            components
+                    .add(
+                            Component
+                                    .translatable(
+                                            "tooltip.hold_shift.info"
+                                    )
+                    );
 
         return components;
     }
@@ -90,44 +271,8 @@ public class TooltipUtil
     {
         List<Component> components = new ArrayList<>();
         for (MobEffectInstance instance: instances)
-            components.add(Component.empty().append(Component.translatable("tooltip.effect.hold.info", instance.getDescriptionId(), instance.getAmplifier())));
+            components.add(Component.empty().append(Component.translatable("tooltip.effect.whenhold.info", instance.getDescriptionId(), instance.getAmplifier())));
 
         return components;
-    }
-
-    private static String translateOperation(
-            AttributeModifier.Operation operation
-    )
-    {
-        return switch (operation) {
-            case ADD_VALUE -> "+ ";
-            case ADD_MULTIPLIED_BASE -> "*= ";
-            case ADD_MULTIPLIED_TOTAL -> "* ";
-        };
-    }
-
-    private static List<Component> translateSlots(
-            EquipmentSlot[] slots
-    )
-    {
-        List<Component> components = new ArrayList<>();
-        for (EquipmentSlot slot: slots)
-            components.add(Component.empty().append(Component.translatable("tooltip.slot.avaiable.info")).append(Component.translatable(slot.getName())));
-
-        return components;
-    }
-
-    private static Component translateTarget(
-            AwakenPollinate.TriggerTarget target
-    )
-    {
-        return Component.translatable(target.getUnlocalized());
-    }
-
-    private static Component translateTrigger(
-            AwakenPollinate.TriggerType type
-    )
-    {
-        return Component.translatable(type.getUnlocalized());
     }
 }

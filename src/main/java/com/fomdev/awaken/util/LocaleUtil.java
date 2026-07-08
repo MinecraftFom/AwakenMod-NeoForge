@@ -35,6 +35,13 @@ public class LocaleUtil
         };
     }
 
+    public static Component localizePollinate(
+            AwakenPollinate pollinate
+    )
+    {
+        return Component.translatable("pollinate." + pollinate.id() + ".name");
+    }
+
     public static Component localizePrefix(
             AwakenPrefix prefix
     )
@@ -58,6 +65,14 @@ public class LocaleUtil
             components.add(Component.empty().append(Component.translatable("tooltip.slot.avaiable.info")).append(Component.translatable(slot.getName())));
 
         return components;
+    }
+
+    public static Component localizeSpore(
+            AwakenSpore spore
+
+    )
+    {
+        return Component.translatable("spore." + spore.id() + ".name");
     }
 
     public static Component localizeSuffix(

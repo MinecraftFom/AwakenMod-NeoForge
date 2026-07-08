@@ -87,6 +87,56 @@ public class TooltipUtil
         return components;
     }
 
+    public static List<Component> castPollinateTooltip(
+            TooltipFlag flag,
+            AwakenPollinate.PollinateInstance pollinate
+    )
+    {
+        List<Component> components = new ArrayList<>();
+        components
+                .add(
+                        Component
+                                .empty()
+                                .append(
+                                        Component
+                                                .translatable(
+                                                        "tooltip.pollinate.info"
+                                                )
+                                )
+                                .append(
+                                        ": "
+                                )
+                                .append(
+                                        LocaleUtil.localizePollinate(pollinate.getPollinate())
+                                )
+                                .append(
+                                        " (" + pollinate.getLevel() + ")"
+                                )
+                );
+
+        if (flag.hasShiftDown())
+            components.add(
+                    Component
+                            .empty()
+                            .append(
+                                    Component
+                                            .translatable(
+                                                    "tooltip.pollinate.when.info",
+                                                    LocaleUtil.localizeTrigger(pollinate.getPollinate().getType()),
+                                                    LocaleUtil.localizeTarget(pollinate.getPollinate().getTarget()),
+                                                    pollinate.getPollinate().getEffect(pollinate.getLevel()).getDescriptionId()
+                                            )
+                            )
+            );
+        else
+            components.add(
+                    Component
+                            .translatable("tooltip.hold_shift.info")
+            );
+
+        return components;
+    }
+
     public static List<Component> castPrefixTooltip(
             TooltipFlag flag,
             AwakenPrefix prefix
@@ -196,6 +246,57 @@ public class TooltipUtil
                                     )
                                     .append(
                                             "" + quality.getFactor()
+                                    )
+                    );
+        else
+            components
+                    .add(
+                            Component
+                                    .translatable(
+                                            "tooltip.hold_shift.info"
+                                    )
+                    );
+
+        return components;
+    }
+
+    public static List<Component> castSporeTooltip(
+            TooltipFlag flag,
+            AwakenSpore.SporeInstance spore
+    )
+    {
+        List<Component> components = new ArrayList<>();
+        components
+                .add(
+                        Component
+                                .empty()
+                                .append(
+                                        Component
+                                                .translatable(
+                                                        "tooltip.spore.info"
+                                                )
+                                )
+                                .append(
+                                        ": "
+                                )
+                                .append(
+                                        LocaleUtil.localizeSpore(
+                                                spore.getSpore()
+                                        )
+                                )
+                                .append(
+                                        " (" + spore.getLevel() + ")"
+                                )
+                );
+
+        if (flag.hasShiftDown())
+            components
+                    .add(
+                            Component
+                                    .translatable(
+                                            "tooltip.spore.attribute.info",
+                                            spore.getSpore().getAttribute().getRegisteredName(),
+                                            "" + spore.getSpore().getAmount(spore.getLevel())
                                     )
                     );
         else

@@ -1,9 +1,6 @@
 package com.fomdev.awaken.mixin;
 
-import com.fomdev.awaken.entries.AwakenInfix;
-import com.fomdev.awaken.entries.AwakenPrefix;
-import com.fomdev.awaken.entries.AwakenQuality;
-import com.fomdev.awaken.entries.AwakenSuffix;
+import com.fomdev.awaken.entries.*;
 import com.fomdev.awaken.util.ColorUtil;
 import com.fomdev.awaken.util.LocaleUtil;
 import com.fomdev.awaken.util.NBTUtil;
@@ -124,6 +121,14 @@ public abstract class MixinItemStack implements DataComponentHolder
         AwakenPrefix prefix = NBTUtil.deserializePrefix(self);
         AwakenSuffix suffix = NBTUtil.deserializeSuffix(self);
         AwakenQuality quality = NBTUtil.deserializeQuality(self);
+        List<AwakenPollinate.PollinateInstance> pollinates = NBTUtil.deserializePollinates(self);
+        List<AwakenSpore.SporeInstance> spores = NBTUtil.deserializeSpores(self);
+
+        for (AwakenPollinate.PollinateInstance instance: pollinates)
+            list.addAll(TooltipUtil.castPollinateTooltip(flag, instance));
+
+        for (AwakenSpore.SporeInstance instance: spores)
+            list.addAll(TooltipUtil.castSporeTooltip(flag, instance));
 
         if (infix != null && prefix != null && suffix != null)
         {

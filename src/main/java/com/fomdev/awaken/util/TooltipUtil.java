@@ -52,6 +52,74 @@ public class TooltipUtil
         return components;
     }
 
+    public static List<Component> castEpochTooltip(
+            TooltipFlag flag,
+            AwakenEpoch epoch,
+            float currentLevel,
+            float currentDiff
+    )
+    {
+        List<Component> components = new ArrayList<>();
+        components.add(
+                Component
+                        .empty()
+                        .append(
+                                Component
+                                        .translatable(
+                                                "tooltip.unawaken.info"
+                                        )
+                        )
+        );
+
+        components.add(
+                Component
+                        .empty()
+                        .append(
+                                Component
+                                        .translatable(
+                                                "tooltip.unawaken.required.info"
+                                        )
+                        )
+        );
+
+        if (flag.hasShiftDown())
+        {
+            components.add(
+                    Component
+                            .empty()
+                            .append(
+                                    Component
+                                            .translatable(
+                                                    "tooltip.unawaken.diff.info",
+                                                    currentDiff,
+                                                    epoch.getRequiredDifficulty()
+                                            )
+                            )
+            );
+
+            components.add(
+                    Component
+                            .empty()
+                            .append(
+                                    Component
+                                            .translatable(
+                                                    "tooltip.unawaken.level.info",
+                                                    currentLevel,
+                                                    epoch.getRequiredLevel().getMin()
+                                            )
+                            )
+            );
+        } else
+            components.add(
+                    Component
+                            .translatable(
+                                    "tooltip.hold_shift.info"
+                            )
+            );
+
+        return components;
+    }
+
     public static List<Component> castInfixTooltip(
             TooltipFlag flag,
             AwakenInfix infix,

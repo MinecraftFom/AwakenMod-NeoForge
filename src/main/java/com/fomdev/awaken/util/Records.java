@@ -17,6 +17,12 @@ public class Records
             )
     {}
 
+    public record AwakenEpochComponent
+            (
+                    String key
+            )
+    {}
+
     public record AwakenLevelComponent
             (
                     Float level

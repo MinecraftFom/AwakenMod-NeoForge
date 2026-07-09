@@ -54,6 +54,20 @@ public class NBTUtil
         return instances;
     }
 
+    public static AwakenEpoch deserializeEpoch(
+            ItemStack stack
+    )
+    {
+        Records.AwakenEpochComponent component = stack.get(AwakenDataComponents.AWAKEN_EPOCH_STORAGE);
+        if (component == null)
+            return null;
+
+        if (component.key() == null || component.key().isEmpty())
+            return null;
+
+        return AwakenRegistries.AWAKEN_EPOCH.getRegistry(ResourceLocation.parse(component.key()));
+    }
+
     public static float deserializeAwakenLevel(
             Player player
     )

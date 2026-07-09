@@ -1,6 +1,9 @@
 package com.fomdev.awaken.mixin;
 
+import com.fomdev.awaken.difficulty.DifficultyManager;
 import com.fomdev.awaken.entries.*;
+import com.fomdev.awaken.init.Awaken;
+import com.fomdev.awaken.register.items.AwakenItems;
 import com.fomdev.awaken.util.ColorUtil;
 import com.fomdev.awaken.util.LocaleUtil;
 import com.fomdev.awaken.util.NBTUtil;
@@ -13,6 +16,9 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.saveddata.maps.MapId;
@@ -25,6 +31,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -55,6 +62,10 @@ public abstract class MixinItemStack implements DataComponentHolder
     @Final
     private static Component DISABLED_ITEM_TOOLTIP;
 
+    @Shadow
+    @Nullable
+    public abstract Entity getEntityRepresentation();
+
     @Inject(method = "getMaxDamage", at = @At("RETURN"), cancellable = true)
     private void customDurability(CallbackInfoReturnable<Integer> cir)
     {
@@ -66,6 +77,22 @@ public abstract class MixinItemStack implements DataComponentHolder
     private void fancyName(CallbackInfoReturnable<Component> cir)
     {
         ItemStack self = (ItemStack) (Object) this;
+        if (self.is(AwakenItems.UNKNOWN_ITEM))
+        {
+            cir.setReturnValue(
+                    Component
+                            .translatable(
+                                    "item.unawaken.name"
+                            )
+                            .withStyle(
+                                    ChatFormatting.OBFUSCATED
+                            )
+                            .withStyle(
+                                    ChatFormatting.RED
+                            )
+            );
+        }
+
         AwakenQuality quality = NBTUtil.deserializeQuality(self);
         AwakenInfix infix = NBTUtil.deserializeInfix(self);
         AwakenPrefix prefix = NBTUtil.deserializePrefix(self);
@@ -87,6 +114,28 @@ public abstract class MixinItemStack implements DataComponentHolder
     private void fancyTooltip(Item.TooltipContext context, Player player, TooltipFlag flag, CallbackInfoReturnable<List<Component>> cir)
     {
         ItemStack self = (ItemStack) (Object) this;
+        if (self.is(AwakenItems.UNKNOWN_ITEM))
+        {
+            AwakenEpoch epoch = NBTUtil.deserializeEpoch(self);
+            if (epoch == null)
+                return;
+
+            if (!(player.level() instanceof ServerLevel level))
+                return;
+
+            cir.setReturnValue(
+                    TooltipUtil.castEpochTooltip(
+                            flag,
+                            epoch,
+                            DifficultyManager.getLevelDifficulty(
+                                    level
+                            ),
+                            NBTUtil.deserializeAwakenLevel(player)
+                    )
+            );
+            return;
+        }
+
         List<Component> list = new ArrayList<>();
         Consumer<Component> consumer = list::add;
 
@@ -182,5 +231,24 @@ public abstract class MixinItemStack implements DataComponentHolder
         }
 
         cir.setReturnValue(list);
+    }
+
+    @Inject(method = "getItem", at = @At("RETURN"), cancellable = true)
+    private void restrictedItem(CallbackInfoReturnable<Item> cir)
+    {
+        ItemStack self = (ItemStack) (Object) this;
+        Entity entity = getEntityRepresentation();
+        if (!(entity instanceof ServerPlayer player))
+            return;
+
+        AwakenEpoch epoch = NBTUtil.deserializeEpoch(self);
+        if (epoch == null)
+            return;
+
+        float difficulty = DifficultyManager.getLevelDifficulty(player.serverLevel());
+        float level = NBTUtil.deserializeAwakenLevel(player);
+
+        if (difficulty < epoch.getRequiredDifficulty() || level < epoch.getRequiredLevel().getMin())
+            cir.setReturnValue(AwakenItems.UNKNOWN_ITEM.asItem());
     }
 }

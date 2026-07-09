@@ -31,6 +31,21 @@ public class AwakenDataComponents
                                     )
             );
 
+    public static final Codec<Records.AwakenEpochComponent> AWAKEN_EPOCH_CODEC =
+            RecordCodecBuilder.create(
+                    inst ->
+                            inst
+                                    .group(
+                                            Codec.STRING
+                                                    .fieldOf("epoch")
+                                                    .forGetter(Records.AwakenEpochComponent::key)
+                                    )
+                                    .apply(
+                                            inst,
+                                            Records.AwakenEpochComponent::new
+                                    )
+            );
+
     public static final Codec<Records.AwakenDescriberComponent> AWAKEN_DESCRIBER_CODEC =
             RecordCodecBuilder.create(
                     inst ->
@@ -123,6 +138,14 @@ public class AwakenDataComponents
                     Records.AwakenAspectComponent::new
             );
 
+
+    public static final StreamCodec<ByteBuf, Records.AwakenEpochComponent> AWAKEN_EPOCH_STREAM_CODEC =
+            StreamCodec.composite(
+                    ByteBufCodecs.STRING_UTF8,
+                    Records.AwakenEpochComponent::key,
+                    Records.AwakenEpochComponent::new
+            );
+
     public static final StreamCodec<ByteBuf, Records.AwakenDescriberComponent> AWAKEN_DESCRIBER_STREAM_CODEC =
             StreamCodec.composite(
                     ByteBufCodecs.STRING_UTF8,
@@ -175,6 +198,15 @@ public class AwakenDataComponents
                             builder
                                     .persistent(AWAKEN_ASPECT_CODEC)
                                     .networkSynchronized(AWAKEN_ASPECT_STREAM_CODEC)
+            );
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Records.AwakenEpochComponent>> AWAKEN_EPOCH_STORAGE =
+            COMPONENT_REGISTER.registerComponentType(
+                    "awaken_epoch",
+                    builder ->
+                            builder
+                                    .persistent(AWAKEN_EPOCH_CODEC)
+                                    .networkSynchronized(AWAKEN_EPOCH_STREAM_CODEC)
             );
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Records.AwakenDescriberComponent>> AWAKEN_DESCRIBER_STORAGE =

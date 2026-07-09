@@ -7,6 +7,7 @@ import com.fomdev.awaken.register.data.AwakenAttachmentTypes;
 import com.fomdev.awaken.register.data.AwakenDataComponents;
 import com.fomdev.awaken.register.awaken.AwakenPollinates;
 import com.fomdev.awaken.register.awaken.AwakenQualities;
+import com.fomdev.awaken.register.items.AwakenItems;
 import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -26,6 +27,8 @@ public class Awaken
     {
         AwakenRegistries.register(bus);
         AwakenBlocks.register(bus);
+        AwakenItems.register(bus);
+
         AwakenBlockEntities.register(bus);
         AwakenAttachmentTypes.register(bus);
         AwakenDataComponents.register(bus);

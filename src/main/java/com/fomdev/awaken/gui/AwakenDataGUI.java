@@ -31,6 +31,6 @@ public class AwakenDataGUI implements LayeredDraw.Layer
         AwakenLevel level = AwakenRegistries.AWAKEN_LEVEL.getLevel(data);
 
         String levelText = Component.translatable("gui.level.info").getString() + ": " + (level == null? "None": LocaleUtil.localizeAwakenLevel(level) + " (" + data + ")");
-        graphics.drawString(minecraft.font, levelText, 10, 20, Color.CYAN.getRGB(), true);
+        graphics.drawString(minecraft.font, levelText, 10, 20, level == null? Color.CYAN.getRGB(): level.getColor().getRGB(), true);
     }
 }

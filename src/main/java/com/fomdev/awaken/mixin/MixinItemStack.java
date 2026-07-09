@@ -90,7 +90,7 @@ public abstract class MixinItemStack implements DataComponentHolder
         List<Component> list = new ArrayList<>();
         Consumer<Component> consumer = list::add;
 
-        if (player == null)
+        if (player == null || self.is(Items.AIR))
             return;
 
         if (!player.isCreative() && this.has(DataComponents.HIDE_TOOLTIP))

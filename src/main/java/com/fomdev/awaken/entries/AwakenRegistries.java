@@ -11,6 +11,7 @@ import net.neoforged.bus.api.IEventBus;
 public class AwakenRegistries
 {
     public static final String SIG_AWAKEN_ASPECT = "awaken_aspect";
+    public static final String SIG_AWAKEN_EPOCH = "awaken_epoch";
     public static final String SIG_AWAKEN_INFIX = "awaken_infix";
     public static final String SIG_AWAKEN_LEVEL = "awaken_level";
     public static final String SIG_AWAKEN_POLLINATE = "awaken_pollinate";
@@ -21,6 +22,7 @@ public class AwakenRegistries
     public static final String SIG_AWAKEN_SUFFIX = "awaken_suffix";
 
     public static final ResourceKey<Registry<AwakenAspect>> RES_AWAKEN_ASPECT = createKey(SIG_AWAKEN_ASPECT);
+    public static final ResourceKey<Registry<AwakenEpoch>> RES_AWAKEN_EPOCH = createKey(SIG_AWAKEN_EPOCH);
     public static final ResourceKey<Registry<AwakenInfix>> RES_AWAKEN_INFIX = createKey(SIG_AWAKEN_INFIX);
     public static final ResourceKey<Registry<AwakenLevel>> RES_AWAKEN_LEVEL = createKey(SIG_AWAKEN_LEVEL);
     public static final ResourceKey<Registry<AwakenPollinate>> RES_AWAKEN_POLLINATE = createKey(SIG_AWAKEN_POLLINATE);
@@ -31,6 +33,7 @@ public class AwakenRegistries
     public static final ResourceKey<Registry<AwakenSuffix>> RES_AWAKEN_SUFFIX = createKey(SIG_AWAKEN_SUFFIX);
 
     public static final FreezingRegistry<AwakenAspect> AWAKEN_ASPECT = new FreezingRegistry<>(RES_AWAKEN_ASPECT);
+    public static final FreezingRegistry<AwakenEpoch> AWAKEN_EPOCH = new FreezingRegistry<>(RES_AWAKEN_EPOCH);
     public static final FreezingRegistry<AwakenInfix> AWAKEN_INFIX = new FreezingRegistry<>(RES_AWAKEN_INFIX);
     public static final AwakenLevelRegistry AWAKEN_LEVEL = new AwakenLevelRegistry(RES_AWAKEN_LEVEL);
     public static final FreezingRegistry<AwakenPollinate> AWAKEN_POLLINATE = new FreezingRegistry<>(RES_AWAKEN_POLLINATE);
@@ -45,6 +48,7 @@ public class AwakenRegistries
     )
     {
         AWAKEN_ASPECT.attach(bus);
+        AWAKEN_EPOCH.attach(bus);
         AWAKEN_INFIX.attach(bus);
         AWAKEN_LEVEL.attach(bus);
         AWAKEN_POLLINATE.attach(bus);

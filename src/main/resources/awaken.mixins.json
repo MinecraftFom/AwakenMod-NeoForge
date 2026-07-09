@@ -7,7 +7,7 @@
   [
     "MixinDataComponentHolder",
     "MixinEnchantment",
-    "MixinEnchantmentMenu",
+    "MixinEnchantmentHelper",
     "MixinIItemExtension",
     "MixinItemStack",
     "MixinLivingEntity",

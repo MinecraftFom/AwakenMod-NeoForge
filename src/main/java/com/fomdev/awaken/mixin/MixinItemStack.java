@@ -113,6 +113,7 @@ public abstract class MixinItemStack implements DataComponentHolder
         AwakenPrefix prefix = NBTUtil.deserializePrefix(self);
         AwakenSuffix suffix = NBTUtil.deserializeSuffix(self);
         AwakenQuality quality = NBTUtil.deserializeQuality(self);
+        List<AwakenAspect.AspectInstance> aspects = NBTUtil.deserializeAspects(self);
         List<AwakenPollinate.PollinateInstance> pollinates = NBTUtil.deserializePollinates(self);
         List<AwakenSpore.SporeInstance> spores = NBTUtil.deserializeSpores(self);
 
@@ -164,6 +165,8 @@ public abstract class MixinItemStack implements DataComponentHolder
             consumer.accept(AdventureModePredicate.CAN_PLACE_HEADER);
             can_place.addToTooltip(consumer);
         }
+
+        list.addAll(TooltipUtil.castAspectTooltip(flag, aspects));
 
         if (flag.isAdvanced())
         {

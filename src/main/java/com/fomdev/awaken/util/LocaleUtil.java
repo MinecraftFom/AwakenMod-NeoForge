@@ -10,6 +10,13 @@ import java.util.List;
 
 public class LocaleUtil
 {
+    public static Component localizeAspect(
+            AwakenAspect aspect
+    )
+    {
+        return Component.translatable("aspect." + aspect.id() + ".name");
+    }
+
     public static Component localizeAwakenLevel(
             AwakenLevel level
     )

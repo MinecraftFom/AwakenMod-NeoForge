@@ -10,6 +10,48 @@ import java.util.List;
 
 public class TooltipUtil
 {
+    public static List<Component> castAspectTooltip(
+            TooltipFlag flag,
+            List<AwakenAspect.AspectInstance> aspects
+    )
+    {
+        if (aspects.isEmpty())
+            return List.of();
+
+        List<Component> components = new ArrayList<>();
+        components
+                .add(
+                        Component
+                                .empty()
+                                .append(
+                                        Component
+                                                .translatable(
+                                                        "tooltip.aspect.info"
+                                                )
+                                )
+                );
+
+        if (flag.hasShiftDown())
+            for (AwakenAspect.AspectInstance instance: aspects)
+                components.add(
+                        Component
+                                .empty()
+                                .append(
+                                        LocaleUtil.localizeAspect(instance.aspect())
+                                )
+                                .append(
+                                        ": "
+                                )
+                                .append(
+                                        "" + instance.amount()
+                                )
+                );
+        else
+            components.add(Component.translatable("tooltip.hold_shift.info"));
+
+        return components;
+    }
+
     public static List<Component> castInfixTooltip(
             TooltipFlag flag,
             AwakenInfix infix,

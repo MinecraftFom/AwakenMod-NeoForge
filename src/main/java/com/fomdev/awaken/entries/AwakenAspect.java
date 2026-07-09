@@ -7,11 +7,24 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
+
 public class AwakenAspect extends Registry
 {
-    public AwakenAspect(String id)
+    private final Color color;
+
+    public AwakenAspect(
+            String id,
+            Color color
+    )
     {
         super(id);
+        this.color = color;
+    }
+
+    public Color getColor()
+    {
+        return this.color;
     }
 
     public static class AspectInstance implements INBTSerializable<CompoundTag>

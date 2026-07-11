@@ -219,7 +219,8 @@ public abstract class MixinItemStack implements DataComponentHolder
 
         if (flag.isAdvanced())
         {
-            list.add(Component.translatable("item.durability", this.getMaxDamage() - this.getDamageValue(), this.getMaxDamage()));
+            if (self.getMaxDamage() != 0)
+                list.add(Component.translatable("item.durability", this.getMaxDamage() - this.getDamageValue(), this.getMaxDamage()));
 
             list.add(Component.literal(BuiltInRegistries.ITEM.getKey(this.getItem()).toString()).withStyle(ChatFormatting.DARK_GRAY));
             int i = this.components.size();

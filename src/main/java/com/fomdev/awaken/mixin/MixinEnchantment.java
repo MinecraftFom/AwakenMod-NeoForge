@@ -21,13 +21,7 @@ public class MixinEnchantment
     private static void getDescription(Holder<Enchantment> enchantment, int level, CallbackInfoReturnable<Component> cir)
     {
         MutableComponent component = enchantment.value().description().copy();
-
-        if (enchantment.is(EnchantmentTags.CURSE))
-            component.setStyle(ColorUtil.colorStyle(Color.RED));
-        else if (enchantment.value().getMaxLevel() == 1)
-            component.setStyle(ColorUtil.colorStyle(Color.MAGENTA));
-        else
-            component.setStyle(ColorUtil.colorStyle(EnchantManager.colors.get(level - 1)));
+        component.setStyle(ColorUtil.colorStyle(EnchantManager.calculateColor(level, enchantment.value().getMaxLevel(), enchantment.is(EnchantmentTags.CURSE))));
 
         if (enchantment.value().getMaxLevel() != 1)
             component.append(" ").append(Component.translatable("tooltip.enchantment.level." + level));

@@ -11,18 +11,6 @@ import java.util.List;
 
 public class Records
 {
-    public record AwakenAspectComponent
-            (
-                    List<CompoundTag> data
-            )
-    {}
-
-    public record AwakenEpochComponent
-            (
-                    String key
-            )
-    {}
-
     public record AwakenLevelComponent
             (
                     Float level
@@ -34,30 +22,6 @@ public class Records
                     String infix,
                     String prefix,
                     String suffix
-            )
-    {}
-
-    public record AwakenPollinateComponent
-            (
-                    List<CompoundTag> data
-            )
-    {}
-
-    public record AwakenQualityComponent
-            (
-                    String key
-            )
-    {}
-
-    public record AwakenSpiritualComponent
-            (
-                    String key
-            )
-    {}
-
-    public record AwakenSporeComponent
-            (
-                    List<CompoundTag> data
             )
     {}
 

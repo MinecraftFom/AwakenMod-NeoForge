@@ -14,36 +14,10 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-public class AwakenDataComponents
-{
-    public static final Codec<Records.AwakenAspectComponent> AWAKEN_ASPECT_CODEC =
-            RecordCodecBuilder.create(
-                    inst ->
-                            inst
-                                    .group(
-                                            CompoundTag.CODEC.listOf()
-                                                    .fieldOf("aspect")
-                                                    .forGetter(Records.AwakenAspectComponent::data)
-                                    )
-                                    .apply(
-                                            inst,
-                                            Records.AwakenAspectComponent::new
-                                    )
-            );
+import java.util.List;
 
-    public static final Codec<Records.AwakenEpochComponent> AWAKEN_EPOCH_CODEC =
-            RecordCodecBuilder.create(
-                    inst ->
-                            inst
-                                    .group(
-                                            Codec.STRING
-                                                    .fieldOf("epoch")
-                                                    .forGetter(Records.AwakenEpochComponent::key)
-                                    )
-                                    .apply(
-                                            inst,
-                                            Records.AwakenEpochComponent::new
-                                    )
+public class AwakenDataComponents
+{     )
             );
 
     public static final Codec<Records.AwakenDescriberComponent> AWAKEN_DESCRIBER_CODEC =
@@ -71,81 +45,6 @@ public class AwakenDataComponents
                                     )
             );
 
-    public static final Codec<Records.AwakenPollinateComponent> AWAKEN_POLLINATE_CODEC =
-            RecordCodecBuilder.create(
-                    inst ->
-                            inst
-                                    .group(
-                                            CompoundTag.CODEC.listOf()
-                                                    .fieldOf("pollinate")
-                                                    .forGetter(Records.AwakenPollinateComponent::data)
-                                    )
-                                    .apply(
-                                            inst,
-                                            Records.AwakenPollinateComponent::new
-                                    )
-            );
-
-    public static final Codec<Records.AwakenQualityComponent> AWAKEN_QUALITY_CODEC =
-            RecordCodecBuilder.create(
-                    inst ->
-                            inst
-                                    .group(
-                                            Codec.STRING
-                                                    .fieldOf("quality")
-                                                    .forGetter(Records.AwakenQualityComponent::key)
-                                    )
-                                    .apply(
-                                            inst,
-                                            Records.AwakenQualityComponent::new
-                                    )
-            );
-
-    public static final Codec<Records.AwakenSpiritualComponent> AWAKEN_SPIRITUAL_CODEC =
-            RecordCodecBuilder.create(
-                    inst ->
-                            inst
-                                    .group(
-                                            Codec.STRING
-                                                    .fieldOf("spiritual")
-                                                    .forGetter(Records.AwakenSpiritualComponent::key)
-                                    )
-                                    .apply(
-                                            inst,
-                                            Records.AwakenSpiritualComponent::new
-                                    )
-            );
-
-    public static final Codec<Records.AwakenSporeComponent> AWAKEN_SPORE_CODEC =
-            RecordCodecBuilder.create(
-                    inst ->
-                            inst
-                                    .group(
-                                            CompoundTag.CODEC.listOf()
-                                                    .fieldOf("spore")
-                                                    .forGetter(Records.AwakenSporeComponent::data)
-                                    )
-                                    .apply(
-                                            inst,
-                                            Records.AwakenSporeComponent::new
-                                    )
-            );
-
-    public static final StreamCodec<ByteBuf, Records.AwakenAspectComponent> AWAKEN_ASPECT_STREAM_CODEC =
-            StreamCodec.composite(
-                    ByteBufCodecs.COMPOUND_TAG.apply(ByteBufCodecs.list()),
-                    Records.AwakenAspectComponent::data,
-                    Records.AwakenAspectComponent::new
-            );
-
-
-    public static final StreamCodec<ByteBuf, Records.AwakenEpochComponent> AWAKEN_EPOCH_STREAM_CODEC =
-            StreamCodec.composite(
-                    ByteBufCodecs.STRING_UTF8,
-                    Records.AwakenEpochComponent::key,
-                    Records.AwakenEpochComponent::new
-            );
-
     public static final StreamCodec<ByteBuf, Records.AwakenDescriberComponent> AWAKEN_DESCRIBER_STREAM_CODEC =
             StreamCodec.composite(
                     ByteBufCodecs.STRING_UTF8,
@@ -157,56 +56,28 @@ public class AwakenDataComponents
                     Records.AwakenDescriberComponent::new
             );
 
-    public static final StreamCodec<ByteBuf, Records.AwakenPollinateComponent> AWAKEN_POLLINATE_STREAM_CODEC =
-            StreamCodec.composite(
-                    ByteBufCodecs.COMPOUND_TAG.apply(ByteBufCodecs.list()),
-                    Records.AwakenPollinateComponent::data,
-                    Records.AwakenPollinateComponent::new
-            );
-
-    public static final StreamCodec<ByteBuf, Records.AwakenQualityComponent> AWAKEN_QUALITY_STREAM_CODEC =
-            StreamCodec.composite(
-                    ByteBufCodecs.STRING_UTF8,
-                    Records.AwakenQualityComponent::key,
-                    Records.AwakenQualityComponent::new
-            );
-
-    public static final StreamCodec<ByteBuf, Records.AwakenSpiritualComponent> AWAKEN_SPIRITUAL_STREAM_CODEC =
-            StreamCodec.composite(
-                    ByteBufCodecs.STRING_UTF8,
-                    Records.AwakenSpiritualComponent::key,
-                    Records.AwakenSpiritualComponent::new
-            );
-
-    public static final StreamCodec<ByteBuf, Records.AwakenSporeComponent> AWAKEN_SPORE_STREAM_CODEC =
-            StreamCodec.composite(
-                    ByteBufCodecs.COMPOUND_TAG.apply(ByteBufCodecs.list()),
-                    Records.AwakenSporeComponent::data,
-                    Records.AwakenSporeComponent::new
-            );
-
     public static final DeferredRegister.DataComponents COMPONENT_REGISTER =
             DeferredRegister.createDataComponents(
                     Registries.DATA_COMPONENT_TYPE,
                     Awaken.MODID
             );
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Records.AwakenAspectComponent>> AWAKEN_ASPECT_STORAGE =
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<CompoundTag>>> AWAKEN_ASPECT_STORAGE =
             COMPONENT_REGISTER.registerComponentType(
                     "awaken_aspect",
                     builder ->
                             builder
-                                    .persistent(AWAKEN_ASPECT_CODEC)
-                                    .networkSynchronized(AWAKEN_ASPECT_STREAM_CODEC)
+                                    .persistent(CompoundTag.CODEC.listOf())
+                                    .networkSynchronized(ByteBufCodecs.COMPOUND_TAG.apply(ByteBufCodecs.list()))
             );
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Records.AwakenEpochComponent>> AWAKEN_EPOCH_STORAGE =
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> AWAKEN_EPOCH_STORAGE =
             COMPONENT_REGISTER.registerComponentType(
                     "awaken_epoch",
                     builder ->
                             builder
-                                    .persistent(AWAKEN_EPOCH_CODEC)
-                                    .networkSynchronized(AWAKEN_EPOCH_STREAM_CODEC)
+                                    .persistent(Codec.STRING)
+                                    .networkSynchronized(ByteBufCodecs.STRING_UTF8)
             );
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Records.AwakenDescriberComponent>> AWAKEN_DESCRIBER_STORAGE =
@@ -218,40 +89,40 @@ public class AwakenDataComponents
                                     .networkSynchronized(AWAKEN_DESCRIBER_STREAM_CODEC)
             );
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Records.AwakenPollinateComponent>> AWAKEN_POLLINATE_STORAGE =
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<CompoundTag>>> AWAKEN_POLLINATE_STORAGE =
             COMPONENT_REGISTER.registerComponentType(
                     "awaken_pollinate",
                     builder ->
                             builder
-                                    .persistent(AWAKEN_POLLINATE_CODEC)
-                                    .networkSynchronized(AWAKEN_POLLINATE_STREAM_CODEC)
+                                    .persistent(CompoundTag.CODEC.listOf())
+                                    .networkSynchronized(ByteBufCodecs.COMPOUND_TAG.apply(ByteBufCodecs.list()))
             );
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Records.AwakenQualityComponent>> AWAKEN_QUALITY_STORAGE =
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> AWAKEN_QUALITY_STORAGE =
             COMPONENT_REGISTER.registerComponentType(
                     "awaken_quality",
                     builder ->
                             builder
-                                    .persistent(AWAKEN_QUALITY_CODEC)
-                                    .networkSynchronized(AWAKEN_QUALITY_STREAM_CODEC)
+                                    .persistent(Codec.STRING)
+                                    .networkSynchronized(ByteBufCodecs.STRING_UTF8)
             );
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Records.AwakenSpiritualComponent>> AWAKEN_SPIRITUAL_STORAGE =
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> AWAKEN_SPIRITUAL_STORAGE =
             COMPONENT_REGISTER.registerComponentType(
                     "awaken_spiritual",
                     builder ->
                             builder
-                                    .persistent(AWAKEN_SPIRITUAL_CODEC)
-                                    .networkSynchronized(AWAKEN_SPIRITUAL_STREAM_CODEC)
+                                    .persistent(Codec.STRING)
+                                    .networkSynchronized(ByteBufCodecs.STRING_UTF8)
             );
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Records.AwakenSporeComponent>> AWAKEN_SPORE_STORAGE =
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<CompoundTag>>> AWAKEN_SPORE_STORAGE =
             COMPONENT_REGISTER.registerComponentType(
                     "awaken_spore",
                     builder ->
                             builder
-                                    .persistent(AWAKEN_SPORE_CODEC)
-                                    .networkSynchronized(AWAKEN_SPORE_STREAM_CODEC)
+                                    .persistent(CompoundTag.CODEC.listOf())
+                                    .networkSynchronized(ByteBufCodecs.COMPOUND_TAG.apply(ByteBufCodecs.list()))
             );
 
     public static void register(

@@ -29,15 +29,12 @@ public class NBTUtil
         if (stack.is(Items.AIR))
             return List.of();
 
-        Records.AwakenAspectComponent component = stack.get(AwakenDataComponents.AWAKEN_ASPECT_STORAGE.get());
+        List<CompoundTag> component = stack.get(AwakenDataComponents.AWAKEN_ASPECT_STORAGE.get());
         if (component == null)
             return List.of();
 
-        if (component.data().isEmpty())
-            return List.of();
-
         List<AwakenAspect.AspectInstance> instances = new ArrayList<>();
-        for (CompoundTag tag: component.data())
+        for (CompoundTag tag: component)
         {
             if (!tag.contains("id") || !tag.contains("level"))
                 continue;
@@ -58,14 +55,11 @@ public class NBTUtil
             ItemStack stack
     )
     {
-        Records.AwakenEpochComponent component = stack.get(AwakenDataComponents.AWAKEN_EPOCH_STORAGE);
+        String component = stack.get(AwakenDataComponents.AWAKEN_EPOCH_STORAGE);
         if (component == null)
             return null;
 
-        if (component.key() == null || component.key().isEmpty())
-            return null;
-
-        return AwakenRegistries.AWAKEN_EPOCH.getRegistry(ResourceLocation.parse(component.key()));
+        return AwakenRegistries.AWAKEN_EPOCH.getRegistry(ResourceLocation.parse(component));
     }
 
     public static float deserializeAwakenLevel(
@@ -102,16 +96,16 @@ public class NBTUtil
         if (stack.is(Items.AIR))
             return List.of();
 
-        Records.AwakenPollinateComponent component = stack.get(AwakenDataComponents.AWAKEN_POLLINATE_STORAGE.get());
+        List<CompoundTag> component = stack.get(AwakenDataComponents.AWAKEN_POLLINATE_STORAGE.get());
         if (component == null)
             return List.of();
 
-        if (component.data().isEmpty())
+        if (component.isEmpty())
             return List.of();
 
         List<AwakenPollinate.PollinateInstance> pollinates = new ArrayList<>();
 
-        for (CompoundTag tag: component.data())
+        for (CompoundTag tag: component)
         {
             if (!tag.contains("id") || !tag.contains("level"))
                 continue;
@@ -163,14 +157,11 @@ public class NBTUtil
         if (stack.is(Items.AIR))
             return null;
 
-        Records.AwakenQualityComponent component = stack.get(AwakenDataComponents.AWAKEN_QUALITY_STORAGE.get());
+        String component = stack.get(AwakenDataComponents.AWAKEN_QUALITY_STORAGE.get());
         if (component == null)
             return null;
 
-        if (component.key() == null)
-            return null;
-
-        return AwakenRegistries.AWAKEN_QUALITY.getRegistry(ResourceLocation.parse(component.key()));
+        return AwakenRegistries.AWAKEN_QUALITY.getRegistry(ResourceLocation.parse(component));
     }
 
     public static AwakenSpiritual deserializeSpiritual(
@@ -180,14 +171,11 @@ public class NBTUtil
         if (stack.is(Items.AIR))
             return null;
 
-        Records.AwakenSpiritualComponent component = stack.get(AwakenDataComponents.AWAKEN_SPIRITUAL_STORAGE.get());
+        String component = stack.get(AwakenDataComponents.AWAKEN_SPIRITUAL_STORAGE.get());
         if (component == null)
             return null;
 
-        if (component.key() == null)
-            return null;
-
-        return AwakenRegistries.AWAKEN_SPIRIT.getRegistry(ResourceLocation.parse(component.key()));
+        return AwakenRegistries.AWAKEN_SPIRIT.getRegistry(ResourceLocation.parse(component));
     }
 
     public static List<AwakenSpore.SporeInstance> deserializeSpores(
@@ -197,16 +185,16 @@ public class NBTUtil
         if (stack.is(Items.AIR))
             return List.of();
 
-        Records.AwakenSporeComponent component = stack.get(AwakenDataComponents.AWAKEN_SPORE_STORAGE.get());
+        List<CompoundTag> component = stack.get(AwakenDataComponents.AWAKEN_SPORE_STORAGE.get());
         if (component == null)
             return List.of();
 
-        if (component.data().isEmpty())
+        if (component.isEmpty())
             return List.of();
 
         List<AwakenSpore.SporeInstance> spores = new ArrayList<>();
 
-        for (CompoundTag tag: component.data())
+        for (CompoundTag tag: component)
         {
             if (!tag.contains("id") || !tag.contains("level"))
                 continue;

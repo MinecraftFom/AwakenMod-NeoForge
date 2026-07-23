@@ -17,9 +17,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.List;
 
 public class AwakenDataComponents
-{     )
-            );
-
+{
     public static final Codec<Records.AwakenDescriberComponent> AWAKEN_DESCRIBER_CODEC =
             RecordCodecBuilder.create(
                     inst ->

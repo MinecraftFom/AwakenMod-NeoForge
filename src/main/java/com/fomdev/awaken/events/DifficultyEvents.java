@@ -1,14 +1,12 @@
 package com.fomdev.awaken.events;
 
 import com.fomdev.awaken.difficulty.DifficultyManager;
-import com.fomdev.awaken.event.SendDifficultyEvent;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.util.NBTUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
@@ -61,17 +59,6 @@ public class DifficultyEvents
             float dimedValue = randValue * DifficultyManager.getDimensionFactor(level);
             DifficultyManager.setLevelDifficulty(level, currentDifficulty + dimedValue);
         }
-    }
-
-    @SubscribeEvent
-    public static void onSendData(
-            LevelTickEvent.Post event
-    )
-    {
-        if (!(event.getLevel() instanceof ServerLevel level))
-            return;
-
-        NeoForge.EVENT_BUS.post(new SendDifficultyEvent(DifficultyManager.getLevelDifficulty(level)));
     }
 
     @SubscribeEvent

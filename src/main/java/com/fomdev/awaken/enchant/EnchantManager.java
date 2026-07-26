@@ -68,12 +68,12 @@ public class EnchantManager
         if (isCurse)
             return Color.RED;
 
-        double factor = (double) level / (double) max;
-        int red = 255;
-        int green = 255 - (int) (factor * 255);
-        int blue = (int) (factor * 255);
+        double factor = (double) (level - 1)/ (double) (max - 1);
+        factor = Math.clamp(factor, 0.0f, 1.0f);
 
-        return new Color(red, green, blue);
+        double hue = factor * 300.0f / 360.0f;
+
+        return Color.getHSBColor((float) hue, 1.0f, 1.0f);
     }
 
     static

@@ -2,6 +2,7 @@ package com.fomdev.awaken.register.data;
 
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.util.Records;
+import com.fomdev.flame.annotation.AutoRegister;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
@@ -16,6 +17,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.List;
 
+@AutoRegister
 public class AwakenDataComponents
 {
     public static final Codec<Records.AwakenDescriberComponent> AWAKEN_DESCRIBER_CODEC =
@@ -54,6 +56,7 @@ public class AwakenDataComponents
                     Records.AwakenDescriberComponent::new
             );
 
+    @AutoRegister.Registrable
     public static final DeferredRegister.DataComponents COMPONENT_REGISTER =
             DeferredRegister.createDataComponents(
                     Registries.DATA_COMPONENT_TYPE,

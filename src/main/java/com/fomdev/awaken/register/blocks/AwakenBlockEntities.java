@@ -2,14 +2,17 @@ package com.fomdev.awaken.register.blocks;
 
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.spawner.AwakenSpawnerBlockEntity;
+import com.fomdev.flame.annotation.AutoRegister;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+@AutoRegister
 public class AwakenBlockEntities
 {
+    @AutoRegister.Registrable
     public static final DeferredRegister<BlockEntityType<?>> REGISTER =
             DeferredRegister.create(
                     Registries.BLOCK_ENTITY_TYPE,

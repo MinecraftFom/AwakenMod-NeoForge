@@ -1,13 +1,16 @@
 package com.fomdev.awaken.register.items;
 
 import com.fomdev.awaken.init.Awaken;
+import com.fomdev.flame.annotation.AutoRegister;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+@AutoRegister
 public class AwakenItems
 {
+    @AutoRegister.Registrable
     public static final DeferredRegister.Items REGISTER =
             DeferredRegister.Items.createItems(
                     Awaken.MODID

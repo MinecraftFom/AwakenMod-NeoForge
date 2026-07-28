@@ -1,6 +1,6 @@
 package com.fomdev.awaken.entries;
 
-import com.fomdev.awaken.api.Registry;
+import com.fomdev.flame.register.Registry;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;

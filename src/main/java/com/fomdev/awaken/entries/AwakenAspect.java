@@ -1,6 +1,6 @@
 package com.fomdev.awaken.entries;
 
-import com.fomdev.awaken.api.Registry;
+import com.fomdev.flame.register.Registry;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;

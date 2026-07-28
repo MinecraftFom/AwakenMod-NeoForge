@@ -1,8 +1,8 @@
 package com.fomdev.awaken.entries;
 
-import com.fomdev.awaken.api.FreezingRegistry;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.level.AwakenLevelRegistry;
+import com.fomdev.flame.register.FreezingRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;

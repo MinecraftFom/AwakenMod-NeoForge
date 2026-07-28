@@ -1,6 +1,6 @@
 package com.fomdev.awaken.entries;
 
-import com.fomdev.awaken.api.Registry;
+import com.fomdev.flame.register.Registry;
 
 public class AwakenEpoch extends Registry
 {

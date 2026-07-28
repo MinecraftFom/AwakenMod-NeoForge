@@ -2,6 +2,7 @@ package com.fomdev.awaken.register.data;
 
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.util.Records;
+import com.fomdev.flame.annotation.AutoRegister;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
@@ -14,6 +15,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.function.Supplier;
 
+@AutoRegister
 public class AwakenAttachmentTypes
 {
     public static final Codec<Records.AwakenLevelComponent> AWAKEN_LEVEL_CODEC =
@@ -38,6 +40,7 @@ public class AwakenAttachmentTypes
                     Records.AwakenLevelComponent::new
             );
 
+    @AutoRegister.Registrable
     public static final DeferredRegister<AttachmentType<?>> REGISTER =
             DeferredRegister.create(
                     NeoForgeRegistries.ATTACHMENT_TYPES,

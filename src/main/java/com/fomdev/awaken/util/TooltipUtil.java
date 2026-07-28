@@ -1,6 +1,7 @@
 package com.fomdev.awaken.util;
 
 import com.fomdev.awaken.entries.*;
+import com.fomdev.flame.util.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.TooltipFlag;

@@ -3,9 +3,8 @@ package com.fomdev.awaken.register.blocks;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.spawner.AwakenSpawner;
 import com.fomdev.flame.annotation.AutoRegister;
-import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 @AutoRegister
@@ -15,7 +14,7 @@ public class AwakenBlocks
     public static final DeferredRegister.Blocks REGISTER =
             DeferredRegister.Blocks.createBlocks(Awaken.MODID);
 
-    public static final DeferredHolder<Block, Block> BLOCK_AWAKEN_SPAWNER =
+    public static final DeferredBlock<AwakenSpawner> BLOCK_AWAKEN_SPAWNER =
             REGISTER.registerBlock(
                     "awaken_spawner",
                     AwakenSpawner::new

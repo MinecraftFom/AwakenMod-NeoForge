@@ -1,6 +1,6 @@
 package com.fomdev.awaken.enchant;
 
-import com.fomdev.awaken.entries.AwakenAspect;
+import com.fomdev.awaken.entries.raw.AwakenAspect;
 import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.enchantment.Enchantment;

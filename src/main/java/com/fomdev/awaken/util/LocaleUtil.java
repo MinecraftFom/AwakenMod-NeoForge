@@ -1,6 +1,6 @@
 package com.fomdev.awaken.util;
 
-import com.fomdev.awaken.entries.*;
+import com.fomdev.awaken.entries.raw.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;

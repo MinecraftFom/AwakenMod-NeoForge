@@ -1,8 +1,7 @@
 package com.fomdev.awaken.mixin;
 
 import com.fomdev.awaken.difficulty.DifficultyManager;
-import com.fomdev.awaken.entries.*;
-import com.fomdev.awaken.init.Awaken;
+import com.fomdev.awaken.entries.raw.*;
 import com.fomdev.awaken.register.items.AwakenItems;
 import com.fomdev.awaken.util.ColorUtil;
 import com.fomdev.awaken.util.LocaleUtil;
@@ -10,10 +9,7 @@ import com.fomdev.awaken.util.NBTUtil;
 import com.fomdev.awaken.util.TooltipUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponentHolder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.component.PatchedDataComponentMap;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -21,10 +17,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.minecraft.world.level.saveddata.maps.MapId;
-import net.neoforged.neoforge.common.util.AttributeTooltipContext;
-import net.neoforged.neoforge.common.util.AttributeUtil;
-import net.neoforged.neoforge.event.EventHooks;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -33,9 +25,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 @Mixin(ItemStack.class)
 public abstract class MixinItemStack implements DataComponentHolder

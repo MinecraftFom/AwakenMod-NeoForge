@@ -1,8 +1,8 @@
 package com.fomdev.awaken.mixin;
 
-import com.fomdev.awaken.entries.AwakenPrefix;
-import com.fomdev.awaken.entries.AwakenQuality;
-import com.fomdev.awaken.entries.AwakenSuffix;
+import com.fomdev.awaken.entries.raw.AwakenPrefix;
+import com.fomdev.awaken.entries.raw.AwakenQuality;
+import com.fomdev.awaken.entries.raw.AwakenSuffix;
 import com.fomdev.awaken.util.NBTUtil;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.extensions.IItemExtension;

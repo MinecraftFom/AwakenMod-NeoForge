@@ -1,6 +1,6 @@
 package com.fomdev.awaken.mixin;
 
-import com.fomdev.awaken.entries.*;
+import com.fomdev.awaken.entries.raw.*;
 import com.fomdev.awaken.util.NBTUtil;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentHolder;

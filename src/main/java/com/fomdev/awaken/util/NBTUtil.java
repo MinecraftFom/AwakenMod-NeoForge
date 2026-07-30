@@ -1,6 +1,6 @@
 package com.fomdev.awaken.util;
 
-import com.fomdev.awaken.entries.*;
+import com.fomdev.awaken.entries.raw.*;
 import com.fomdev.awaken.register.data.AwakenAttachmentTypes;
 import com.fomdev.awaken.register.data.AwakenDataComponents;
 import net.minecraft.nbt.CompoundTag;

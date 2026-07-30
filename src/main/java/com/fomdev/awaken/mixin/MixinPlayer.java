@@ -1,7 +1,7 @@
 package com.fomdev.awaken.mixin;
 
-import com.fomdev.awaken.entries.AwakenLevel;
-import com.fomdev.awaken.entries.AwakenRegistries;
+import com.fomdev.awaken.entries.raw.AwakenLevel;
+import com.fomdev.awaken.entries.raw.AwakenRegistries;
 import com.fomdev.awaken.util.ColorUtil;
 import com.fomdev.awaken.util.LocaleUtil;
 import com.fomdev.awaken.util.NBTUtil;

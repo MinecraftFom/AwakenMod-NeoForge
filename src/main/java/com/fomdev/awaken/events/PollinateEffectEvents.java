@@ -1,6 +1,6 @@
 package com.fomdev.awaken.events;
 
-import com.fomdev.awaken.entries.AwakenPollinate;
+import com.fomdev.awaken.entries.raw.AwakenPollinate;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.util.NBTUtil;
 import com.fomdev.awaken.util.Util;

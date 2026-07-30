@@ -42,4 +42,7 @@ public class Util
 
         return value;
     }
+
+    /* A function to solve the problem that idea warns unused parameters */
+    public static void placeholder(Object... trash) {}
 }

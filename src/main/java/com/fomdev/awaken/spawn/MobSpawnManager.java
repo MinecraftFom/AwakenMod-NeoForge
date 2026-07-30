@@ -1,5 +1,6 @@
 package com.fomdev.awaken.spawn;
 
+import com.fomdev.awaken.util.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -25,6 +26,17 @@ public class MobSpawnManager
     )
     {
         /* PLACEHOLDER */
+        Util.placeholder(
+                original,
+                diff,
+                strength,
+                auraSize,
+                color,
+                title,
+                item,
+                slot,
+                level
+        );
     }
 
     public static void reinforceSpawnLogic(

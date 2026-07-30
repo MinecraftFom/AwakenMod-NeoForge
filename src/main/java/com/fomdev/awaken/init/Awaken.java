@@ -1,6 +1,7 @@
 package com.fomdev.awaken.init;
 
-import com.fomdev.awaken.entries.AwakenRegistries;
+import com.fomdev.awaken.entries.raw.AwakenRegistries;
+import com.fomdev.awaken.spawn.shuffle.ShuffledRegistries;
 import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -19,5 +20,6 @@ public class Awaken
     )
     {
         AwakenRegistries.register(bus);
+        ShuffledRegistries.register(bus);
     }
 }

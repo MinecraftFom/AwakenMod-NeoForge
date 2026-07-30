@@ -1,6 +1,6 @@
 package com.fomdev.awaken.events;
 
-import com.fomdev.awaken.entries.*;
+import com.fomdev.awaken.entries.raw.*;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.util.NBTUtil;
 import com.fomdev.awaken.util.TooltipUtil;

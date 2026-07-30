@@ -1,6 +1,6 @@
 package com.fomdev.awaken.util;
 
-import com.fomdev.awaken.entries.*;
+import com.fomdev.awaken.entries.raw.*;
 import com.fomdev.flame.util.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;

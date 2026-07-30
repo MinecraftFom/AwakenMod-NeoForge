@@ -1,10 +1,9 @@
 package com.fomdev.awaken.events;
 
-import com.fomdev.awaken.entries.AwakenQuality;
+import com.fomdev.awaken.entries.raw.AwakenQuality;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.util.ColorUtil;
 import com.fomdev.awaken.util.NBTUtil;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.bus.api.SubscribeEvent;

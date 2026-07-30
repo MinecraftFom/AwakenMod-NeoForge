@@ -1,6 +1,6 @@
 package com.fomdev.awaken.util;
 
-import com.fomdev.awaken.entries.AwakenQuality;
+import com.fomdev.awaken.entries.raw.AwakenQuality;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.neoforged.neoforge.client.event.RenderTooltipEvent;

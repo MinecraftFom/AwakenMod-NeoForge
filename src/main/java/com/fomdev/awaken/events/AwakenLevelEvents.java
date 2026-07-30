@@ -1,7 +1,7 @@
 package com.fomdev.awaken.events;
 
-import com.fomdev.awaken.entries.AwakenLevel;
-import com.fomdev.awaken.entries.AwakenRegistries;
+import com.fomdev.awaken.entries.raw.AwakenLevel;
+import com.fomdev.awaken.entries.raw.AwakenRegistries;
 import com.fomdev.awaken.event.PlayerLevelUpgradeEvent;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.util.HealthUtil;

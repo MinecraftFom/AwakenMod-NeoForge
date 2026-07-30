@@ -1,6 +1,6 @@
 package com.fomdev.awaken.level;
 
-import com.fomdev.awaken.entries.AwakenLevel;
+import com.fomdev.awaken.entries.raw.AwakenLevel;
 import com.fomdev.flame.register.FreezingRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;

@@ -1,4 +1,6 @@
 {
+  "gui.difficulty.info": "Current Awaken Difficulty",
+  "gui.level.info": "Awaken Level",
   "tooltip.enchantment.level.1": "I",
   "tooltip.enchantment.level.2": "II",
   "tooltip.enchantment.level.3": "III",
@@ -18,5 +20,14 @@
   "tooltip.enchantment.level.17": "XVII",
   "tooltip.enchantment.level.18": "XVIII",
   "tooltip.enchantment.level.19": "XIX",
-  "tooltip.enchantment.level.20": "XX"
+  "tooltip.enchantment.level.20": "XX",
+
+  "tooltip.triggertarget.self.name": "yourself",
+  "tooltip.triggertype.hurt.name": "been hurt",
+
+  "tooltip.hold_shift.info": "Hold shift for DETAILED information",
+  "tooltip.pollinate.info": "Pollinate",
+  "tooltip.pollinate.when.info": "When %s, give %s %s %s",
+  "tooltip.quality.info": "Quality",
+  "tooltip.quality.factor.info": "Factor"
 }

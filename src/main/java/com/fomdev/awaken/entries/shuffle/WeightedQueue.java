@@ -8,7 +8,7 @@ import net.minecraft.util.RandomSource;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
-public class WeightedQueue<T extends Registry> extends FreezingRegistry<WeightedRegistry<T>>
+public class WeightedQueue<T> extends FreezingRegistry<WeightedRegistry<T>>
 {
     private final Queue<WeightedRegistry<T>> queue;
     private float totalWeight;

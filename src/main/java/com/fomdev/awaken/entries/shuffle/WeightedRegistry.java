@@ -4,7 +4,7 @@ import com.fomdev.flame.register.Registry;
 
 import java.util.UUID;
 
-public class WeightedRegistry<T extends Registry> extends Registry
+public class WeightedRegistry<T> extends Registry
 {
     final float weight;
     final float minDiff;

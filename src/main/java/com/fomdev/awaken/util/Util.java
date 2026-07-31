@@ -6,7 +6,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class Util
 {
@@ -41,6 +43,11 @@ public class Util
             value = value.replaceFirst("\\{}", argv.toString());
 
         return value;
+    }
+
+    public static boolean ifNull(Object... args)
+    {
+        return Arrays.stream(args).anyMatch(Objects::isNull);
     }
 
     /* A function to solve the problem that idea warns unused parameters */

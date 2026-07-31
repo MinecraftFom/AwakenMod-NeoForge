@@ -7,10 +7,14 @@ import com.fomdev.awaken.init.Awaken;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
 
 public class ShuffledRegistries
 {
+    public static final String SIG_AWAKEN_STACKS =
+            "generatable_stacks";
+
     public static final ResourceKey<Registry<WeightedRegistry<AwakenInfix>>> RES_WEIGHTED_INFIX =
             createKey(AwakenRegistries.SIG_AWAKEN_INFIX);
 
@@ -22,6 +26,9 @@ public class ShuffledRegistries
 
     public static final ResourceKey<Registry<WeightedRegistry<AwakenSuffix>>> RES_WEIGHTED_SUFFIX =
             createKey(AwakenRegistries.SIG_AWAKEN_SUFFIX);
+
+    public static final ResourceKey<Registry<WeightedRegistry<ItemStack>>> RES_WEIGHTED_STACK =
+            createKey(SIG_AWAKEN_STACKS);
 
     public static final WeightedQueue<AwakenInfix> WEIGHTED_AWAKEN_INFIX =
             new WeightedQueue<>(RES_WEIGHTED_INFIX);
@@ -35,6 +42,9 @@ public class ShuffledRegistries
     public static final WeightedQueue<AwakenSuffix> WEIGHTED_AWAKEN_SUFFIX =
             new WeightedQueue<>(RES_WEIGHTED_SUFFIX);
 
+    public static final WeightedQueue<ItemStack> WEIGHTED_AWAKEN_STACK =
+            new WeightedQueue<>(RES_WEIGHTED_STACK);
+
     public static void register(
             IEventBus bus
     )
@@ -43,6 +53,8 @@ public class ShuffledRegistries
         WEIGHTED_AWAKEN_PREFIX.attach(bus);
         WEIGHTED_AWAKEN_QUALITY.attach(bus);
         WEIGHTED_AWAKEN_SUFFIX.attach(bus);
+
+        WEIGHTED_AWAKEN_STACK.attach(bus);
     }
 
     private static <T> ResourceKey<Registry<T>> createKey(

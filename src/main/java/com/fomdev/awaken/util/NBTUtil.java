@@ -219,6 +219,30 @@ public class NBTUtil
         player.setData(AwakenAttachmentTypes.PLAYER_AWAKEN_LEVEL_ATTACHMENT, new Records.AwakenLevelComponent(level));
     }
 
+    public static void serializeDescriber(
+            ItemStack stack,
+            AwakenInfix infix,
+            AwakenPrefix prefix,
+            AwakenSuffix suffix
+    )
+    {
+        Records.AwakenDescriberComponent component = new Records.AwakenDescriberComponent(
+                infix.getLocation().toString(),
+                prefix.getLocation().toString(),
+                suffix.getLocation().toString()
+        );
+
+        stack.set(AwakenDataComponents.AWAKEN_DESCRIBER_STORAGE, component);
+    }
+
+    public static void serializeQuality(
+            ItemStack stack,
+            AwakenQuality quality
+    )
+    {
+        stack.set(AwakenDataComponents.AWAKEN_QUALITY_STORAGE, quality.getLocation().toString());
+    }
+
     private static Records.AwakenDescriberComponent deserializeDescriber(
             ItemStack stack
     )
@@ -226,6 +250,6 @@ public class NBTUtil
         if (stack.is(Items.AIR))
             return null;
 
-        return stack.get(AwakenDataComponents.AWAKEN_DESCRIBER_STORAGE.get());
+        return stack.get(AwakenDataComponents.AWAKEN_DESCRIBER_STORAGE);
     }
 }

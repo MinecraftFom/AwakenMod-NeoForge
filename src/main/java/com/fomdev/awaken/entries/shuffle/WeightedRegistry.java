@@ -2,7 +2,9 @@ package com.fomdev.awaken.entries.shuffle;
 
 import com.fomdev.flame.register.Registry;
 
-public class WeightedRegistry<T extends Registry>
+import java.util.UUID;
+
+public class WeightedRegistry<T extends Registry> extends Registry
 {
     final float weight;
     final float minDiff;
@@ -14,6 +16,7 @@ public class WeightedRegistry<T extends Registry>
             T entry
     )
     {
+        super(UUID.randomUUID().toString());
         this.weight = weight;
         this.minDiff = minDiff;
         this.entry = entry;

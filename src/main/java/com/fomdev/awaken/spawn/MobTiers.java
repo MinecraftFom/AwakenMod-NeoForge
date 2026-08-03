@@ -2,17 +2,22 @@ package com.fomdev.awaken.spawn;
 
 public enum MobTiers
 {
-    NAIVE(MobSpawnManager::noviceSpawnLogic), /* NOTHING, JUST AS A PLACEHOLDER FOR CAPABILITY */
-    REINFORCE(MobSpawnManager::reinforceSpawnLogic), /* REINFORCE IS JUST SIMPLE MOBS, NOT BOSS */
-    ENLIGHTEN(MobSpawnManager::enlightenSpawnLogic), /* ENLIGHTEN IS NOVICE, AWAKEN IS A STEP FORWARD */
-    AWAKEN(MobSpawnManager::awakenSpawnLogic); /* THE MOD TITLE, THE STRONGEST BOSS OF ALL */
+    NAIVE(MobSpawnManager::noviceSpawnLogic, 90), /* NOTHING, JUST AS A PLACEHOLDER FOR CAPABILITY */
+    REINFORCE(MobSpawnManager::reinforceSpawnLogic, 6), /* REINFORCE IS JUST SIMPLE MOBS, NOT BOSS */
+    ENLIGHTEN(MobSpawnManager::enlightenSpawnLogic, 3), /* ENLIGHTEN IS NOVICE, AWAKEN IS A STEP FORWARD */
+    AWAKEN(MobSpawnManager::awakenSpawnLogic, 1); /* THE MOD TITLE, THE STRONGEST BOSS OF ALL */
+
+    public static int totalWeight = 100; // Not finalized for further extension
 
     public final MobSpawnManager.ISpawningLogic logic;
+    public final int chance;
 
     MobTiers(
-            MobSpawnManager.ISpawningLogic logic
+            MobSpawnManager.ISpawningLogic logic,
+            int chance
     )
     {
         this.logic = logic;
+        this.chance = chance;
     }
 }

@@ -1,6 +1,7 @@
 package com.fomdev.awaken.spawn.shuffle;
 
 import com.fomdev.awaken.entries.raw.*;
+import com.fomdev.awaken.entries.shuffle.EquippedQueue;
 import com.fomdev.awaken.entries.shuffle.WeightedQueue;
 import com.fomdev.awaken.entries.shuffle.WeightedRegistry;
 import com.fomdev.awaken.init.Awaken;
@@ -42,8 +43,8 @@ public class ShuffledRegistries
     public static final WeightedQueue<AwakenSuffix> WEIGHTED_AWAKEN_SUFFIX =
             new WeightedQueue<>(RES_WEIGHTED_SUFFIX);
 
-    public static final WeightedQueue<ItemStack> WEIGHTED_AWAKEN_STACK =
-            new WeightedQueue<>(RES_WEIGHTED_STACK);
+    public static final EquippedQueue WEIGHTED_AWAKEN_STACK =
+            new EquippedQueue(RES_WEIGHTED_STACK);
 
     public static void register(
             IEventBus bus

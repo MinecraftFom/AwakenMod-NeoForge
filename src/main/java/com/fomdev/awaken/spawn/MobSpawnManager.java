@@ -97,11 +97,11 @@ public class MobSpawnManager
                     item
             );
         }
-        AwakenParticlePlayer.playReinforceMobGenerate(
-            server,
-            original.position().toVector3f(),
-            auraSize
-        );
+//        AwakenParticlePlayer.playReinforceMobGenerate(
+//            server,
+//            original.position().toVector3f(),
+//            auraSize
+//        );
     }
 
     public static void enlightenSpawnLogic(

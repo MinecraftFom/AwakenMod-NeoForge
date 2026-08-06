@@ -1,6 +1,6 @@
 package com.fomdev.awaken.spawn;
 
-import com.fomdev.awaken.particle.AwakenParticlePlayer;
+import com.fomdev.awaken.literature.Literature;
 import com.fomdev.awaken.util.ColorUtil;
 import com.fomdev.awaken.util.Util;
 import net.minecraft.network.chat.Component;
@@ -241,8 +241,7 @@ public class MobSpawnManager
             RandomSource random
     )
     {
-        // TODO: FINISH
-        return Component.empty();
+        return Literature.NAMES_INSTANCE.get(random);
     }
 
     public static void spawn(

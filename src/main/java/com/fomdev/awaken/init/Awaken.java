@@ -6,9 +6,11 @@ import com.fomdev.awaken.literature.Literature;
 import com.fomdev.awaken.spawn.shuffle.ShuffledRegistries;
 import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.config.ModConfigEvent;
 import org.slf4j.Logger;
 
 @Mod(Awaken.MODID)
@@ -29,7 +31,13 @@ public class Awaken
                 ModConfig.Type.COMMON,
                 AwakenLiterature.SPEC
         );
+    }
 
+    @SubscribeEvent
+    public void onConfigLoad(
+            ModConfigEvent.Loading event
+    )
+    {
         Literature.init();
     }
 }

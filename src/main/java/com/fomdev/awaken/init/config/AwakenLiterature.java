@@ -1,5 +1,6 @@
 package com.fomdev.awaken.init.config;
 
+import com.fomdev.awaken.util.Constants;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -20,7 +21,9 @@ public class AwakenLiterature
 
         this.NAMES = builder
                 .comment("Names for generating mobs, structure: [NAME]|[CHANCE]")
-                .define("name_entries", List.of());
+                .define("name_entries", List.of(
+                        Constants.defaultNames
+                ));
     }
 
     static

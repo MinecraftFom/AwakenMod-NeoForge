@@ -14,7 +14,9 @@ Program: Fom477
 Design: Fom477, modic_M, Sixawns, SukISU117
 Art: modic_M, Sixawns
 '''
-
+credits = '''
+BI2QMA_MEMZ: Submitting names
+'''
 description = '''Wake before you Awake!'''
 
 [[mixins]]

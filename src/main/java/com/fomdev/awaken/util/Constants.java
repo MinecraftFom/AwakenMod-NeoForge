@@ -24,4 +24,26 @@ public class Constants
             EquipmentSlot.LEGS,
             EquipmentSlot.FEET
     };
+
+    // Lost tinkers
+    public static final String[] defaultNames = new String[]{
+            "James-Harper|800",
+            "Michael-Bullock|700",
+            "William-Sterling|600",
+            "Robert-Payton|700",
+            "David-Crawford|600",
+            "Richard-Fletcher|700",
+            "Joseph-Winslow|600",
+            "Thomas-Bradley|700",
+            "Charles-Randall|600",
+            "Christopher-Morrison|700",
+            "Daniel-Sherman|600",
+            "Matthew-Griffith|700",
+            "Anthony-Carter|600",
+            "Mark-Summers|700",
+            "Steven-Norris|700",
+            "SM-Huang|2", //Co-Developer
+            "Simon-Suns|2", // Co-Developer
+            "Lucas-Fom|1" // Main-Developer
+    };
 }

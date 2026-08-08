@@ -1,5 +1,6 @@
 package com.fomdev.awaken.spawn;
 
+import com.fomdev.awaken.init.config.AwakenGenerate;
 import com.fomdev.awaken.literature.Literature;
 import com.fomdev.awaken.util.ColorUtil;
 import com.fomdev.awaken.util.Util;
@@ -7,6 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -20,7 +22,7 @@ import java.util.List;
 public class MobSpawnManager
 {
     /* Here, the resourcelocation should be the key of the level (dimension) the entities are generating in */
-    public static final Map<ResourceLocation, List<Class<? extends Mob>>> LEVELED_ENTITIES
+    public static final Map<ResourceLocation, List<ResourceLocation>> LEVELED_ENTITIES
             = new HashMap<>();
 
     public static void noviceSpawnLogic(
@@ -288,6 +290,42 @@ public class MobSpawnManager
                 Component title,
                 Level level,
                 RandomSource random
+        );
+    }
+
+    public static void loadFromConfig()
+    {
+        AwakenGenerate.CONFIG.ENTITIES.get()
+                .stream()
+                .map(
+                        MobSpawnManager::loadFromString
+                )
+                .forEach(
+                        data ->
+                                data.getB()
+                                        .forEach(
+                                                loc -> LEVELED_ENTITIES.computeIfAbsent(
+                                                        loc,
+                                                        l -> new ArrayList<>()
+                                                ).add(data.getA())
+                                        )
+                );
+    }
+
+    public static Tuple<ResourceLocation, List<ResourceLocation>> loadFromString(
+            String raw
+    )
+    {
+        String[] components = raw.split("\\|");
+        if (components.length != 2)
+            throw new IllegalArgumentException("Invalid config structure");
+
+        String entity = components[0].strip();
+        String[] levels = components[1].strip().split("&");
+
+        return new Tuple<>(
+                ResourceLocation.parse(entity),
+                Arrays.stream(levels).map(String::strip).map(ResourceLocation::parse).toList()
         );
     }
 }

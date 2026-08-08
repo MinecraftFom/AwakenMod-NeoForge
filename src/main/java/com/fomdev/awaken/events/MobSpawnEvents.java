@@ -3,6 +3,7 @@ package com.fomdev.awaken.events;
 import com.fomdev.awaken.difficulty.DifficultyManager;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.spawn.MobSpawnManager;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -18,8 +19,9 @@ public class MobSpawnEvents
     )
     {
         ResourceLocation level = event.getLevel().getLevel().dimension().location();
+        ResourceLocation key = BuiltInRegistries.ENTITY_TYPE.getKey(event.getEntity().getType());
 
-        if (!MobSpawnManager.LEVELED_ENTITIES.containsKey(level) || !MobSpawnManager.LEVELED_ENTITIES.get(level).contains(event.getEntity().getClass()))
+        if (!MobSpawnManager.LEVELED_ENTITIES.containsKey(level) || !MobSpawnManager.LEVELED_ENTITIES.get(level).contains(key))
             return;
 
         RandomSource random = event.getEntity().getRandom();

@@ -1,8 +1,7 @@
 package com.fomdev.awaken.init;
 
 import com.fomdev.awaken.entries.raw.AwakenRegistries;
-import com.fomdev.awaken.init.config.AwakenGenerate;
-import com.fomdev.awaken.init.config.AwakenLiterature;
+import com.fomdev.awaken.init.config.AwakenCommon;
 import com.fomdev.awaken.literature.Literature;
 import com.fomdev.awaken.spawn.MobSpawnManager;
 import com.fomdev.awaken.spawn.shuffle.ShuffledRegistries;
@@ -31,12 +30,7 @@ public class Awaken
 
         container.registerConfig(
                 ModConfig.Type.COMMON,
-                AwakenGenerate.SPEC
-        );
-
-        container.registerConfig(
-                ModConfig.Type.COMMON,
-                AwakenLiterature.SPEC
+                AwakenCommon.SPEC
         );
     }
 

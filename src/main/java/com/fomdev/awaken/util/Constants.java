@@ -46,4 +46,11 @@ public class Constants
             "Simon-Suns|2", // Co-Developer
             "Lucas-Fom|1" // Main-Developer
     };
+
+    public static final String[] defaultSpawning = new String[]{
+            "zombie|overworld",
+            "skeleton|overworld&nether",
+            "spider|overworld",
+            "creeper|overworld"
+    };
 }

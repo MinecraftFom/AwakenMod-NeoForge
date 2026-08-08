@@ -1,6 +1,6 @@
 package com.fomdev.awaken.literature;
 
-import com.fomdev.awaken.init.config.AwakenLiterature;
+import com.fomdev.awaken.init.config.AwakenCommon;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.NotNull;
@@ -63,7 +63,7 @@ public class NameDictionary extends AbstractList<NameDictionary.NameEntry> imple
 
     public static NameEntry[] loadFromConfig()
     {
-        return AwakenLiterature.CONFIG.NAMES.get()
+        return AwakenCommon.CONFIG.NAMES.get()
                 .stream()
                 .map(
                         NameDictionary::loadFromString

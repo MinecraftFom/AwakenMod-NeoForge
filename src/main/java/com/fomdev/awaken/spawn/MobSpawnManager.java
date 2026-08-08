@@ -1,6 +1,6 @@
 package com.fomdev.awaken.spawn;
 
-import com.fomdev.awaken.init.config.AwakenGenerate;
+import com.fomdev.awaken.init.config.AwakenCommon;
 import com.fomdev.awaken.literature.Literature;
 import com.fomdev.awaken.util.ColorUtil;
 import com.fomdev.awaken.util.Util;
@@ -295,7 +295,7 @@ public class MobSpawnManager
 
     public static void loadFromConfig()
     {
-        AwakenGenerate.CONFIG.ENTITIES.get()
+        AwakenCommon.CONFIG.ENTITIES.get()
                 .stream()
                 .map(
                         MobSpawnManager::loadFromString

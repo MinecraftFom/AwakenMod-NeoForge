@@ -1,6 +1,5 @@
 package com.fomdev.awaken.literature;
 
-import com.fomdev.awaken.init.config.AwakenCommon;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.NotNull;
@@ -15,9 +14,9 @@ public class NameDictionary extends AbstractList<NameDictionary.NameEntry> imple
     private final int size;
     private final NameEntry[] nameEntries;
 
-    public NameDictionary()
+    public NameDictionary(List<? extends String> raw)
     {
-        this.nameEntries = loadFromConfig();
+        this.nameEntries = loadFromConfig(raw);
         this.size = this.nameEntries.length;
 
         for (NameEntry entry: this)
@@ -30,14 +29,17 @@ public class NameDictionary extends AbstractList<NameDictionary.NameEntry> imple
     {
         int currentIndex = 0;
         int totalWeight = random.nextInt(weight);
+        NameEntry entry = null;
 
         while (totalWeight >= 0)
         {
-            totalWeight -= this.get(currentIndex).weight;
+            entry = this.get(currentIndex);
+            totalWeight -= entry.weight;
             currentIndex++;
         }
 
-        return this.get(currentIndex).value;
+        assert entry != null;
+        return entry.value;
     }
 
     @Override
@@ -61,9 +63,11 @@ public class NameDictionary extends AbstractList<NameDictionary.NameEntry> imple
         }
     }
 
-    public static NameEntry[] loadFromConfig()
+    public static NameEntry[] loadFromConfig(
+            List<? extends String> raw
+    )
     {
-        return AwakenCommon.CONFIG.NAMES.get()
+        return raw
                 .stream()
                 .map(
                         NameDictionary::loadFromString

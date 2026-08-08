@@ -46,7 +46,7 @@ public class EquippedQueue extends FreezingRegistry<WeightedRegistry<ItemStack>>
 
         for (Map.Entry<EquipmentSlot, Queue<WeightedRegistry<ItemStack>>> queue: registry.entrySet())
             for (WeightedRegistry<ItemStack> registry: queue.getValue())
-                if (registry.minDiff <= diff)
+                if (registry.minDiff >= diff)
                     totalWeights.put(queue.getKey(), totalWeights.getOrDefault(queue.getKey(), 0.0F) + registry.weight);
 
     }

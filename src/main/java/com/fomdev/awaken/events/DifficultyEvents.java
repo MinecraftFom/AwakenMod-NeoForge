@@ -2,11 +2,14 @@ package com.fomdev.awaken.events;
 
 import com.fomdev.awaken.difficulty.DifficultyManager;
 import com.fomdev.awaken.init.Awaken;
+import com.fomdev.awaken.packet.DifficultySyncPacketPayloadResponder;
 import com.fomdev.awaken.util.NBTUtil;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Difficulty;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
@@ -83,6 +86,20 @@ public class DifficultyEvents
         DifficultyManager.SavedDifficultyLevel level = DifficultyManager.levels.get(serverLevel);
         if (level != null)
             level.setDirty();
+    }
+
+    @SubscribeEvent
+    public static void onPlayerJoin(
+            EntityJoinLevelEvent event
+    )
+    {
+        if (!(event.getEntity() instanceof ServerPlayer player))
+            return;
+
+        if (!(event.getLevel() instanceof ServerLevel level))
+            return;
+
+        player.connection.send(new DifficultySyncPacketPayloadResponder(DifficultyManager.getLevelDifficulty(level)));
     }
 
     private static float calculateDifficultyFactor(

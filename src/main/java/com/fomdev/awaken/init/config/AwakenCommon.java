@@ -5,14 +5,23 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
+import java.util.Objects;
 
 public class AwakenCommon
 {
     public static final AwakenCommon CONFIG;
     public static final ModConfigSpec SPEC;
 
-    public final ModConfigSpec.ConfigValue<List<String>> ENTITIES;
-    public final ModConfigSpec.ConfigValue<List<String>> NAMES;
+    public final ModConfigSpec.ConfigValue<List<? extends String>> ENTITIES;
+    public final ModConfigSpec.ConfigValue<List<? extends String>> NAMES_FIRST;
+    public final ModConfigSpec.ConfigValue<List<? extends String>> NAMES_LAST;
+
+    public final ModConfigSpec.ConfigValue<List<? extends String>> MAIN_HAND;
+    public final ModConfigSpec.ConfigValue<List<? extends String>> OFF_HAND;
+    public final ModConfigSpec.ConfigValue<List<? extends String>> HELMET;
+    public final ModConfigSpec.ConfigValue<List<? extends String>> CHESTPLATE;
+    public final ModConfigSpec.ConfigValue<List<? extends String>> LEGGINGS;
+    public final ModConfigSpec.ConfigValue<List<? extends String>> BOOTS;
 
     public AwakenCommon(
             ModConfigSpec.Builder builder
@@ -20,12 +29,28 @@ public class AwakenCommon
     {
         builder.push("literature");
 
-        this.NAMES = builder
-                .comment("Names for generating mobs, structure: [NAME]|[CHANCE]")
-                .define("name_entries", List.of(
-                        Constants.defaultNames
-                ));
+        builder.push("name_entries");
+        this.NAMES_FIRST = builder
+                .comment("Names for generating mobs (first_name), structure: [NAME]|[CHANCE]")
+                .defineList(
+                        "first_name",
+                        List.of(
+                                Constants.defaultFirstNames
+                        ),
+                        Objects::nonNull
+                );
 
+        this.NAMES_LAST = builder
+                .comment("Names for generating mobs (last_name), structure: [NAME]|[CHANCE]")
+                .defineList(
+                        "last_name",
+                        List.of(
+                                Constants.defaultLastNames
+                        ),
+                        Objects::nonNull
+                );
+
+        builder.pop();
         builder.pop();
 
         builder.push("spawn");
@@ -34,11 +59,68 @@ public class AwakenCommon
                 .comment(
                         "Decides mobs that will be generated. Structure: MOB_TYPE_ID | DIM0 & DIM1 & ... & DIM_N"
                 )
-                .define(
+                .defineList(
                         "entity_spawn",
                         List.of(
                                 Constants.defaultSpawning
-                        )
+                        ),
+                        Objects::nonNull
+                );
+
+        builder.push("equipments");
+        MAIN_HAND = builder
+                .comment("Equipments to be generated on the main hand. Structure: [ITEM_ID]|[CHANCE]|MINIMUM_DIFFICULTY")
+                .defineList(
+                        "main_hand",
+                        List.of(
+                                Constants.defaultEquipment$Hand
+                        ),
+                        Objects::nonNull
+                );
+        OFF_HAND = builder
+                .comment("Equipments to be generated on the off hand. Structure: [ITEM_ID]|[CHANCE]|MINIMUM_DIFFICULTY")
+                .defineList(
+                        "off_hand",
+                        List.of(
+                                Constants.defaultEquipment$OffHand
+                        ),
+                        Objects::nonNull
+                );
+        HELMET = builder
+                .comment("Equipments to be generated on the head. Structure: [ITEM_ID]|[CHANCE]|MINIMUM_DIFFICULTY")
+                .defineList(
+                        "helmet",
+                        List.of(
+                                Constants.defaultEquipment$Head
+                        ),
+                        Objects::nonNull
+                );
+        CHESTPLATE = builder
+                .comment("Equipments to be generated on the chest. Structure: [ITEM_ID]|[CHANCE]|MINIMUM_DIFFICULTY")
+                .defineList(
+                        "chestplate",
+                        List.of(
+                                Constants.defaultEquipment$Chest
+                        ),
+                        Objects::nonNull
+                );
+        LEGGINGS = builder
+                .comment("Equipments to be generated on the legs. Structure: [ITEM_ID]|[CHANCE]|MINIMUM_DIFFICULTY")
+                .defineList(
+                        "leggings",
+                        List.of(
+                                Constants.defaultEquipment$Legs
+                        ),
+                        Objects::nonNull
+                );
+        BOOTS = builder
+                .comment("Equipments to be generated on the feet. Structure: [ITEM_ID]|[CHANCE]|MINIMUM_DIFFICULTY")
+                .defineList(
+                        "boots",
+                        List.of(
+                                Constants.defaultEquipment$Feet
+                        ),
+                        Objects::nonNull
                 );
     }
 

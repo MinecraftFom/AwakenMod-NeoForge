@@ -1,9 +1,11 @@
 package com.fomdev.awaken.difficulty;
 
+import com.fomdev.awaken.packet.DifficultySyncPacketPayloadResponder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.storage.DimensionDataStorage;
 import org.jetbrains.annotations.NotNull;
@@ -67,6 +69,8 @@ public class DifficultyManager
         SavedDifficultyLevel sl = levels.get(level);
         if (sl != null)
             sl.setLevel(diff);
+
+        level.getServer().getPlayerList().getPlayers().forEach(sp -> sp.connection.send(new DifficultySyncPacketPayloadResponder(levels.get(level).getLevel())));
     }
 
     public static SavedDifficultyLevel readDifficulty(

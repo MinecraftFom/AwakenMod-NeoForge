@@ -87,6 +87,9 @@ public class MobSpawnManager
                     random
             );
 
+            if (item == null)
+                return;
+
             EquipmentManager.shuffleForItemStack(
                     item,
                     diff,
@@ -151,6 +154,9 @@ public class MobSpawnManager
                     random
             );
 
+            if (item == null)
+                return;
+
             user.setItemSlot(
                     slot,
                     item
@@ -198,6 +204,9 @@ public class MobSpawnManager
                     random
             );
 
+            if (item == null)
+                return;
+
             EquipmentManager.shuffleForItemStack(
                     item,
                     diff,
@@ -218,7 +227,7 @@ public class MobSpawnManager
             RandomSource random
     )
     {
-        int h = random.nextInt(360);
+        float h = random.nextFloat() % 360;
 
         return Color.getHSBColor(h, 1.0F, 1.0f);
     }
@@ -230,20 +239,23 @@ public class MobSpawnManager
         int totalWeight = random.nextInt(MobTiers.totalWeight);
         int i = 0;
 
-        while (totalWeight >= 0)
+        MobTiers tier = null;
+
+        while (totalWeight > 0)
         {
-            MobTiers tier = MobTiers.values()[i];
+            tier = MobTiers.values()[i];
             totalWeight -= tier.chance;
+            i++;
         }
 
-        return MobTiers.values()[i];
+        return tier;
     }
 
     public static Component shuffleTitle(
             RandomSource random
     )
     {
-        return Literature.NAMES_INSTANCE.get(random);
+        return Literature.NAMES_FIRST_INSTANCE.get(random).copy().append("-").append(Literature.NAMES_LAST_INSTANCE.get(random));
     }
 
     public static void spawn(
@@ -257,14 +269,17 @@ public class MobSpawnManager
                 random
         );
 
+        if (tier == null)
+            return;
+
         int strength = random.nextInt(Math.max((int) diff * 100, 1));
         int auraSize = random.nextInt(20);
         Color color = shuffleColor(
                 random
         );
-        Component title = shuffleTitle(
+        Component title = Component.empty().append("[").append(Component.translatable(tier.desc).append("] ").append(shuffleTitle(
                 random
-        );
+        )));
 
         tier.logic.onSpawn(
                 entity,

@@ -1,8 +1,11 @@
 package com.fomdev.awaken.literature;
 
+import com.fomdev.awaken.init.config.AwakenCommon;
+
 public class Literature
 {
-    public static NameDictionary NAMES_INSTANCE;
+    public static NameDictionary NAMES_FIRST_INSTANCE;
+    public static NameDictionary NAMES_LAST_INSTANCE;
 
     public static boolean initialized;
 
@@ -15,6 +18,7 @@ public class Literature
             );
 
         initialized = true;
-        NAMES_INSTANCE = new NameDictionary();
+        NAMES_FIRST_INSTANCE = new NameDictionary(AwakenCommon.CONFIG.NAMES_FIRST.get());
+        NAMES_LAST_INSTANCE = new NameDictionary(AwakenCommon.CONFIG.NAMES_LAST.get());
     }
 }

@@ -12,13 +12,13 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 public class NetworkingEvents
 {
     public static final String PAYLOAD_VERSION =
-            "1.0.0-beta";
+            "1.0.1-bugfix"; // Bug-Fix
 
     @SubscribeEvent
     public static void onRegister(RegisterPayloadHandlersEvent event)
     {
         PayloadRegistrar registrar = event.registrar(PAYLOAD_VERSION);
-        registrar.playToServer(
+        registrar.playToClient(
                 DifficultySyncPacketPayloadResponder.TYPE,
                 DifficultySyncPacketPayloadResponder.STREAM_CODEC,
                 DifficultyHandler::handleResponse

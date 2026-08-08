@@ -66,7 +66,7 @@ public class EquipmentManager
     )
     {
         int n = random.nextInt(Math.max((int) diff, 1)) + (int) factor;
-        return Math.clamp(1, n, 5);
+        return Math.clamp(n, 1, 6);
     }
 
     public static EquipmentSlot[] shuffleSlots(

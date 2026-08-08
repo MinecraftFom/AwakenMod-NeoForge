@@ -43,5 +43,6 @@ public class Awaken
     {
         Literature.init();
         MobSpawnManager.loadFromConfig();
+        ShuffledRegistries.initFromConfig();
     }
 }

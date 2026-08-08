@@ -25,6 +25,8 @@ public class Awaken
             ModContainer container
     )
     {
+        bus.register(this);
+
         AwakenRegistries.register(bus);
         ShuffledRegistries.register(bus);
 

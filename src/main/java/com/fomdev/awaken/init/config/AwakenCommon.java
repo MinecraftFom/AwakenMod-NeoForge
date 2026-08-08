@@ -19,7 +19,6 @@ public class AwakenCommon
     )
     {
         builder.push("literature");
-        builder.push("The literature module (everything in the game that is about pure text)");
 
         this.NAMES = builder
                 .comment("Names for generating mobs, structure: [NAME]|[CHANCE]")
@@ -27,8 +26,9 @@ public class AwakenCommon
                         Constants.defaultNames
                 ));
 
+        builder.pop();
+
         builder.push("spawn");
-        builder.comment("The generation module (about mob generating)");
 
         ENTITIES = builder
                 .comment(
@@ -37,7 +37,7 @@ public class AwakenCommon
                 .define(
                         "entity_spawn",
                         List.of(
-                                Constants.defaultNames
+                                Constants.defaultSpawning
                         )
                 );
     }

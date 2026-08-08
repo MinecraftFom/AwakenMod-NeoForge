@@ -43,7 +43,7 @@ public class NameDictionary extends AbstractList<NameDictionary.NameEntry> imple
     @Override
     public NameEntry get(int index)
     {
-        return this.nameEntries[this.size];
+        return this.nameEntries[index];
     }
 
     @Override
@@ -81,11 +81,11 @@ public class NameDictionary extends AbstractList<NameDictionary.NameEntry> imple
         if (components.length != 2)
             throw new IllegalArgumentException("Illegal argument structure, required 2 parts");
 
-        String header = components[0];
-        String body = components[1];
+        String header = components[0].strip();
+        String body = components[1].strip() ;
 
         Component title = Component.literal(header);
-        Integer chance = Integer.getInteger(body);
+        int chance = Integer.parseInt(body);
 
         return new NameEntry(title, chance);
     }

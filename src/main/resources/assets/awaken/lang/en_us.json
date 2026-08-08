@@ -1,6 +1,12 @@
 {
   "gui.difficulty.info": "Current Awaken Difficulty",
   "gui.level.info": "Awaken Level",
+
+  "tier.awaken.naive.name": "Naive",
+  "tier.awaken.reinforce.name": "Reinforced",
+  "tier.awaken.enlighten.name": "Enlighten",
+  "tier.awaken.awaken.name": "Awaken",
+
   "tooltip.enchantment.level.1": "I",
   "tooltip.enchantment.level.2": "II",
   "tooltip.enchantment.level.3": "III",

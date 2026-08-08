@@ -27,9 +27,6 @@ public class MobSpawnEvents
         RandomSource random = event.getEntity().getRandom();
         float diff = DifficultyManager.getDimensionFactor(event.getLevel().getLevel());
 
-        if (random.nextInt(100) > 10 * diff)
-            return;
-
         MobSpawnManager.spawn(
                 event.getEntity(),
                 diff,

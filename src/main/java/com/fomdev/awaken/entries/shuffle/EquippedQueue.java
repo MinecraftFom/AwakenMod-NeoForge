@@ -45,7 +45,7 @@ public class EquippedQueue<T> extends FreezingRegistry<WeightedRegistry<T>>
 
         for (Map.Entry<EquipmentSlot, Queue<WeightedRegistry<T>>> queue: registry.entrySet())
             for (WeightedRegistry<T> registry: queue.getValue())
-                if (registry.minDiff >= diff)
+                if (registry.minDiff < diff)
                     totalWeights.put(queue.getKey(), totalWeights.getOrDefault(queue.getKey(), 0.0F) + registry.weight);
 
     }
@@ -56,10 +56,10 @@ public class EquippedQueue<T> extends FreezingRegistry<WeightedRegistry<T>>
             RandomSource random
     )
     {
-        if (!registry.containsKey(slot))
+        refresh(diff);
+        if (!registry.containsKey(slot) || !totalWeights.containsKey(slot))
             return null;
 
-        refresh(diff);
         float weight = random.nextFloat() * totalWeights.get(slot);
         Queue<WeightedRegistry<T>> newQueue = new ArrayDeque<>(registry.get(slot));
         WeightedRegistry<T> current = null;

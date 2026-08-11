@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Mixin(IItemStackExtension.class)
@@ -35,6 +36,7 @@ public interface MixinIItemStackExtension
             return;
 
         ItemAttributeModifiers modifiers = cir.getReturnValue();
+//        List<ItemAttributeModifiers.Entry> entries = new ArrayList<>(modifiers.modifiers());
 
         AwakenPrefix prefix = NBTUtil.deserializePrefix(stack);
         AwakenSuffix suffix = NBTUtil.deserializeSuffix(stack);
@@ -53,18 +55,18 @@ public interface MixinIItemStackExtension
 
             for (EquipmentSlot slot: slots)
             {
-                modifiers.modifiers().add(new ItemAttributeModifiers.Entry(
+                modifiers.withModifierAdded(
                         attribute,
                         new AttributeModifier(
                                 ResourceLocation.fromNamespaceAndPath(
                                         infix.id(),
-                                        attribute.getRegisteredName() + "_" + slot.getName()
+                                        attribute.unwrapKey().orElseThrow().location().getPath() + "_" + slot.getName()
                                 ),
                                 amount,
                                 operation
                         ),
                         EquipmentSlotGroup.bySlot(slot)
-                ));
+                );
             }
         }
 
@@ -77,18 +79,18 @@ public interface MixinIItemStackExtension
 
             for (EquipmentSlot slot: value.getSlots())
             {
-                modifiers.modifiers().add(new ItemAttributeModifiers.Entry(
+                modifiers.withModifierAdded(
                         attribute,
                         new AttributeModifier(
                                 ResourceLocation.fromNamespaceAndPath(
                                         value.id(),
-                                        attribute.getRegisteredName() + "_" + slot.getName()
+                                        attribute.unwrapKey().orElseThrow().location().getPath() + "_" + slot.getName()
                                 ),
                                 amount,
                                 AttributeModifier.Operation.ADD_VALUE
                         ),
                         EquipmentSlotGroup.bySlot(slot)
-                ));
+                );
             }
         }
 

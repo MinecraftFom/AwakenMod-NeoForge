@@ -25,7 +25,7 @@ public class MobSpawnEvents
             return;
 
         RandomSource random = event.getEntity().getRandom();
-        float diff = DifficultyManager.getDimensionFactor(event.getLevel().getLevel());
+        float diff = DifficultyManager.getLevelDifficulty(event.getLevel().getLevel());
 
         MobSpawnManager.spawn(
                 event.getEntity(),

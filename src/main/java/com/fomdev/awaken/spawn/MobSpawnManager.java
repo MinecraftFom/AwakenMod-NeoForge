@@ -94,7 +94,7 @@ public class MobSpawnManager
                     item,
                     slot,
                     diff,
-                    1.0F,
+                    1.5F,
                     random
             );
 
@@ -148,6 +148,9 @@ public class MobSpawnManager
                     random
             );
 
+            if (item == null)
+                return;
+
             EquipmentManager.shuffleForItemStack(
                     item,
                     slot,
@@ -155,9 +158,6 @@ public class MobSpawnManager
                     7.5F,
                     random
             );
-
-            if (item == null)
-                return;
 
             user.setItemSlot(
                     slot,

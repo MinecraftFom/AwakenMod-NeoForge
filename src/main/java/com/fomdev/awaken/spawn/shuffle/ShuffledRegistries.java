@@ -38,8 +38,8 @@ public class ShuffledRegistries
     public static final ResourceKey<Registry<WeightedRegistry<ItemStack>>> RES_WEIGHTED_STACK =
             createKey(SIG_AWAKEN_STACKS);
 
-    public static final WeightedQueue<AwakenInfix> WEIGHTED_AWAKEN_INFIX =
-            new WeightedQueue<>(RES_WEIGHTED_INFIX);
+    public static final EquippedQueue<AwakenInfix> WEIGHTED_AWAKEN_INFIX =
+            new EquippedQueue<>(RES_WEIGHTED_INFIX);
 
     public static final WeightedQueue<AwakenPrefix> WEIGHTED_AWAKEN_PREFIX =
             new WeightedQueue<>(RES_WEIGHTED_PREFIX);
@@ -50,8 +50,8 @@ public class ShuffledRegistries
     public static final WeightedQueue<AwakenSuffix> WEIGHTED_AWAKEN_SUFFIX =
             new WeightedQueue<>(RES_WEIGHTED_SUFFIX);
 
-    public static final EquippedQueue WEIGHTED_AWAKEN_STACK =
-            new EquippedQueue(RES_WEIGHTED_STACK);
+    public static final EquippedQueue<ItemStack> WEIGHTED_AWAKEN_STACK =
+            new EquippedQueue<>(RES_WEIGHTED_STACK);
 
     public static void register(
             IEventBus bus

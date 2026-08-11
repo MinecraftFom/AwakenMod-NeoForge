@@ -92,6 +92,7 @@ public class MobSpawnManager
 
             EquipmentManager.shuffleForItemStack(
                     item,
+                    slot,
                     diff,
                     1.0F,
                     random
@@ -149,6 +150,7 @@ public class MobSpawnManager
 
             EquipmentManager.shuffleForItemStack(
                     item,
+                    slot,
                     diff,
                     7.5F,
                     random
@@ -209,6 +211,7 @@ public class MobSpawnManager
 
             EquipmentManager.shuffleForItemStack(
                     item,
+                    slot,
                     diff,
                     15.0F,
                     random

@@ -5,10 +5,10 @@
   "compatibilityLevel": "JAVA_21",
   "mixins":
   [
-    "MixinDataComponentHolder",
     "MixinEnchantment",
     "MixinEnchantmentHelper",
     "MixinIItemExtension",
+    "MixinIItemStackExtension",
     "MixinItemStack",
     "MixinLivingEntity",
     "MixinMob",

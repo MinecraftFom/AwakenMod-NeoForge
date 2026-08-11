@@ -3,9 +3,6 @@ package com.fomdev.awaken.mixin;
 import com.fomdev.awaken.entries.raw.*;
 import com.fomdev.awaken.util.NBTUtil;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponentHolder;
-import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
@@ -14,6 +11,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.neoforged.neoforge.common.extensions.IItemStackExtension;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -21,22 +19,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 
-@Mixin(DataComponentHolder.class)
-public interface MixinDataComponentHolder
+@Mixin(IItemStackExtension.class)
+public interface MixinIItemStackExtension
 {
-    @Inject(method = "getOrDefault", at = @At("RETURN"), cancellable = true)
-    private <T> void changeAttributes(DataComponentType<? extends T> type, T defaultValue, CallbackInfoReturnable<T> cir)
+    @Inject(method = "getAttributeModifiers", at = @At("RETURN"), cancellable = true)
+    private void getAttributeModifiers(
+            CallbackInfoReturnable<ItemAttributeModifiers> cir
+    )
     {
-        if (type != DataComponents.ATTRIBUTE_MODIFIERS)
-            return;
-
-        if (!((DataComponentHolder) this instanceof ItemStack stack))
+        IItemStackExtension ext = (IItemStackExtension) this;
+        if (!(ext instanceof ItemStack stack))
             return;
 
         if (stack.is(Items.AIR))
             return;
 
-        ItemAttributeModifiers modifiers = (ItemAttributeModifiers) cir.getReturnValue();
+        ItemAttributeModifiers modifiers = cir.getReturnValue();
 
         AwakenPrefix prefix = NBTUtil.deserializePrefix(stack);
         AwakenSuffix suffix = NBTUtil.deserializeSuffix(stack);
@@ -55,7 +53,7 @@ public interface MixinDataComponentHolder
 
             for (EquipmentSlot slot: slots)
             {
-               modifiers.modifiers().add(new ItemAttributeModifiers.Entry(
+                modifiers.modifiers().add(new ItemAttributeModifiers.Entry(
                         attribute,
                         new AttributeModifier(
                                 ResourceLocation.fromNamespaceAndPath(
@@ -94,6 +92,6 @@ public interface MixinDataComponentHolder
             }
         }
 
-        cir.setReturnValue((T) modifiers);
+        cir.setReturnValue(modifiers);
     }
 }

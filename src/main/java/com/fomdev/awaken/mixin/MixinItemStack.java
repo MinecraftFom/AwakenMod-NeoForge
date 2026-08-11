@@ -31,35 +31,14 @@ import java.util.List;
 public abstract class MixinItemStack implements DataComponentHolder
 {
     @Shadow
-    public abstract Component getHoverName();
-
-    @Shadow
     public abstract Item getItem();
 
     @Shadow
     public abstract boolean is(Item p_150931_);
 
     @Shadow
-    public abstract int getMaxDamage();
-
-    @Shadow
-    public abstract int getDamageValue();
-
-    @Shadow
-    @Final
-    PatchedDataComponentMap components;
-
-    @Shadow
-    @Final
-    private static Component DISABLED_ITEM_TOOLTIP;
-
-    @Shadow
     @Nullable
     public abstract Entity getEntityRepresentation();
-
-    @Shadow
-    @Nullable
-    private Entity entityRepresentation;
 
     @Inject(method = "getMaxDamage", at = @At("RETURN"), cancellable = true)
     private void customDurability(CallbackInfoReturnable<Integer> cir)

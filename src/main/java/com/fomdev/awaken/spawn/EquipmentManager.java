@@ -18,6 +18,7 @@ public class EquipmentManager
 {
     public static void shuffleForItemStack(
             ItemStack stack,
+            EquipmentSlot slot,
             float diff,
             float factor,
             RandomSource random
@@ -27,7 +28,7 @@ public class EquipmentManager
 
         AwakenQuality quality = ShuffledRegistries.WEIGHTED_AWAKEN_QUALITY.calculate(d, random);
 
-        AwakenInfix infix = ShuffledRegistries.WEIGHTED_AWAKEN_INFIX.calculate(d, random);
+        AwakenInfix infix = ShuffledRegistries.WEIGHTED_AWAKEN_INFIX.calculate(slot, d, random);
         AwakenPrefix prefix = ShuffledRegistries.WEIGHTED_AWAKEN_PREFIX.calculate(d, random);
         AwakenSuffix suffix = ShuffledRegistries.WEIGHTED_AWAKEN_SUFFIX.calculate(d, random);
 
@@ -66,7 +67,7 @@ public class EquipmentManager
     )
     {
         int n = random.nextInt(Math.max((int) diff, 1)) + (int) factor;
-        return Math.clamp(n, 1, 6);
+        return Math.clamp(n, 1, 7);
     }
 
     public static EquipmentSlot[] shuffleSlots(

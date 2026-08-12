@@ -39,9 +39,8 @@ public class MobSpawnManager
             RandomSource random
     )
     {
-        float f = diff * factor;
-        int rand = random.nextInt((int) diff * (int) factor);
-        return f > rand * 10 && rand % 17 == 0;
+        int n = random.nextInt((int) diff * (int) factor);
+        return n > diff / (factor * 10);
     }
 
     public static Entity spawnRideEntity(
@@ -70,6 +69,7 @@ public class MobSpawnManager
             return null;
 
         ent.setCustomName(Component.translatable("tile.rideble_entity.name"));
+        level.addFreshEntity(ent);
         return ent;
     }
 
@@ -241,13 +241,6 @@ public class MobSpawnManager
         AttributeInstance instance = Objects.requireNonNull(original.getAttribute(Attributes.ATTACK_DAMAGE));
         instance.setBaseValue(strength);
 
-        List<MobEffectInstance> insts = EquipmentManager.shuffleEffects(level,diff, factor, random);
-        insts.forEach(original::addEffect);
-
-        Entity ride;
-        if ((ride = spawnRideEntity(level, original.getEyePosition().toVector3f(), diff, factor, random)) != null)
-            ride.positionRider(original);
-
         EquipmentSlot[] slots = EquipmentManager.shuffleSlots(
                 diff,
                 factor,
@@ -264,7 +257,7 @@ public class MobSpawnManager
             );
 
             if (item == null)
-                return;
+                continue;
 
             EquipmentManager.shuffleForItemStack(
                     level,
@@ -280,6 +273,12 @@ public class MobSpawnManager
                     item
             );
         }
+
+        List<MobEffectInstance> insts = EquipmentManager.shuffleEffects(level,diff, factor, random);
+        insts.forEach(original::addEffect);
+        Entity ride;
+        if ((ride = spawnRideEntity(level, original.getEyePosition().toVector3f(), diff, factor, random)) != null)
+            original.startRiding(ride);
     }
 
     @FunctionalInterface

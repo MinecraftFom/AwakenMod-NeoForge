@@ -19,7 +19,6 @@ import net.minecraft.util.Tuple;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
@@ -99,9 +98,8 @@ public class EquipmentManager
             RandomSource random
     )
     {
-        float f = diff * factor;
-        float n = random.nextInt(Math.max((int) f, 1)) / f;
-        return (int) (n * EFFECTS.size());
+        float n = (float) Math.sqrt(Math.sqrt(diff)) * random.nextInt(Math.max((int) factor, 1)) / factor;
+        return Math.min((int) (n * EFFECTS.size()), EFFECTS.size());
     }
 
     public static int shuffleEffectLevel(
@@ -111,9 +109,8 @@ public class EquipmentManager
             RandomSource random
     )
     {
-        float f = diff * factor;
-        float n = random.nextInt(Math.max((int) f, 1)) / f;
-        return (int) (n * effect.getB().getB()) - 1; // MC Effect levels starts at 0
+        float n = (float) Math.sqrt(Math.sqrt(diff)) * random.nextInt(Math.max((int) factor, 1)) / factor;
+        return Math.min((int) (n * effect.getB().getB()) - 1, effect.getB().getB()); // MC Effect levels starts at 0
     }
 
     public static List<MobEffectInstance> shuffleEffects(
@@ -123,6 +120,9 @@ public class EquipmentManager
             RandomSource random
     )
     {
+        if (EFFECTS.isEmpty())
+            return List.of();
+
         int count = shuffleEffectCount(diff, factor, random);
         List<Holder<MobEffect>> exist = new ArrayList<>();
         List<MobEffectInstance> insts = new ArrayList<>();
@@ -212,7 +212,7 @@ public class EquipmentManager
     )
     {
         float d = diff * factor;
-
+        enchant(stack, level, diff, factor, random);
         AwakenQuality quality = ShuffledRegistries.WEIGHTED_AWAKEN_QUALITY.calculate(d, random);
 
         AwakenInfix infix = ShuffledRegistries.WEIGHTED_AWAKEN_INFIX.calculate(slot, d, random);
@@ -233,8 +233,6 @@ public class EquipmentManager
                 stack,
                 quality
         );
-
-        enchant(stack, level, diff, factor, random);
     }
 
     public static ItemStack shuffleItemStack(

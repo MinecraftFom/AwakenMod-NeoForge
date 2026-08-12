@@ -65,6 +65,9 @@ public abstract class MixinLivingEntity
     {
         LivingEntity self = (LivingEntity) (Object) this;
 
+        if (!(self.level() instanceof ServerLevel))
+            return;
+
         if (!(self instanceof Player player))
             cir.setReturnValue(HealthUtil.calculateMobHealth(self, cir.getReturnValue()));
         else

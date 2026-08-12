@@ -106,7 +106,7 @@ public class Constants
 
     public static final String[] defaultEquipment$OffHand = new String[]{
             "shield|20|1.0",
-            "totem_of_undead|1|10000.0"
+            "totem_of_undying|1|10000.0"
     };
 
     public static final String[] defaultEquipment$Head = new String[]{
@@ -150,7 +150,8 @@ public class Constants
     };
 
     public static final String[] defaultRideEntities = new String[]{
-            "phantom"
+            "phantom",
+            "silverfish"
     };
 
     public static final String[] defaultEffects = new String[]{

@@ -24,8 +24,8 @@ public class HealthUtil
         if (!(entity.level() instanceof ServerLevel level))
             return original;
 
-        float factor = (DifficultyManager.getDimensionFactor(level) / 10);
-        return original * Math.max((int) factor, 1);
+        float factor = DifficultyManager.getLevelDifficulty(level);
+        return Math.max(original, original * Math.max((int) factor, 1));
     }
 
     public static float deserializeAdditionalHealthPersistent(

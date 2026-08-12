@@ -67,9 +67,12 @@ public class Constants
 
     public static final String[] defaultSpawning = new String[]{
             "zombie|overworld",
-            "skeleton|overworld&nether",
+            "husk|overworld",
+            "drown|overworld",
+            "skeleton|overworld&the_nether",
             "spider|overworld",
-            "creeper|overworld"
+            "creeper|overworld",
+            "enderman|overworld&the_nether&the_end"
     };
 
     public static final String[] defaultEquipment$Hand = new String[]{
@@ -133,7 +136,8 @@ public class Constants
             "iron_leggings|60|10.0",
             "golden_leggings|66|10.0",
             "diamond_leggings|10|50.0",
-            "netherite_leggings|1|100.0"
+            "netherite_leggings|5|100.0",
+            "end_rod|1|10000.0"
     };
 
     public static final String[] defaultEquipment$Feet = new String[]{
@@ -143,5 +147,13 @@ public class Constants
             "golden_boots|66|10.0",
             "diamond_boots|10|50.0",
             "netherite_boots|1|100.0"
+    };
+
+    public static final String[] defaultRideEntities = new String[]{
+            "phantom"
+    };
+
+    public static final String[] defaultEffects = new String[]{
+            "health_boost|10000|10"
     };
 }

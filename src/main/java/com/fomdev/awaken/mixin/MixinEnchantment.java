@@ -35,6 +35,6 @@ public class MixinEnchantment
         if (cir.getReturnValue() == 1)
             return;
 
-        cir.setReturnValue(20);
+        cir.setReturnValue(EnchantManager.maxLevel);
     }
 }

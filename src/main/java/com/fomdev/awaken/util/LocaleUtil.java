@@ -1,6 +1,7 @@
 package com.fomdev.awaken.util;
 
 import com.fomdev.awaken.entries.raw.*;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -69,7 +70,7 @@ public class LocaleUtil
     {
         List<Component> components = new ArrayList<>();
         for (EquipmentSlot slot: slots)
-            components.add(Component.empty().append(Component.translatable("tooltip.slot.avaiable.info")).append(Component.translatable(slot.getName())));
+            components.add(Component.empty().append(Component.translatable("tooltip.slot.avaiable.info")).append(Component.translatable(slot.getName())).withStyle(ChatFormatting.GRAY));
 
         return components;
     }

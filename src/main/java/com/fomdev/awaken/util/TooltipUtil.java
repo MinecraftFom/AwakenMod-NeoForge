@@ -2,6 +2,7 @@ package com.fomdev.awaken.util;
 
 import com.fomdev.awaken.entries.raw.*;
 import com.fomdev.flame.util.Util;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.TooltipFlag;
@@ -30,6 +31,7 @@ public class TooltipUtil
                                                         "tooltip.aspect.info"
                                                 )
                                 )
+                                .withStyle(ChatFormatting.GRAY)
                 );
 
         if (flag.hasShiftDown())
@@ -46,9 +48,10 @@ public class TooltipUtil
                                 .append(
                                         "" + instance.amount()
                                 )
+                                .withStyle(ChatFormatting.GRAY)
                 );
         else
-            components.add(Component.translatable("tooltip.hold_shift.info"));
+            components.add(Component.translatable("tooltip.hold_shift.info").withStyle(ChatFormatting.GRAY));
 
         return components;
     }
@@ -69,6 +72,7 @@ public class TooltipUtil
                                         .translatable(
                                                 "tooltip.unawaken.info"
                                         )
+                                        .withStyle(ChatFormatting.GRAY)
                         )
         );
 
@@ -80,6 +84,7 @@ public class TooltipUtil
                                         .translatable(
                                                 "tooltip.unawaken.required.info"
                                         )
+                                        .withStyle(ChatFormatting.GRAY)
                         )
         );
 
@@ -96,6 +101,7 @@ public class TooltipUtil
                                                     epoch.getRequiredDifficulty()
                                             )
                             )
+                            .withStyle(ChatFormatting.GRAY)
             );
 
             components.add(
@@ -109,6 +115,7 @@ public class TooltipUtil
                                                     epoch.getRequiredLevel().getMin()
                                             )
                             )
+                            .withStyle(ChatFormatting.GRAY)
             );
         } else
             components.add(
@@ -116,6 +123,7 @@ public class TooltipUtil
                             .translatable(
                                     "tooltip.hold_shift.info"
                             )
+                            .withStyle(ChatFormatting.GRAY)
             );
 
         return components;
@@ -144,6 +152,7 @@ public class TooltipUtil
                                 .append(
                                         LocaleUtil.localizeInfix(infix)
                                 )
+                                .withStyle(ChatFormatting.GRAY)
                 );
 
         if (flag.hasShiftDown())
@@ -167,6 +176,7 @@ public class TooltipUtil
                                                             infix.getAttribute().attr().value().getDescriptionId()
                                                     )
                                     )
+                                    .withStyle(ChatFormatting.GRAY)
                     );
             components
                     .add(
@@ -182,6 +192,7 @@ public class TooltipUtil
                                                     ? "" + infix.getAttribute().amount()
                                                     : infix.getAttribute().amount() * factor + " [" + infix.getAttribute().amount() + " * " + factor + "]"
                                     )
+                                    .withStyle(ChatFormatting.GRAY)
                     );
             components
                     .addAll(
@@ -194,6 +205,7 @@ public class TooltipUtil
                                     .translatable(
                                             "tooltip.hold_shift.info"
                                     )
+                                    .withStyle(ChatFormatting.GRAY)
                     );
 
         return components;
@@ -224,6 +236,7 @@ public class TooltipUtil
                                 .append(
                                         " (" + pollinate.getLevel() + ")"
                                 )
+                                .withStyle(ChatFormatting.GRAY)
                 );
 
         if (flag.hasShiftDown())
@@ -240,11 +253,13 @@ public class TooltipUtil
                                                     Util.castTickToString(pollinate.getPollinate().getEffect(pollinate.getLevel()).getDuration())
                                             )
                             )
+                            .withStyle(ChatFormatting.GRAY)
             );
         else
             components.add(
                     Component
                             .translatable("tooltip.hold_shift.info")
+                            .withStyle(ChatFormatting.GRAY)
             );
 
         return components;
@@ -272,6 +287,7 @@ public class TooltipUtil
                                 .append(
                                         LocaleUtil.localizePrefix(prefix)
                                 )
+                                .withStyle(ChatFormatting.GRAY)
                 );
 
         if (flag.hasShiftDown())
@@ -289,6 +305,7 @@ public class TooltipUtil
                                     .append(
                                             ": "
                                     )
+                                    .withStyle(ChatFormatting.GRAY)
                     );
             components
                     .addAll(
@@ -305,6 +322,7 @@ public class TooltipUtil
                                                             prefix.addition()
                                                     )
                                     )
+                                    .withStyle(ChatFormatting.GRAY)
                     );
         } else
             components
@@ -313,6 +331,7 @@ public class TooltipUtil
                                     .translatable(
                                             "tooltip.hold_shift.info"
                                     )
+                                    .withStyle(ChatFormatting.GRAY)
                     );
 
         return components;
@@ -340,6 +359,7 @@ public class TooltipUtil
                                 .append(
                                         LocaleUtil.localizeQuality(quality)
                                 )
+                                .withStyle(ChatFormatting.GRAY)
                 );
 
         if (flag.hasShiftDown())
@@ -359,6 +379,7 @@ public class TooltipUtil
                                     .append(
                                             "" + quality.getFactor()
                                     )
+                                    .withStyle(ChatFormatting.GRAY)
                     );
         else
             components
@@ -367,6 +388,7 @@ public class TooltipUtil
                                     .translatable(
                                             "tooltip.hold_shift.info"
                                     )
+                                    .withStyle(ChatFormatting.GRAY)
                     );
 
         return components;
@@ -399,6 +421,7 @@ public class TooltipUtil
                                 .append(
                                         " (" + spore.getLevel() + ")"
                                 )
+                                .withStyle(ChatFormatting.GRAY)
                 );
 
         if (flag.hasShiftDown())
@@ -410,6 +433,7 @@ public class TooltipUtil
                                             Component.translatable(spore.getSpore().getAttribute().value().getDescriptionId()).getString(),
                                             "" + spore.getSpore().getAmount(spore.getLevel())
                                     )
+                                    .withStyle(ChatFormatting.GRAY)
                     );
         else
             components
@@ -418,6 +442,7 @@ public class TooltipUtil
                                     .translatable(
                                             "tooltip.hold_shift.info"
                                     )
+                                    .withStyle(ChatFormatting.GRAY)
                     );
 
         return components;
@@ -445,6 +470,7 @@ public class TooltipUtil
                                 .append(
                                         LocaleUtil.localizeSuffix(suffix)
                                 )
+                                .withStyle(ChatFormatting.GRAY)
                 );
 
         if (flag.hasShiftDown())
@@ -457,6 +483,7 @@ public class TooltipUtil
                                             Component.translatable(suffix.getTarget().value().getDescriptionId()).getString(),
                                             "" + suffix.factor()
                                     )
+                                    .withStyle(ChatFormatting.GRAY)
                     );
             components
                     .add(
@@ -465,6 +492,7 @@ public class TooltipUtil
                                             "tooltip.durability.additional.info",
                                             suffix.addition()
                                     )
+                                    .withStyle(ChatFormatting.GRAY)
                     );
         } else
             components
@@ -473,6 +501,7 @@ public class TooltipUtil
                                     .translatable(
                                             "tooltip.hold_shift.info"
                                     )
+                                    .withStyle(ChatFormatting.GRAY)
                     );
 
         return components;
@@ -484,7 +513,7 @@ public class TooltipUtil
     {
         List<Component> components = new ArrayList<>();
         for (MobEffectInstance instance: instances)
-            components.add(Component.empty().append(Component.translatable("tooltip.effect.whenhold.info", Component.translatable(instance.getDescriptionId()).getString(), Util.castTickToString(instance.getAmplifier()))));
+            components.add(Component.empty().append(Component.translatable("tooltip.effect.whenhold.info", Component.translatable(instance.getDescriptionId()).getString(), Util.castTickToString(instance.getAmplifier()))).withStyle(ChatFormatting.GRAY));
 
         return components;
     }

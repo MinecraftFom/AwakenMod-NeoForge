@@ -4,16 +4,22 @@ import com.fomdev.awaken.init.config.AwakenCommon;
 import com.fomdev.awaken.literature.Literature;
 import com.fomdev.awaken.util.ColorUtil;
 import com.fomdev.awaken.util.Util;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Tuple;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3f;
 
 import java.awt.*;
 import java.util.*;
@@ -24,6 +30,48 @@ public class MobSpawnManager
     /* Here, the resourcelocation should be the key of the level (dimension) the entities are generating in */
     public static final Map<ResourceLocation, List<ResourceLocation>> LEVELED_ENTITIES
             = new HashMap<>();
+
+    public static final List<Holder.Reference<EntityType<?>>> RIDE_ENTITIES = new ArrayList<>();
+
+    public static boolean shouldRide(
+            float diff,
+            float factor,
+            RandomSource random
+    )
+    {
+        float f = diff * factor;
+        int rand = random.nextInt((int) diff * (int) factor);
+        return f > rand * 10 && rand % 17 == 0;
+    }
+
+    public static Entity spawnRideEntity(
+            Level level,
+            Vector3f pos,
+            float diff,
+            float factor,
+            RandomSource random
+    )
+    {
+        if (!shouldRide(diff, factor, random))
+            return null;
+
+        if (RIDE_ENTITIES.isEmpty())
+            return null;
+
+        Holder.Reference<EntityType<?>> entity = RIDE_ENTITIES.get(random.nextInt(RIDE_ENTITIES.size()));
+        String id = Objects.requireNonNull(entity.getKey()).location().toString();
+        CompoundTag idTag = new CompoundTag();
+        idTag.putString("id", id);
+        Entity ent = EntityType.loadEntityRecursive(idTag, level, e -> {
+            e.moveTo(new Vec3(pos), e.getYRot(), e.getXRot());
+            return e;
+        });
+        if (ent == null)
+            return null;
+
+        ent.setCustomName(Component.translatable("tile.rideble_entity.name"));
+        return ent;
+    }
 
     public static void noviceSpawnLogic(
             LivingEntity original,
@@ -60,49 +108,7 @@ public class MobSpawnManager
             RandomSource random
     )
     {
-        if (!(level instanceof ServerLevel server))
-            return;
-        if (!(original instanceof EquipmentUser user))
-            return;
-
-        original.setCustomName(
-                Component.empty().append(title).withStyle(ColorUtil.colorStyle(color))
-        );
-
-        AttributeInstance instance = Objects.requireNonNull(original.getAttribute(Attributes.ATTACK_DAMAGE));
-        instance.setBaseValue(strength);
-
-        EquipmentSlot[] slots = EquipmentManager.shuffleSlots(
-                diff,
-                1.5F,
-                random
-        );
-
-        for (EquipmentSlot slot: slots)
-        {
-            ItemStack item = EquipmentManager.shuffleItemStack(
-                    slot,
-                    diff,
-                    1.5F,
-                    random
-            );
-
-            if (item == null)
-                return;
-
-            EquipmentManager.shuffleForItemStack(
-                    item,
-                    slot,
-                    diff,
-                    1.5F,
-                    random
-            );
-
-            user.setItemSlot(
-                    slot,
-                    item
-            );
-        }
+        normalGenerate(original, diff, 1.0F, strength, color, title, level, random);
 //        AwakenParticlePlayer.playReinforceMobGenerate(
 //            server,
 //            original.position().toVector3f(),
@@ -121,50 +127,7 @@ public class MobSpawnManager
             RandomSource random
     )
     {
-        if (!(level instanceof ServerLevel server))
-            return;
-        if (!(original instanceof EquipmentUser user))
-            return;
-
-        original.setCustomName(
-                Component.empty().append(title).withStyle(ColorUtil.colorStyle(color))
-        );
-
-        AttributeInstance instance = Objects.requireNonNull(original.getAttribute(Attributes.ATTACK_DAMAGE));
-        instance.setBaseValue(strength);
-
-        EquipmentSlot[] slots = EquipmentManager.shuffleSlots(
-                diff,
-                7.5F,
-                random
-        );
-
-        for (EquipmentSlot slot: slots)
-        {
-            ItemStack item = EquipmentManager.shuffleItemStack(
-                    slot,
-                    diff,
-                    7.5F,
-                    random
-            );
-
-            if (item == null)
-                return;
-
-            EquipmentManager.shuffleForItemStack(
-                    item,
-                    slot,
-                    diff,
-                    7.5F,
-                    random
-            );
-
-            user.setItemSlot(
-                    slot,
-                    item
-            );
-        }
-
+        normalGenerate(original, diff, 7.5F, strength, color, title, level, random);
         /* TODO: ADD PARTICLE */
     }
 
@@ -179,50 +142,7 @@ public class MobSpawnManager
             RandomSource random
     )
     {
-        if (!(level instanceof ServerLevel server))
-            return;
-        if (!(original instanceof EquipmentUser user))
-            return;
-
-        original.setCustomName(
-                Component.empty().append(title).withStyle(ColorUtil.colorStyle(color))
-        );
-
-        AttributeInstance instance = Objects.requireNonNull(original.getAttribute(Attributes.ATTACK_DAMAGE));
-        instance.setBaseValue(strength);
-
-        EquipmentSlot[] slots = EquipmentManager.shuffleSlots(
-                diff,
-                15.0F,
-                random
-        );
-
-        for (EquipmentSlot slot: slots)
-        {
-            ItemStack item = EquipmentManager.shuffleItemStack(
-                    slot,
-                    diff,
-                    15.0F,
-                    random
-            );
-
-            if (item == null)
-                return;
-
-            EquipmentManager.shuffleForItemStack(
-                    item,
-                    slot,
-                    diff,
-                    15.0F,
-                    random
-            );
-
-            user.setItemSlot(
-                    slot,
-                    item
-            );
-        }
-
+        normalGenerate(original, diff, 15.0F, strength, color, title, level, random);
         /* TODO: ADD PARTICLE */
     }
 
@@ -236,15 +156,16 @@ public class MobSpawnManager
     }
 
     public static MobTiers shuffleTier(
+            float diff,
             RandomSource random
     )
     {
-        int totalWeight = random.nextInt(MobTiers.totalWeight);
+        int totalWeight = Math.max((int) (random.nextInt(MobTiers.totalWeight) * diff), MobTiers.totalWeight);
         int i = 0;
 
         MobTiers tier = null;
 
-        while (totalWeight > 0)
+        while (totalWeight > 0 && i < MobTiers.values().length)
         {
             tier = MobTiers.values()[i];
             totalWeight -= tier.chance;
@@ -269,6 +190,7 @@ public class MobSpawnManager
     )
     {
         MobTiers tier = shuffleTier(
+                diff,
                 random
         );
 
@@ -294,6 +216,70 @@ public class MobSpawnManager
                 level,
                 random
         );
+    }
+
+    private static void normalGenerate(
+            LivingEntity original,
+            float diff,
+            float factor,
+            int strength,
+            Color color,
+            Component title,
+            Level level,
+            RandomSource random
+    )
+    {
+        if (!(level instanceof ServerLevel server))
+            return;
+        if (!(original instanceof EquipmentUser user))
+            return;
+
+        original.setCustomName(
+                Component.empty().append(title).withStyle(ColorUtil.colorStyle(color))
+        );
+
+        AttributeInstance instance = Objects.requireNonNull(original.getAttribute(Attributes.ATTACK_DAMAGE));
+        instance.setBaseValue(strength);
+
+        List<MobEffectInstance> insts = EquipmentManager.shuffleEffects(level,diff, factor, random);
+        insts.forEach(original::addEffect);
+
+        Entity ride;
+        if ((ride = spawnRideEntity(level, original.getEyePosition().toVector3f(), diff, factor, random)) != null)
+            ride.positionRider(original);
+
+        EquipmentSlot[] slots = EquipmentManager.shuffleSlots(
+                diff,
+                factor,
+                random
+        );
+
+        for (EquipmentSlot slot: slots)
+        {
+            ItemStack item = EquipmentManager.shuffleItemStack(
+                    slot,
+                    diff,
+                    factor,
+                    random
+            );
+
+            if (item == null)
+                return;
+
+            EquipmentManager.shuffleForItemStack(
+                    level,
+                    item,
+                    slot,
+                    diff,
+                    factor,
+                    random
+            );
+
+            user.setItemSlot(
+                    slot,
+                    item
+            );
+        }
     }
 
     @FunctionalInterface
@@ -328,6 +314,15 @@ public class MobSpawnManager
                                                 ).add(data.getA())
                                         )
                 );
+
+        AwakenCommon.CONFIG.RIDE_ENTITIES.get()
+                .stream()
+                .map(
+                        MobSpawnManager::loadFromString$1
+                )
+                .forEach(
+                        RIDE_ENTITIES::add
+                );
     }
 
     public static Tuple<ResourceLocation, List<ResourceLocation>> loadFromString(
@@ -345,5 +340,13 @@ public class MobSpawnManager
                 ResourceLocation.parse(entity),
                 Arrays.stream(levels).map(String::strip).map(ResourceLocation::parse).toList()
         );
+    }
+
+    public static Holder.Reference<EntityType<?>> loadFromString$1(
+            String raw
+    )
+    {
+        ResourceLocation location = ResourceLocation.parse(raw);
+        return BuiltInRegistries.ENTITY_TYPE.getHolder(location).orElseThrow();
     }
 }

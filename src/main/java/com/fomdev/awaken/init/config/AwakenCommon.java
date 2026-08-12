@@ -13,6 +13,8 @@ public class AwakenCommon
     public static final ModConfigSpec SPEC;
 
     public final ModConfigSpec.ConfigValue<List<? extends String>> ENTITIES;
+    public final ModConfigSpec.ConfigValue<List<? extends String>> RIDE_ENTITIES;
+
     public final ModConfigSpec.ConfigValue<List<? extends String>> NAMES_FIRST;
     public final ModConfigSpec.ConfigValue<List<? extends String>> NAMES_LAST;
 
@@ -22,6 +24,8 @@ public class AwakenCommon
     public final ModConfigSpec.ConfigValue<List<? extends String>> CHESTPLATE;
     public final ModConfigSpec.ConfigValue<List<? extends String>> LEGGINGS;
     public final ModConfigSpec.ConfigValue<List<? extends String>> BOOTS;
+
+    public final ModConfigSpec.ConfigValue<List<? extends String>> EFFECTS;
 
     public AwakenCommon(
             ModConfigSpec.Builder builder
@@ -63,6 +67,16 @@ public class AwakenCommon
                         "entity_spawn",
                         List.of(
                                 Constants.defaultSpawning
+                        ),
+                        Objects::nonNull
+                );
+
+        RIDE_ENTITIES = builder
+                .comment("Decides mobs that may generate as carriers while rare mobs generate")
+                .defineList(
+                        "ride_entities",
+                        List.of(
+                                Constants.defaultRideEntities
                         ),
                         Objects::nonNull
                 );
@@ -122,6 +136,19 @@ public class AwakenCommon
                         ),
                         Objects::nonNull
                 );
+
+        builder.pop();
+
+        EFFECTS =
+                builder
+                        .comment("Effects that will be generated on mobs. Structure: [EFFECT_ID]|[DURATION]|[MAX_LEVEL]")
+                        .defineList(
+                                "effects",
+                                List.of(
+                                        Constants.defaultEffects
+                                ),
+                                Objects::nonNull
+                        );
     }
 
     static

@@ -78,6 +78,6 @@ public class EnchantManager
 
     static
     {
-        maxLevel = 20;
+        maxLevel = 50;
     }
 }

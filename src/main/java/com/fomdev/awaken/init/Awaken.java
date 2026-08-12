@@ -3,6 +3,7 @@ package com.fomdev.awaken.init;
 import com.fomdev.awaken.entries.raw.AwakenRegistries;
 import com.fomdev.awaken.init.config.AwakenCommon;
 import com.fomdev.awaken.literature.Literature;
+import com.fomdev.awaken.spawn.EquipmentManager;
 import com.fomdev.awaken.spawn.MobSpawnManager;
 import com.fomdev.awaken.spawn.shuffle.ShuffledRegistries;
 import com.mojang.logging.LogUtils;
@@ -41,6 +42,7 @@ public class Awaken
             ModConfigEvent.Loading event
     )
     {
+        EquipmentManager.loadFromConfig();
         Literature.init();
         MobSpawnManager.loadFromConfig();
         ShuffledRegistries.initFromConfig();

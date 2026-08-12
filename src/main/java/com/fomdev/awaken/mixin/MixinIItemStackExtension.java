@@ -1,6 +1,7 @@
 package com.fomdev.awaken.mixin;
 
 import com.fomdev.awaken.entries.raw.*;
+import com.fomdev.awaken.spawn.EquipmentManager;
 import com.fomdev.awaken.util.NBTUtil;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
@@ -18,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Mixin(IItemStackExtension.class)
@@ -52,10 +54,9 @@ public interface MixinIItemStackExtension
             double amount = (suffix.should(attribute)? infix.getAttribute().amount() * suffix.factor(): infix.getAttribute().amount()) * factor;
             AttributeModifier.Operation operation = infix.getAttribute().operation();
             EquipmentSlot[] slots = infix.getAttribute().slot();
-
-            for (EquipmentSlot slot: slots)
-            {
-                modifiers.withModifierAdded(
+            EquipmentSlot slot = EquipmentManager.forSlot(stack);
+            if (Arrays.asList(slots).contains(slot))
+                modifiers = modifiers.withModifierAdded(
                         attribute,
                         new AttributeModifier(
                                 ResourceLocation.fromNamespaceAndPath(
@@ -67,7 +68,6 @@ public interface MixinIItemStackExtension
                         ),
                         EquipmentSlotGroup.bySlot(slot)
                 );
-            }
         }
 
         for (AwakenSpore.SporeInstance instance: spore)
@@ -76,10 +76,10 @@ public interface MixinIItemStackExtension
             int level = instance.getLevel();
             double amount = value.getAmount(level) * factor;
             Holder<Attribute> attribute = value.getAttribute();
+            EquipmentSlot slot = EquipmentManager.forSlot(stack);
 
-            for (EquipmentSlot slot: value.getSlots())
-            {
-                modifiers.withModifierAdded(
+            if (Arrays.asList(value.getSlots()).contains(slot))
+                modifiers = modifiers.withModifierAdded(
                         attribute,
                         new AttributeModifier(
                                 ResourceLocation.fromNamespaceAndPath(
@@ -91,7 +91,6 @@ public interface MixinIItemStackExtension
                         ),
                         EquipmentSlotGroup.bySlot(slot)
                 );
-            }
         }
 
         cir.setReturnValue(modifiers);

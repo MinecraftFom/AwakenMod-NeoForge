@@ -47,6 +47,22 @@ public class AwakenAttachmentTypes
                     Awaken.MODID
             );
 
+    public static final Supplier<AttachmentType<Integer>> IS_ATTACKED =
+            REGISTER.register("attacked",
+                    () -> AttachmentType.builder(() -> 0)
+                            .serialize(Codec.INT)
+                            .sync(ByteBufCodecs.INT)
+                            .build()
+            );
+
+    public static final Supplier<AttachmentType<Boolean>> IS_AWAKEN =
+            REGISTER.register("awaken",
+                    () -> AttachmentType.<Boolean>builder(() -> false)
+                            .serialize(Codec.BOOL)
+                            .sync(ByteBufCodecs.BOOL)
+                            .build()
+            );
+
     public static final Supplier<AttachmentType<Float>> PLAYER_ADDITIONAL_HEALTH =
             REGISTER.register("additional_health",
                     () -> AttachmentType.builder(() -> 0.0F)

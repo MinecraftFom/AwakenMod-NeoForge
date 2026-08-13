@@ -2,6 +2,7 @@ package com.fomdev.awaken.spawn;
 
 import com.fomdev.awaken.init.config.AwakenCommon;
 import com.fomdev.awaken.literature.Literature;
+import com.fomdev.awaken.register.data.AwakenAttachmentTypes;
 import com.fomdev.awaken.util.ColorUtil;
 import com.fomdev.awaken.util.Util;
 import net.minecraft.core.Holder;
@@ -143,6 +144,7 @@ public class MobSpawnManager
     )
     {
         normalGenerate(original, diff, 15.0F, strength, color, title, level, random);
+        original.setData(AwakenAttachmentTypes.IS_AWAKEN, true);
         /* TODO: ADD PARTICLE */
     }
 
@@ -156,7 +158,6 @@ public class MobSpawnManager
     }
 
     public static MobTiers shuffleTier(
-            float diff,
             RandomSource random
     )
     {
@@ -193,7 +194,6 @@ public class MobSpawnManager
             return;
 
         MobTiers tier = shuffleTier(
-                diff,
                 random
         );
 

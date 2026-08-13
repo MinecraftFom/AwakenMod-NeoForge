@@ -101,12 +101,16 @@ public class Constants
             "netherite_pickaxe|10|100.0",
             "netherite_shovel|20|100.0",
             "netherite_sword|5|100.0",
-            "mace|1|10000.0"
+            "mace|1|10000.0",
+            "bow|50|500.0",
+            "cobweb|50|500.0",
+            "ender_pearl|50|500.0"
     };
 
     public static final String[] defaultEquipment$OffHand = new String[]{
             "shield|20|1.0",
-            "totem_of_undying|1|10000.0"
+            "totem_of_undying|1|10000.0",
+            "ender_pearl|50|500.0"
     };
 
     public static final String[] defaultEquipment$Head = new String[]{

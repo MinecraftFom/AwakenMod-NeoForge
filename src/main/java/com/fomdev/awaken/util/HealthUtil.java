@@ -26,7 +26,7 @@ public class HealthUtil
             return original;
 
         float factor = DifficultyManager.getLevelDifficulty(level);
-        float df = (float) Math.sqrt(Math.max((int) factor, 1));
+        float df = (float) Math.pow(Math.max((int) factor, 1), 1.0 / 5.0);
         float value = df * original;
         float max = AwakenCommon.CONFIG.MAX_HEALTH.get().floatValue();
         return Math.clamp(value, original, max);

@@ -160,8 +160,7 @@ public class MobSpawnManager
             RandomSource random
     )
     {
-        int factor = (int) Math.pow(diff, 1.0 / 5.0);
-        int totalWeight = Math.min(random.nextInt(MobTiers.totalWeight) * factor, MobTiers.totalWeight);
+        int totalWeight = Math.min(random.nextInt(MobTiers.totalWeight), MobTiers.totalWeight);
         int i = 0;
 
         MobTiers tier = null;
@@ -169,7 +168,7 @@ public class MobSpawnManager
         while (totalWeight > 0 && i < MobTiers.values().length)
         {
             tier = MobTiers.values()[i];
-            totalWeight -= tier.chance * factor;
+            totalWeight -= tier.chance;
             i++;
         }
 

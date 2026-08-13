@@ -19,7 +19,7 @@ public class ItemStackEvents
     public static void onItemPickup(ItemEntityPickupEvent.Pre event)
     {
         Player player = event.getPlayer();
-        if (!(player instanceof ServerPlayer serverPlayer))
+        if (!(player instanceof ServerPlayer serverPlayer) || player.isCreative())
             return;
 
         ItemStack stack = event.getItemEntity().getItem();

@@ -40,7 +40,7 @@ public class MobSpawnManager
     )
     {
         int n = random.nextInt((int) diff * (int) factor);
-        return n > diff / (factor * 10);
+        return n > diff / (factor * 10) && diff >= AwakenCommon.CONFIG.CARRIER_GENERATION.get();
     }
 
     public static Entity spawnRideEntity(
@@ -160,7 +160,7 @@ public class MobSpawnManager
             RandomSource random
     )
     {
-        int totalWeight = Math.max((int) (random.nextInt(MobTiers.totalWeight) * diff), MobTiers.totalWeight);
+        int totalWeight = Math.max((int) (random.nextInt(MobTiers.totalWeight) * Math.sqrt(Math.sqrt(diff))), MobTiers.totalWeight);
         int i = 0;
 
         MobTiers tier = null;

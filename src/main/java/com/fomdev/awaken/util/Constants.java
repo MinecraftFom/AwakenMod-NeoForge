@@ -158,6 +158,11 @@ public class Constants
             "health_boost|10000|10"
     };
 
-    public static final double epochChance = 0.1;
+    public static final double epochChance = 35.0;
     public static final double maxHealth = 10000.0;
+
+    public static final int maxEnchant = 50;
+    public static final int xpLevel = 200;
+
+    public static final int carrierGenerateDiff = 10000;
 }

@@ -14,6 +14,7 @@ public class AwakenCommon
 
     public final ModConfigSpec.ConfigValue<Double> EPOCH_RARITY;
     public final ModConfigSpec.ConfigValue<Double> MAX_HEALTH;
+    public final ModConfigSpec.ConfigValue<Integer> CARRIER_GENERATION;
 
     public final ModConfigSpec.ConfigValue<List<? extends String>> ENTITIES;
     public final ModConfigSpec.ConfigValue<List<? extends String>> RIDE_ENTITIES;
@@ -29,6 +30,9 @@ public class AwakenCommon
     public final ModConfigSpec.ConfigValue<List<? extends String>> BOOTS;
 
     public final ModConfigSpec.ConfigValue<List<? extends String>> EFFECTS;
+
+    public final ModConfigSpec.ConfigValue<Integer> MAX_ENCHANT_LEVEL;
+    public final ModConfigSpec.ConfigValue<Integer> XP_PER_LEVEL;
 
     public AwakenCommon(
             ModConfigSpec.Builder builder
@@ -81,6 +85,14 @@ public class AwakenCommon
                         List.of(
                                 Constants.defaultSpawning
                         ),
+                        Objects::nonNull
+                );
+
+        CARRIER_GENERATION = builder
+                .comment("Decides when mobs will have carriers")
+                .define(
+                        "carrier_generate_difficulty",
+                        Constants.carrierGenerateDiff,
                         Objects::nonNull
                 );
 
@@ -170,6 +182,23 @@ public class AwakenCommon
                 .define(
                         "max_health",
                         Constants.maxHealth,
+                        Objects::nonNull
+                );
+
+        MAX_ENCHANT_LEVEL = builder
+                .comment("Max enchantment level accepted")
+                .define(
+                        "max_enchantment_level",
+                        Constants.maxEnchant,
+                        Objects::nonNull
+                );
+
+        XP_PER_LEVEL = builder
+                .comment("Experience required for each level")
+                .comment("WARNING: If you change this, some of your saves will break, and you aren't able to regain xp")
+                .define(
+                        "xp_per_level",
+                        Constants.xpLevel,
                         Objects::nonNull
                 );
     }

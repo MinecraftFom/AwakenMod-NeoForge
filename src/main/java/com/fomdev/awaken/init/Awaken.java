@@ -1,5 +1,6 @@
 package com.fomdev.awaken.init;
 
+import com.fomdev.awaken.enchant.EnchantManager;
 import com.fomdev.awaken.entries.raw.AwakenRegistries;
 import com.fomdev.awaken.init.config.AwakenCommon;
 import com.fomdev.awaken.literature.Literature;
@@ -42,6 +43,7 @@ public class Awaken
             ModConfigEvent.Loading event
     )
     {
+        EnchantManager.init();
         EquipmentManager.loadFromConfig();
         Literature.init();
         MobSpawnManager.loadFromConfig();

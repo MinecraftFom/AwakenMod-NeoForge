@@ -1,7 +1,6 @@
 package com.fomdev.awaken.mixin;
 
 import com.fomdev.awaken.difficulty.ClientDifficultyManager;
-import com.fomdev.awaken.difficulty.DifficultyManager;
 import com.fomdev.awaken.entries.raw.*;
 import com.fomdev.awaken.register.data.AwakenDataComponents;
 import com.fomdev.awaken.register.items.AwakenItems;
@@ -11,8 +10,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,7 +18,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 @Mixin(ItemStack.class)
@@ -32,10 +28,6 @@ public abstract class MixinItemStack implements DataComponentHolder
 
     @Shadow
     public abstract boolean is(Item p_150931_);
-
-    @Shadow
-    @Nullable
-    public abstract Entity getEntityRepresentation();
 
     @Inject(method = "getMaxDamage", at = @At("RETURN"), cancellable = true)
     private void customDurability(CallbackInfoReturnable<Integer> cir)
@@ -87,29 +79,22 @@ public abstract class MixinItemStack implements DataComponentHolder
     private void fancyTooltip(Item.TooltipContext context, Player player, TooltipFlag flag, CallbackInfoReturnable<List<Component>> cir)
     {
         ItemStack self = (ItemStack) (Object) this;
-        if (player.isCreative())
+
+        if (player == null || player.isCreative() || !player.getInventory().contains(self::equals))
             return;
 
-        if (self.is(AwakenItems.UNKNOWN_ITEM))
-        {
-            Records.AwakenEpochComponent epoch = NBTUtil.deserializeEpoch(self);
-            if (epoch == null)
-                return;
+        Records.AwakenEpochComponent epoch = NBTUtil.deserializeEpoch(self);
+        if (epoch == null)
+            return;
 
-            if (!(player.level() instanceof ServerLevel level))
-                return;
-
-            cir.setReturnValue(
-                    TooltipUtil.castEpochTooltip(
-                            flag,
-                            epoch,
-                            DifficultyManager.getLevelDifficulty(
-                                    level
-                            ),
-                            NBTUtil.deserializeAwakenLevel(player)
-                    )
-            );
-        }
+        cir.setReturnValue(
+                TooltipUtil.castEpochTooltip(
+                        flag,
+                        epoch,
+                        ClientDifficultyManager.getDifficulty(),
+                        NBTUtil.deserializeAwakenLevel(player)
+                )
+        );
     }
 
     @Inject(method = "getItem", at = @At("RETURN"), cancellable = true)

@@ -1,6 +1,7 @@
 package com.fomdev.awaken.enchant;
 
 import com.fomdev.awaken.entries.raw.AwakenAspect;
+import com.fomdev.awaken.init.config.AwakenCommon;
 import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -13,6 +14,7 @@ import java.util.List;
 public class EnchantManager
 {
     public static final Map<Holder<Enchantment>, List<AwakenAspect.AspectInstance>> aspects = new HashMap<>();
+    public static int xpLevel;
     public static int maxLevel;
 
     public static List<EnchantmentInstance> getAvailableEnchantments(
@@ -76,8 +78,9 @@ public class EnchantManager
         return Color.getHSBColor((float) hue, 1.0f, 1.0f);
     }
 
-    static
+    public static void init()
     {
-        maxLevel = 50;
+        xpLevel = AwakenCommon.CONFIG.XP_PER_LEVEL.get();
+        maxLevel = AwakenCommon.CONFIG.MAX_ENCHANT_LEVEL.get();
     }
 }

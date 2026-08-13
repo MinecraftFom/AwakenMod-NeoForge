@@ -54,13 +54,16 @@ public class DifficultyEvents
             if (diffOffset == 0)
                 diffOffset = 0.01F;
 
-            float randValue = DifficultyManager.random.nextFloat(diffOffset * average) / day;
+            float randValue = DifficultyManager.random.nextFloat(diffOffset * average) * day;
             if (randValue == 0)
                 randValue = 0.01F;
 
             float currentDifficulty = DifficultyManager.getLevelDifficulty(level);
             float dimedValue = randValue * DifficultyManager.getDimensionFactor(level);
-            DifficultyManager.setLevelDifficulty(level, currentDifficulty + dimedValue);
+            float finalDiff = currentDifficulty + dimedValue;
+            // Fixed diff
+            float fd = (int) (finalDiff * 100) / 100.0F;
+            DifficultyManager.setLevelDifficulty(level, fd);
         }
     }
 

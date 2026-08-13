@@ -53,7 +53,7 @@ public abstract class MixinLivingEntity
                                                 level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)
                         )
         ) {
-            float factor = DifficultyManager.getDimensionFactor(level) / 20;
+            float factor = DifficultyManager.getLevelDifficulty(level) / 20;
             int reward = EventHooks.getExperienceDrop(self, this.lastHurtByPlayer, this.getExperienceReward(level, entity) * (int) (Math.max(factor, 1.0F)));
             ExperienceOrb.award(level, self.position(), reward);
         }

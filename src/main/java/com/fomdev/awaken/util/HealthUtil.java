@@ -26,7 +26,10 @@ public class HealthUtil
             return original;
 
         float factor = DifficultyManager.getLevelDifficulty(level);
-        return Math.clamp(original * (float) Math.sqrt(Math.max((int) factor, 1)), original, AwakenCommon.CONFIG.MAX_HEALTH.get());
+        float df = (float) Math.sqrt(Math.max((int) factor, 1));
+        float value = df * original;
+        float max = AwakenCommon.CONFIG.MAX_HEALTH.get().floatValue();
+        return Math.clamp(value, original, max);
     }
 
     public static float deserializeAdditionalHealthPersistent(

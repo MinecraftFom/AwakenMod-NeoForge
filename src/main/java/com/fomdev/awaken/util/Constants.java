@@ -159,5 +159,5 @@ public class Constants
     };
 
     public static final double epochChance = 0.1;
-    public static final float maxHealth = 10000.0F;
+    public static final double maxHealth = 10000.0;
 }

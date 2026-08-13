@@ -27,11 +27,14 @@ import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class EquipmentManager
 {
     // Tuple.A: DURATION Tuple.B: MAX_LEVEL
     public static final List<Tuple<ResourceLocation, Tuple<Integer, Integer>>> EFFECTS = new ArrayList<>();
+
+    private static final Random random = new Random(); // For random.nextDouble(bound)
 
     public static void enchant(
             ItemStack stack,
@@ -90,11 +93,9 @@ public class EquipmentManager
         return new Tuple<>(ResourceLocation.parse(effect), new Tuple<>(Integer.parseInt(duration), Integer.parseInt(max_level)));
     }
 
-    public static boolean shouldShuffleEpoch(
-            RandomSource random
-    )
+    public static boolean shouldShuffleEpoch()
     {
-        return random.nextDouble() % 100 >= AwakenCommon.CONFIG.EPOCH_RARITY.get();
+        return random.nextDouble(100) < AwakenCommon.CONFIG.EPOCH_RARITY.get();
     }
 
     public static int shuffleEffectCount(
@@ -214,7 +215,10 @@ public class EquipmentManager
     )
     {
         float minDiff = (float) (random.nextFloat() % (factor * Math.sqrt(diff / 2)));
-        double minLevel = (float) (random.nextDouble() % (factor * Math.sqrt(AwakenRegistries.AWAKEN_LEVEL.getMaxLevel())));
+        double maxLevel = AwakenRegistries.AWAKEN_LEVEL.getMaxLevel();
+        if (maxLevel <= 0)
+            return new Records.AwakenEpochComponent(minDiff, 0.0F);
+        double minLevel = (float) (random.nextDouble() % (factor * Math.sqrt(maxLevel)));
         return new Records.AwakenEpochComponent(minLevel, minDiff);
     }
 
@@ -229,7 +233,7 @@ public class EquipmentManager
     {
         float d = diff * factor;
         enchant(stack, level, diff, factor, random);
-        if (shouldShuffleEpoch(random))
+        if (shouldShuffleEpoch())
         {
             Records.AwakenEpochComponent epoch = shuffleEpoch(diff, factor, random);
             NBTUtil.serializeEpoch(stack, epoch);

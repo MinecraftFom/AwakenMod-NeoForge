@@ -13,7 +13,7 @@ public class AwakenCommon
     public static final ModConfigSpec SPEC;
 
     public final ModConfigSpec.ConfigValue<Double> EPOCH_RARITY;
-    public final ModConfigSpec.ConfigValue<Float> MAX_HEALTH;
+    public final ModConfigSpec.ConfigValue<Double> MAX_HEALTH;
 
     public final ModConfigSpec.ConfigValue<List<? extends String>> ENTITIES;
     public final ModConfigSpec.ConfigValue<List<? extends String>> RIDE_ENTITIES;

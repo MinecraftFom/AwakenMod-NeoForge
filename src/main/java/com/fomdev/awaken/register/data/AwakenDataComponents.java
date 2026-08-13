@@ -56,6 +56,35 @@ public class AwakenDataComponents
                     Records.AwakenDescriberComponent::new
             );
 
+    public static final Codec<Records.AwakenEpochComponent> AWAKEN_EPOCH_CODEC =
+            RecordCodecBuilder.create(
+                    inst ->
+                            inst
+                                    .group(
+                                            Codec.DOUBLE
+                                                    .fieldOf("requiredAwakenLevel")
+                                                    .forGetter(Records.AwakenEpochComponent::requiredAwakenLevel)
+                                    )
+                                    .and(
+                                            Codec.FLOAT
+                                                    .fieldOf("requiredMinDifficulty")
+                                                    .forGetter(Records.AwakenEpochComponent::requiredMinDifficulty)
+                                    )
+                                    .apply(
+                                            inst,
+                                            Records.AwakenEpochComponent::new
+                                    )
+            );
+
+    public static final StreamCodec<ByteBuf, Records.AwakenEpochComponent> AWAKEN_EPOCH_STREAM_CODEC =
+            StreamCodec.composite(
+                    ByteBufCodecs.DOUBLE,
+                    Records.AwakenEpochComponent::requiredAwakenLevel,
+                    ByteBufCodecs.FLOAT,
+                    Records.AwakenEpochComponent::requiredMinDifficulty,
+                    Records.AwakenEpochComponent::new
+            );
+
     @AutoRegister.Registrable
     public static final DeferredRegister.DataComponents COMPONENT_REGISTER =
             DeferredRegister.createDataComponents(
@@ -72,13 +101,13 @@ public class AwakenDataComponents
                                     .networkSynchronized(ByteBufCodecs.COMPOUND_TAG.apply(ByteBufCodecs.list()))
             );
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> AWAKEN_EPOCH_STORAGE =
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Records.AwakenEpochComponent>> AWAKEN_EPOCH_STORAGE =
             COMPONENT_REGISTER.registerComponentType(
                     "awaken_epoch",
                     builder ->
                             builder
-                                    .persistent(Codec.STRING)
-                                    .networkSynchronized(ByteBufCodecs.STRING_UTF8)
+                                    .persistent(AWAKEN_EPOCH_CODEC)
+                                    .networkSynchronized(AWAKEN_EPOCH_STREAM_CODEC)
             );
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Records.AwakenDescriberComponent>> AWAKEN_DESCRIBER_STORAGE =
@@ -88,6 +117,15 @@ public class AwakenDataComponents
                             builder
                                     .persistent(AWAKEN_DESCRIBER_CODEC)
                                     .networkSynchronized(AWAKEN_DESCRIBER_STREAM_CODEC)
+            );
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> AWAKEN_OWNER =
+            COMPONENT_REGISTER.registerComponentType(
+                    "awaken_owner",
+                    builder ->
+                            builder
+                                    .persistent(Codec.STRING)
+                                    .networkSynchronized(ByteBufCodecs.STRING_UTF8)
             );
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<CompoundTag>>> AWAKEN_POLLINATE_STORAGE =

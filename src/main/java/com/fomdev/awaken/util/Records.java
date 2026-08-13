@@ -25,6 +25,13 @@ public class Records
             )
     {}
 
+    public record AwakenEpochComponent
+            (
+                    double requiredAwakenLevel,
+                    float requiredMinDifficulty
+            )
+    {}
+
     public record AttributeHolder
             (
                     Holder<Attribute> attr,

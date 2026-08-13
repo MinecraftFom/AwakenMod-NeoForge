@@ -58,7 +58,7 @@ public class TooltipUtil
 
     public static List<Component> castEpochTooltip(
             TooltipFlag flag,
-            AwakenEpoch epoch,
+            Records.AwakenEpochComponent epoch,
             float currentLevel,
             float currentDiff
     )
@@ -98,7 +98,7 @@ public class TooltipUtil
                                             .translatable(
                                                     "tooltip.unawaken.diff.info",
                                                     currentDiff,
-                                                    epoch.getRequiredDifficulty()
+                                                    epoch.requiredMinDifficulty()
                                             )
                             )
                             .withStyle(ChatFormatting.GRAY)
@@ -112,7 +112,7 @@ public class TooltipUtil
                                             .translatable(
                                                     "tooltip.unawaken.level.info",
                                                     currentLevel,
-                                                    epoch.getRequiredLevel().getMin()
+                                                    epoch.requiredAwakenLevel()
                                             )
                             )
                             .withStyle(ChatFormatting.GRAY)

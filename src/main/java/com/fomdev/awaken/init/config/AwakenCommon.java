@@ -12,6 +12,9 @@ public class AwakenCommon
     public static final AwakenCommon CONFIG;
     public static final ModConfigSpec SPEC;
 
+    public final ModConfigSpec.ConfigValue<Double> EPOCH_RARITY;
+    public final ModConfigSpec.ConfigValue<Float> MAX_HEALTH;
+
     public final ModConfigSpec.ConfigValue<List<? extends String>> ENTITIES;
     public final ModConfigSpec.ConfigValue<List<? extends String>> RIDE_ENTITIES;
 
@@ -59,6 +62,16 @@ public class AwakenCommon
 
         builder.push("spawn");
 
+        EPOCH_RARITY = builder
+                .comment(
+                        "The chance of having 'epoch' attribute on tools"
+                )
+                .define(
+                        "epoch_chance",
+                        Constants.epochChance,
+                        Objects::nonNull
+                );
+
         ENTITIES = builder
                 .comment(
                         "Decides mobs that will be generated. Structure: MOB_TYPE_ID | DIM0 & DIM1 & ... & DIM_N"
@@ -80,6 +93,17 @@ public class AwakenCommon
                         ),
                         Objects::nonNull
                 );
+
+        EFFECTS =
+                builder
+                        .comment("Effects that will be generated on mobs. Structure: [EFFECT_ID]|[DURATION]|[MAX_LEVEL]")
+                        .defineList(
+                                "effects",
+                                List.of(
+                                        Constants.defaultEffects
+                                ),
+                                Objects::nonNull
+                        );
 
         builder.push("equipments");
         MAIN_HAND = builder
@@ -138,17 +162,16 @@ public class AwakenCommon
                 );
 
         builder.pop();
+        builder.pop();
 
-        EFFECTS =
-                builder
-                        .comment("Effects that will be generated on mobs. Structure: [EFFECT_ID]|[DURATION]|[MAX_LEVEL]")
-                        .defineList(
-                                "effects",
-                                List.of(
-                                        Constants.defaultEffects
-                                ),
-                                Objects::nonNull
-                        );
+        builder.push("tweaks");
+        MAX_HEALTH = builder
+                .comment("Max health of mobs")
+                .define(
+                        "max_health",
+                        Constants.maxHealth,
+                        Objects::nonNull
+                );
     }
 
     static

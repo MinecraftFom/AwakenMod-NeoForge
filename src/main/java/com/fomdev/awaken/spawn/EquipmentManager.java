@@ -1,12 +1,10 @@
 package com.fomdev.awaken.spawn;
 
-import com.fomdev.awaken.entries.raw.AwakenInfix;
-import com.fomdev.awaken.entries.raw.AwakenPrefix;
-import com.fomdev.awaken.entries.raw.AwakenQuality;
-import com.fomdev.awaken.entries.raw.AwakenSuffix;
+import com.fomdev.awaken.entries.raw.*;
 import com.fomdev.awaken.init.config.AwakenCommon;
 import com.fomdev.awaken.spawn.shuffle.ShuffledRegistries;
 import com.fomdev.awaken.util.NBTUtil;
+import com.fomdev.awaken.util.Records;
 import com.fomdev.awaken.util.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -90,6 +88,13 @@ public class EquipmentManager
         String max_level = components[2];
 
         return new Tuple<>(ResourceLocation.parse(effect), new Tuple<>(Integer.parseInt(duration), Integer.parseInt(max_level)));
+    }
+
+    public static boolean shouldShuffleEpoch(
+            RandomSource random
+    )
+    {
+        return random.nextDouble() % 100 >= AwakenCommon.CONFIG.EPOCH_RARITY.get();
     }
 
     public static int shuffleEffectCount(
@@ -202,6 +207,17 @@ public class EquipmentManager
         return result;
     }
 
+    public static Records.AwakenEpochComponent shuffleEpoch(
+            float diff,
+            float factor,
+            RandomSource random
+    )
+    {
+        float minDiff = (float) (random.nextFloat() % (factor * Math.sqrt(diff / 2)));
+        double minLevel = (float) (random.nextDouble() % (factor * Math.sqrt(AwakenRegistries.AWAKEN_LEVEL.getMaxLevel())));
+        return new Records.AwakenEpochComponent(minLevel, minDiff);
+    }
+
     public static void shuffleForItemStack(
             Level level,
             ItemStack stack,
@@ -213,6 +229,12 @@ public class EquipmentManager
     {
         float d = diff * factor;
         enchant(stack, level, diff, factor, random);
+        if (shouldShuffleEpoch(random))
+        {
+            Records.AwakenEpochComponent epoch = shuffleEpoch(diff, factor, random);
+            NBTUtil.serializeEpoch(stack, epoch);
+        }
+
         AwakenQuality quality = ShuffledRegistries.WEIGHTED_AWAKEN_QUALITY.calculate(d, random);
 
         AwakenInfix infix = ShuffledRegistries.WEIGHTED_AWAKEN_INFIX.calculate(slot, d, random);

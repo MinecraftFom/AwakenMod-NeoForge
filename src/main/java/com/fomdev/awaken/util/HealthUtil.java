@@ -1,6 +1,7 @@
 package com.fomdev.awaken.util;
 
 import com.fomdev.awaken.difficulty.DifficultyManager;
+import com.fomdev.awaken.init.config.AwakenCommon;
 import com.fomdev.awaken.register.data.AwakenAttachmentTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,7 +26,7 @@ public class HealthUtil
             return original;
 
         float factor = DifficultyManager.getLevelDifficulty(level);
-        return Math.max(original, original * Math.max((int) factor, 1));
+        return Math.clamp(original * (float) Math.sqrt(Math.max((int) factor, 1)), original, AwakenCommon.CONFIG.MAX_HEALTH.get());
     }
 
     public static float deserializeAdditionalHealthPersistent(

@@ -157,4 +157,7 @@ public class Constants
     public static final String[] defaultEffects = new String[]{
             "health_boost|10000|10"
     };
+
+    public static final double epochChance = 0.1;
+    public static final float maxHealth = 10000.0F;
 }

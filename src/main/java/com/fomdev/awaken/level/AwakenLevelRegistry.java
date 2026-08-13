@@ -58,6 +58,14 @@ public class AwakenLevelRegistry extends FreezingRegistry<AwakenLevel>
         return sortedFrozenCache.indexOf(level);
     }
 
+    public double getMaxLevel()
+    {
+        if (sortedFrozenCache.isEmpty())
+            return 0.0F;
+
+        return sortedFrozenCache.getLast().getMin();
+    }
+
     public AwakenLevel getNextLevel(AwakenLevel level)
     {
         int index = sortedFrozenCache.indexOf(level);

@@ -1,23 +1,20 @@
 package com.fomdev.awaken.mixin;
 
+import com.fomdev.awaken.difficulty.ClientDifficultyManager;
 import com.fomdev.awaken.difficulty.DifficultyManager;
 import com.fomdev.awaken.entries.raw.*;
+import com.fomdev.awaken.register.data.AwakenDataComponents;
 import com.fomdev.awaken.register.items.AwakenItems;
-import com.fomdev.awaken.util.ColorUtil;
-import com.fomdev.awaken.util.LocaleUtil;
-import com.fomdev.awaken.util.NBTUtil;
-import com.fomdev.awaken.util.TooltipUtil;
+import com.fomdev.awaken.util.*;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.component.DataComponentHolder;
-import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -65,6 +62,8 @@ public abstract class MixinItemStack implements DataComponentHolder
                                     ChatFormatting.RED
                             )
             );
+
+            return;
         }
 
         AwakenQuality quality = NBTUtil.deserializeQuality(self);
@@ -88,9 +87,12 @@ public abstract class MixinItemStack implements DataComponentHolder
     private void fancyTooltip(Item.TooltipContext context, Player player, TooltipFlag flag, CallbackInfoReturnable<List<Component>> cir)
     {
         ItemStack self = (ItemStack) (Object) this;
+        if (player.isCreative())
+            return;
+
         if (self.is(AwakenItems.UNKNOWN_ITEM))
         {
-            AwakenEpoch epoch = NBTUtil.deserializeEpoch(self);
+            Records.AwakenEpochComponent epoch = NBTUtil.deserializeEpoch(self);
             if (epoch == null)
                 return;
 
@@ -114,18 +116,21 @@ public abstract class MixinItemStack implements DataComponentHolder
     private void restrictedItem(CallbackInfoReturnable<Item> cir)
     {
         ItemStack self = (ItemStack) (Object) this;
-        Entity entity = getEntityRepresentation();
-        if (!(entity instanceof ServerPlayer player))
+        if (!AwakenDataComponents.AWAKEN_EPOCH_STORAGE.isBound())
             return;
 
-        AwakenEpoch epoch = NBTUtil.deserializeEpoch(self);
+        Player player = Minecraft.getInstance().player;
+        if (player == null)
+            return;
+
+        Records.AwakenEpochComponent epoch = NBTUtil.deserializeEpoch(self);
         if (epoch == null)
             return;
 
-        float difficulty = DifficultyManager.getLevelDifficulty(player.serverLevel());
+        float difficulty = ClientDifficultyManager.getDifficulty();
         float level = NBTUtil.deserializeAwakenLevel(player);
 
-        if (difficulty < epoch.getRequiredDifficulty() || level < epoch.getRequiredLevel().getMin())
+        if (difficulty < epoch.requiredMinDifficulty() || level < epoch.requiredAwakenLevel())
             cir.setReturnValue(AwakenItems.UNKNOWN_ITEM.asItem());
     }
 }

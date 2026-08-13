@@ -3,14 +3,19 @@ package com.fomdev.awaken.util;
 import com.fomdev.awaken.entries.raw.*;
 import com.fomdev.awaken.register.data.AwakenAttachmentTypes;
 import com.fomdev.awaken.register.data.AwakenDataComponents;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.PlayerList;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class NBTUtil
 {
@@ -20,6 +25,13 @@ public class NBTUtil
     )
     {
         serializeAwakenLevel(player, deserializeAwakenLevel(player) + amount);
+    }
+
+    public static void clearPlayer(
+            ItemStack stack
+    )
+    {
+        stack.set(AwakenDataComponents.AWAKEN_OWNER, "");
     }
 
     public static List<AwakenAspect.AspectInstance> deserializeAspects(
@@ -51,15 +63,11 @@ public class NBTUtil
         return instances;
     }
 
-    public static AwakenEpoch deserializeEpoch(
+    public static Records.AwakenEpochComponent deserializeEpoch(
             ItemStack stack
     )
     {
-        String component = stack.get(AwakenDataComponents.AWAKEN_EPOCH_STORAGE);
-        if (component == null)
-            return null;
-
-        return AwakenRegistries.AWAKEN_EPOCH.getRegistry(ResourceLocation.parse(component));
+        return stack.get(AwakenDataComponents.AWAKEN_EPOCH_STORAGE);
     }
 
     public static float deserializeAwakenLevel(
@@ -87,6 +95,18 @@ public class NBTUtil
             return null;
 
         return AwakenRegistries.AWAKEN_INFIX.getRegistry(ResourceLocation.parse(desc.infix()));
+    }
+
+    public static ServerPlayer deserializePlayer(
+            ItemStack stack
+    )
+    {
+        String id = stack.get(AwakenDataComponents.AWAKEN_OWNER);
+        IntegratedServer server = Minecraft.getInstance().getSingleplayerServer();
+        if (server == null || id == null || id.isBlank())
+            return null;
+
+        return server.getPlayerList().getPlayer(UUID.fromString(id));
     }
 
     public static List<AwakenPollinate.PollinateInstance> deserializePollinates(
@@ -233,6 +253,22 @@ public class NBTUtil
         );
 
         stack.set(AwakenDataComponents.AWAKEN_DESCRIBER_STORAGE, component);
+    }
+
+    public static void serializeEpoch(
+            ItemStack stack,
+            Records.AwakenEpochComponent epoch
+    )
+    {
+        stack.set(AwakenDataComponents.AWAKEN_EPOCH_STORAGE, epoch);
+    }
+
+    public static void serializePlayer(
+            ItemStack stack,
+            ServerPlayer player
+    )
+    {
+        stack.set(AwakenDataComponents.AWAKEN_OWNER, player.getUUID().toString());
     }
 
     public static void serializeQuality(

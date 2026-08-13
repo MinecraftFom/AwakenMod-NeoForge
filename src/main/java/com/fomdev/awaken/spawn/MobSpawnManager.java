@@ -189,6 +189,9 @@ public class MobSpawnManager
             RandomSource random
     )
     {
+        if (diff <= 0)
+            return;
+
         MobTiers tier = shuffleTier(
                 diff,
                 random
@@ -229,6 +232,8 @@ public class MobSpawnManager
             RandomSource random
     )
     {
+        if (factor <= 0)
+            return;
         if (!(level instanceof ServerLevel server))
             return;
         if (!(original instanceof EquipmentUser user))

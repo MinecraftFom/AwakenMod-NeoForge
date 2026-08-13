@@ -120,7 +120,7 @@ public abstract class MixinItemStack implements DataComponentHolder
             return;
 
         Player player = Minecraft.getInstance().player;
-        if (player == null)
+        if (player == null || player.isCreative())
             return;
 
         Records.AwakenEpochComponent epoch = NBTUtil.deserializeEpoch(self);

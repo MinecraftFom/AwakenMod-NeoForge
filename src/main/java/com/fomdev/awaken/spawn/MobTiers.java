@@ -8,12 +8,13 @@ import java.util.Arrays;
 @AutoProxy
 public enum MobTiers implements MobTier
 {
-    NAIVE(0.0F, 50, "tier.awaken.naive.name", false), /* NOTHING, JUST AS A PLACEHOLDER FOR CAPABILITY */
-    REINFORCE(1.5F, 25, "tier.awaken.reinforce.name", true), /* REINFORCE IS JUST SIMPLE MOBS, NOT BOSS */
+    NAIVE(0.0F, 100, "tier.awaken.naive.name", false), /* NOTHING, JUST AS A PLACEHOLDER FOR CAPABILITY */
+    REINFORCE(1.5F, 80, "tier.awaken.reinforce.name", true), /* REINFORCE IS JUST SIMPLE MOBS, NOT BOSS */
+    LEARNER(2.5F, 75, "tier.awaken.learner.name", true),
+    SKILLED(4.5F, 45, "tier.awaken.skilled.name", true),
+    MASTER(6.5F, 20, "tier.awaken.master.name", true),
     ENLIGHTEN(7.5F, 15, "tier.awaken.enlighten.name", false), /* ENLIGHTEN IS NOVICE, AWAKEN IS A STEP FORWARD */
-    AWAKEN(MobSpawnManager::awakenSpawnLogic, 15.0F, 10, "tier.awaken.awaken.name"); /* THE MOD TITLE, THE STRONGEST BOSS OF ALL */
-
-    public static int totalWeight = 100; // Not finalized for further extension
+    AWAKEN(MobSpawnManager::awakenSpawnLogic, 15.0F, 5, "tier.awaken.awaken.name"); /* THE MOD TITLE, THE STRONGEST BOSS OF ALL */
 
     public final MobSpawnManager.ISpawningLogic logic;
     public final float factor;

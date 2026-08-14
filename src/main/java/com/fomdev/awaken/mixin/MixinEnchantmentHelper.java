@@ -1,8 +1,10 @@
 package com.fomdev.awaken.mixin;
 
 import com.fomdev.awaken.enchant.EnchantManager;
+import com.fomdev.awaken.init.config.AwakenCommon;
 import com.fomdev.awaken.util.NBTUtil;
 import net.minecraft.core.Holder;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -58,5 +60,28 @@ public class MixinEnchantmentHelper
         });
 
         return list;
+    }
+
+    /**
+     * @author Fom477
+     * @reason Change the limit
+     */
+    @Overwrite
+    public static int getEnchantmentCost(
+            RandomSource random,
+            int enchantNum,
+            int power,
+            ItemStack stack
+    )
+    {
+        int i = stack.getEnchantmentValue();
+        if (i <= 0)
+            return 0;
+
+        if (power > AwakenCommon.CONFIG.MAX_ENCHANT_ABILITY.get())
+            power = AwakenCommon.CONFIG.MAX_ENCHANT_ABILITY.get();
+
+        int j = random.nextInt(8) + 1 + (power >> 1) + random.nextInt(power + 1);
+        return enchantNum == 0? Math.max(j / 3, 1): (enchantNum == 1? j * 2 / 3 + 1: Math.max(j, power * 2));
     }
 }

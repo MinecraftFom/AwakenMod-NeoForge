@@ -31,6 +31,7 @@ public class AwakenCommon
 
     public final ModConfigSpec.ConfigValue<List<? extends String>> EFFECTS;
 
+    public final ModConfigSpec.ConfigValue<Integer> MAX_ENCHANT_ABILITY;
     public final ModConfigSpec.ConfigValue<Integer> MAX_ENCHANT_LEVEL;
     public final ModConfigSpec.ConfigValue<Integer> XP_PER_LEVEL;
 
@@ -182,6 +183,14 @@ public class AwakenCommon
                 .define(
                         "max_health",
                         Constants.maxHealth,
+                        Objects::nonNull
+                );
+
+        MAX_ENCHANT_ABILITY = builder
+                .comment("Max enchantment ability can a enchanting table have")
+                .define(
+                        "max_enchantment_ability",
+                        Constants.enchantmentMax,
                         Objects::nonNull
                 );
 

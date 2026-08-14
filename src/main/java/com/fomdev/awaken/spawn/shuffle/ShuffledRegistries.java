@@ -6,6 +6,7 @@ import com.fomdev.awaken.entries.shuffle.WeightedQueue;
 import com.fomdev.awaken.entries.shuffle.WeightedRegistry;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.init.config.AwakenCommon;
+import com.fomdev.awaken.spawn.MobTier;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
@@ -23,6 +24,9 @@ public class ShuffledRegistries
     public static final String SIG_AWAKEN_STACKS =
             "generatable_stacks";
 
+    public static final String SIG_AWAKEN_TIERS =
+            "generatable_tiers";
+
     public static final ResourceKey<Registry<WeightedRegistry<AwakenInfix>>> RES_WEIGHTED_INFIX =
             createKey(AwakenRegistries.SIG_AWAKEN_INFIX);
 
@@ -38,6 +42,9 @@ public class ShuffledRegistries
     public static final ResourceKey<Registry<WeightedRegistry<ItemStack>>> RES_WEIGHTED_STACK =
             createKey(SIG_AWAKEN_STACKS);
 
+    public static final ResourceKey<Registry<WeightedRegistry<MobTier>>> RES_WEIGHTED_TIER =
+            createKey(SIG_AWAKEN_TIERS);
+
     public static final EquippedQueue<AwakenInfix> WEIGHTED_AWAKEN_INFIX =
             new EquippedQueue<>(RES_WEIGHTED_INFIX);
 
@@ -52,6 +59,9 @@ public class ShuffledRegistries
 
     public static final EquippedQueue<ItemStack> WEIGHTED_AWAKEN_STACK =
             new EquippedQueue<>(RES_WEIGHTED_STACK);
+
+    public static final WeightedQueue<MobTier> WEIGHTED_AWAKEN_TIER =
+            new WeightedQueue<>(RES_WEIGHTED_TIER);
 
     public static void register(
             IEventBus bus

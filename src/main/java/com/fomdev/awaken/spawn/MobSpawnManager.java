@@ -3,6 +3,7 @@ package com.fomdev.awaken.spawn;
 import com.fomdev.awaken.init.config.AwakenCommon;
 import com.fomdev.awaken.literature.Literature;
 import com.fomdev.awaken.register.data.AwakenAttachmentTypes;
+import com.fomdev.awaken.spawn.shuffle.ShuffledRegistries;
 import com.fomdev.awaken.util.ColorUtil;
 import com.fomdev.awaken.util.Util;
 import net.minecraft.core.Holder;
@@ -74,64 +75,6 @@ public class MobSpawnManager
         return ent;
     }
 
-    public static void noviceSpawnLogic(
-            LivingEntity original,
-            float diff,
-            int strength,
-            int auraSize,
-            Color color,
-            Component title,
-            Level level,
-            RandomSource random
-    )
-    {
-        /* PLACEHOLDER */
-        Util.placeholder(
-                original,
-                diff,
-                strength,
-                auraSize,
-                color,
-                title,
-                level,
-                random
-        );
-    }
-
-    public static void reinforceSpawnLogic(
-            LivingEntity original,
-            float diff,
-            int strength,
-            int auraSize,
-            Color color,
-            Component title,
-            Level level,
-            RandomSource random
-    )
-    {
-        normalGenerate(original, diff, 1.0F, strength, color, title, level, random);
-//        AwakenParticlePlayer.playReinforceMobGenerate(
-//            server,
-//            original.position().toVector3f(),
-//            auraSize
-//        );
-    }
-
-    public static void enlightenSpawnLogic(
-            LivingEntity original,
-            float diff,
-            int strength,
-            int auraSize,
-            Color color,
-            Component title,
-            Level level,
-            RandomSource random
-    )
-    {
-        normalGenerate(original, diff, 7.5F, strength, color, title, level, random);
-        /* TODO: ADD PARTICLE */
-    }
-
     public static void awakenSpawnLogic(
             LivingEntity original,
             float diff,
@@ -143,9 +86,10 @@ public class MobSpawnManager
             RandomSource random
     )
     {
-        normalGenerate(original, diff, 15.0F, strength, color, title, level, random);
         original.setData(AwakenAttachmentTypes.IS_AWAKEN, true);
         /* TODO: ADD PARTICLE */
+
+        Util.placeholder(diff, strength, auraSize, color, title, level, random);
     }
 
     public static Color shuffleColor(
@@ -155,25 +99,6 @@ public class MobSpawnManager
         float h = random.nextFloat() % 360;
 
         return Color.getHSBColor(h, 1.0F, 1.0f);
-    }
-
-    public static MobTiers shuffleTier(
-            RandomSource random
-    )
-    {
-        int totalWeight = Math.min(random.nextInt(MobTiers.totalWeight), MobTiers.totalWeight);
-        int i = 0;
-
-        MobTiers tier = null;
-
-        while (totalWeight > 0 && i < MobTiers.values().length)
-        {
-            tier = MobTiers.values()[i];
-            totalWeight -= tier.chance;
-            i++;
-        }
-
-        return tier;
     }
 
     public static Component shuffleTitle(
@@ -193,7 +118,8 @@ public class MobSpawnManager
         if (diff <= 0)
             return;
 
-        MobTiers tier = shuffleTier(
+        MobTier tier = ShuffledRegistries.WEIGHTED_AWAKEN_TIER.calculate(
+                diff,
                 random
         );
 
@@ -205,11 +131,25 @@ public class MobSpawnManager
         Color color = shuffleColor(
                 random
         );
-        Component title = Component.empty().append("[").append(Component.translatable(tier.desc).append("] ").append(shuffleTitle(
+        Component title = Component.empty().append("[").append(Component.translatable(tier.getDescriptionID()).append("] ").append(shuffleTitle(
                 random
         )));
 
-        tier.logic.onSpawn(
+        if (!tier.shouldSpawn())
+            return;
+
+        normalGenerate(
+                entity,
+                diff,
+                tier.factor(),
+                strength,
+                color,
+                title,
+                level,
+                random
+        );
+
+        tier.additionalSpawn().onSpawn(
                 entity,
                 diff,
                 strength,

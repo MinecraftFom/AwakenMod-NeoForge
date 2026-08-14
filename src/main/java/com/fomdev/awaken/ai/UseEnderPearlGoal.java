@@ -7,6 +7,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.projectile.ThrownEnderpearl;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class UseEnderPearlGoal extends Goal
 {
@@ -46,7 +47,10 @@ public class UseEnderPearlGoal extends Goal
     {
         this.time = 200;
         this.mob.getLookControl().setLookAt(mob.getTarget(), 10.0F, 10.0F);
-        throwEnderPearl(mob.getTarget());
+        throwEnderPearl(
+                this.mob.getHealth() < this.mob.getHealth() * 2 / 3
+                        ? this.mob.getTarget().getEyePosition().subtract(0, -1, 0)
+                        : reverse(this.mob.getTarget()));
     }
 
     @Override
@@ -55,16 +59,26 @@ public class UseEnderPearlGoal extends Goal
         this.time--;
     }
 
-    private void throwEnderPearl(LivingEntity target)
+    private Vec3 reverse(
+            LivingEntity target
+    )
+    {
+        Vec3 vec = target.getLookAngle();
+        return new Vec3(vec.x, this.mob.getY(), vec.z);
+    }
+
+    private void throwEnderPearl(
+            Vec3 pos
+    )
     {
         Level level = this.mob.level();
         if (level.isClientSide()) return;
 
         ThrownEnderpearl pearl = new ThrownEnderpearl(level, this.mob);
 
-        double d0 = target.getX() - this.mob.getX();
-        double d1 = target.getY() - 1.1 - this.mob.getY();
-        double d2 = target.getZ() - this.mob.getZ();
+        double d0 = pos.x() - this.mob.getX();
+        double d1 = pos.y() - 1.1 - this.mob.getY();
+        double d2 = pos.z() - this.mob.getZ();
         double f = Math.sqrt(d0 * d0 + d2 * d2);
         pearl.shoot(d0, d1 + f * 0.2F, d2, 1.5F, 1.0F);
 

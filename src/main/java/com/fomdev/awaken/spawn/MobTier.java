@@ -10,5 +10,6 @@ public interface MobTier
     String getDescriptionID();
     float factor(); // We defaultly use MobSpawnManager::normalGenerate
     float weight();
+    float minDiff();
     MobSpawnManager.ISpawningLogic additionalSpawn();
 }

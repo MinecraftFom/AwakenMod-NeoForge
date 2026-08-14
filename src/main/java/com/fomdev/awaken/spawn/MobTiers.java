@@ -8,24 +8,26 @@ import java.util.Arrays;
 @AutoProxy
 public enum MobTiers implements MobTier
 {
-    NAIVE(0.0F, 100, "tier.awaken.naive.name", false), /* NOTHING, JUST AS A PLACEHOLDER FOR CAPABILITY */
-    REINFORCE(1.5F, 80, "tier.awaken.reinforce.name", true), /* REINFORCE IS JUST SIMPLE MOBS, NOT BOSS */
-    LEARNER(2.5F, 75, "tier.awaken.learner.name", true),
-    SKILLED(4.5F, 45, "tier.awaken.skilled.name", true),
-    MASTER(6.5F, 20, "tier.awaken.master.name", true),
-    ENLIGHTEN(7.5F, 15, "tier.awaken.enlighten.name", false), /* ENLIGHTEN IS NOVICE, AWAKEN IS A STEP FORWARD */
-    AWAKEN(MobSpawnManager::awakenSpawnLogic, 15.0F, 5, "tier.awaken.awaken.name"); /* THE MOD TITLE, THE STRONGEST BOSS OF ALL */
+    NAIVE(0.0F, 100, 0, "tier.awaken.naive.name", false), /* NOTHING, JUST AS A PLACEHOLDER FOR CAPABILITY */
+    REINFORCE(1.5F, 80, 100, "tier.awaken.reinforce.name", true), /* REINFORCE IS JUST SIMPLE MOBS, NOT BOSS */
+    LEARNER(2.5F, 75, 500, "tier.awaken.learner.name", true),
+    SKILLED(4.5F, 45, 1000, "tier.awaken.skilled.name", true),
+    MASTER(6.5F, 20, 2500, "tier.awaken.master.name", true),
+    ENLIGHTEN(7.5F, 15, 5000, "tier.awaken.enlighten.name", false), /* ENLIGHTEN IS NOVICE, AWAKEN IS A STEP FORWARD */
+    AWAKEN(MobSpawnManager::awakenSpawnLogic, 15.0F, 5, 10000, "tier.awaken.awaken.name"); /* THE MOD TITLE, THE STRONGEST BOSS OF ALL */
 
     public final MobSpawnManager.ISpawningLogic logic;
     public final float factor;
     public final float weight;
     public final String desc;
     public final boolean should;
+    public final float minDiff;
 
     MobTiers(
             MobSpawnManager.ISpawningLogic logic,
             float factor,
             float weight,
+            float minDiff,
             String desc
     )
     {
@@ -33,6 +35,7 @@ public enum MobTiers implements MobTier
 
         this.factor = factor;
         this.weight = weight;
+        this.minDiff = minDiff;
         this.desc = desc;
 
         this.should = true;
@@ -41,6 +44,7 @@ public enum MobTiers implements MobTier
     MobTiers(
             float factor,
             float weight,
+            float minDiff,
             String desc,
             boolean should
     )
@@ -49,6 +53,7 @@ public enum MobTiers implements MobTier
 
         this.factor = factor;
         this.weight = weight;
+        this.minDiff = minDiff;
         this.desc = desc;
 
         this.should = should;
@@ -84,9 +89,15 @@ public enum MobTiers implements MobTier
         return this.should;
     }
 
+    @Override
+    public float minDiff()
+    {
+        return this.minDiff;
+    }
+
     @AutoProxy.Proxied(AutoProxy.ProxyProtocol.FML_SETUP)
     public static void register()
     {
-        Arrays.stream(values()).forEach(tier -> ShuffledRegistries.WEIGHTED_AWAKEN_TIER.push(tier, tier.factor(), tier.weight()));
+        Arrays.stream(values()).forEach(tier -> ShuffledRegistries.WEIGHTED_AWAKEN_TIER.push(tier, tier.weight(), tier.minDiff()));
     }
 }

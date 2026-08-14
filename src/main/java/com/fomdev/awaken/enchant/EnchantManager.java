@@ -64,11 +64,11 @@ public class EnchantManager
             boolean isCurse
     )
     {
-        if (max == 1)
-            return Color.GRAY;
-
         if (isCurse)
             return Color.RED;
+
+        if (max == 1)
+            return Color.MAGENTA;
 
         double factor = (double) (level - 1)/ (double) (max - 1);
         factor = Math.clamp(factor, 0.0f, 1.0f);

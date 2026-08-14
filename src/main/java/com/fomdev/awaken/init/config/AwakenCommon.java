@@ -31,6 +31,7 @@ public class AwakenCommon
 
     public final ModConfigSpec.ConfigValue<List<? extends String>> EFFECTS;
 
+    public final ModConfigSpec.ConfigValue<Integer> MAX_ACCEPTABLE_ENCHANT;
     public final ModConfigSpec.ConfigValue<Integer> MAX_ENCHANT_ABILITY;
     public final ModConfigSpec.ConfigValue<Integer> MAX_ENCHANT_LEVEL;
     public final ModConfigSpec.ConfigValue<Integer> XP_PER_LEVEL;
@@ -183,6 +184,14 @@ public class AwakenCommon
                 .define(
                         "max_health",
                         Constants.maxHealth,
+                        Objects::nonNull
+                );
+
+        MAX_ACCEPTABLE_ENCHANT = builder
+                .comment("The limit of the enchantment levels that game can recognize and accpet legally")
+                .define(
+                        "max_acceptable_enchantment_level",
+                        Constants.maxAcceptableEnchant,
                         Objects::nonNull
                 );
 

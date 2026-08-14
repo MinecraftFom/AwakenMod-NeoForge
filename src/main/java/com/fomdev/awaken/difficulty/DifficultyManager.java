@@ -68,7 +68,7 @@ public class DifficultyManager
 
         SavedDifficultyLevel sl = levels.get(level);
         if (sl != null)
-            sl.setLevel(diff);
+            sl.setLevel((int) (diff * 100.0) / 100.0F);
 
         level.getServer().getPlayerList().getPlayers().forEach(sp -> sp.connection.send(new DifficultySyncPacketPayloadResponder(levels.get(level).getLevel())));
     }

@@ -14,7 +14,10 @@
     "MixinLivingEntity",
     "MixinMaceItem",
     "MixinMob",
-    "MixinPlayer"
+    "MixinPlayer",
+    "MixinTrialSpawner",
+    "MixinTrialSpawnerConfig",
+    "MixinVaultServerData"
   ],
   "client":
   [

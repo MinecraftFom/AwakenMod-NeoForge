@@ -20,6 +20,9 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
+import net.minecraft.world.item.armortrim.ArmorTrim;
+import net.minecraft.world.item.armortrim.TrimMaterial;
+import net.minecraft.world.item.armortrim.TrimPattern;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
@@ -27,6 +30,7 @@ import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 public class EquipmentManager
@@ -239,6 +243,13 @@ public class EquipmentManager
             NBTUtil.serializeEpoch(stack, epoch);
         }
 
+        if (slot.isArmor())
+        {
+            Holder.Reference<TrimMaterial> material = shuffleTrimMaterial(level, random);
+            Holder.Reference<TrimPattern> pattern = shuffleTrimPattern(level, random);
+            stack.set(DataComponents.TRIM, new ArmorTrim(material, pattern));
+        }
+
         AwakenQuality quality = ShuffledRegistries.WEIGHTED_AWAKEN_QUALITY.calculate(d, random);
 
         AwakenInfix infix = ShuffledRegistries.WEIGHTED_AWAKEN_INFIX.calculate(slot, d, random);
@@ -308,5 +319,25 @@ public class EquipmentManager
         return selected.toArray(
                 new EquipmentSlot[]{}
         );
+    }
+
+    public static Holder.Reference<TrimMaterial> shuffleTrimMaterial(
+            Level level,
+            RandomSource random
+    )
+    {
+        Registry<TrimMaterial> trimMaterials = level.registryAccess().registryOrThrow(Registries.TRIM_MATERIAL);
+        Optional<Holder.Reference<TrimMaterial>> trim = trimMaterials.getRandom(random);
+        return trim.orElseThrow();
+    }
+
+    public static Holder.Reference<TrimPattern> shuffleTrimPattern(
+            Level level,
+            RandomSource random
+    )
+    {
+        Registry<TrimPattern> trimPatterns = level.registryAccess().registryOrThrow(Registries.TRIM_PATTERN);
+        Optional<Holder.Reference<TrimPattern>> trim = trimPatterns.getRandom(random);
+        return trim.orElseThrow();
     }
 }

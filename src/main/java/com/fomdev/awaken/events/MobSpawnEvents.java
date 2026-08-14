@@ -38,6 +38,7 @@ public class MobSpawnEvents
         if (!isAwaken(monster))
             return;
         monster.goalSelector.addGoal(1, new CarryPlayerGoal(monster));
+        monster.goalSelector.addGoal(1, new HealGoal(monster));
     }
 
     @SubscribeEvent

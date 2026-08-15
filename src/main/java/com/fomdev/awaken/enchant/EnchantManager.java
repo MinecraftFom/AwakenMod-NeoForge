@@ -1,15 +1,23 @@
 package com.fomdev.awaken.enchant;
 
+import com.fomdev.awaken.difficulty.DifficultyManager;
 import com.fomdev.awaken.entries.raw.AwakenAspect;
+import com.fomdev.awaken.entries.raw.AwakenRegistries;
 import com.fomdev.awaken.init.config.AwakenCommon;
+import com.fomdev.awaken.register.awaken.AwakenAspects;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
@@ -23,7 +31,7 @@ import java.util.function.Function;
 
 public class EnchantManager
 {
-    public static final Map<Holder<Enchantment>, List<AwakenAspect.AspectInstance>> aspects = new HashMap<>();
+    public static final Map<ResourceLocation, List<AwakenAspect.AspectInstance>> aspects = new HashMap<>();
 
     public static final Codec<Integer> LEVEL_CODEC = Codec.intRange(0, Integer.MAX_VALUE);
     public static final Codec<Object2IntOpenHashMap<Holder<Enchantment>>> LEVELS_CODEC = Codec.unboundedMap(Enchantment.CODEC, LEVEL_CODEC).xmap(Object2IntOpenHashMap::new, Function.identity());
@@ -34,28 +42,45 @@ public class EnchantManager
     public static int xpLevel;
     public static int maxLevel;
 
-    public static List<EnchantmentInstance> getAvailableEnchantments(
-            List<AwakenAspect.AspectInstance> available,
-            int slot,
-            RandomSource random
+    public static Tuple<ResourceLocation, List<AwakenAspect.AspectInstance>> loadFromString(
+            String raw
     )
     {
-        List<EnchantmentInstance> enchants = new ArrayList<>();
+        String[] components = raw.strip().split("\\|");
 
-        for (Map.Entry<Holder<Enchantment>, List<AwakenAspect.AspectInstance>> entry: aspects.entrySet())
-        {
-            if (!meetsRequirements(available, entry.getValue()))
-                continue;
+        if (components.length != 2)
+            throw new IllegalArgumentException("Required 2 parts");
 
-            Holder<Enchantment> enchantment = entry.getKey();
-            int level = enchantment.value().getMaxLevel() - enchantment.value().getMinLevel();
-            int factor = level * 3 / slot;
-            int finalValue = random.nextInt(factor == 0? 1: factor);
+        String enchantment = components[0].strip();
+        String body = components[1];
 
-            enchants.add(new EnchantmentInstance(enchantment, finalValue == 0? 1: finalValue));
-        }
+        String[] aspects = body.strip().split(",");
+        ResourceLocation ench = ResourceLocation.parse(enchantment);
+        List<AwakenAspect.AspectInstance> aspectInsts =
+                Arrays.stream(aspects)
+                        .map(
+                                s ->
+                                {
+                                    String[] data = s.strip().split("=");
+                                    return new Tuple<>(AwakenRegistries.AWAKEN_ASPECT.getRegistry(ResourceLocation.parse(data[0].strip())), Integer.parseInt(data[1].strip()));
+                                }
+                        )
+                        .map(
+                                d -> d.getA().toInstance(d.getB())
+                        )
+                        .toList();
 
-        return enchants;
+        return new Tuple<>(ench, aspectInsts);
+    }
+
+    public static void loadFromConfig()
+    {
+        AwakenCommon.CONFIG.ENCHANT_ASPECTS.get().stream().map(EnchantManager::loadFromString).forEach(data -> aspects.computeIfAbsent(data.getA(), d -> new ArrayList<>()).addAll(data.getB()));
+    }
+
+    public static List<AwakenAspect.AspectInstance> get(ResourceLocation location)
+    {
+        return aspects.getOrDefault(location, Collections.singletonList(AwakenAspects.ASPECT_DIVERSITY.toInstance(100)));
     }
 
     public static boolean meetsRequirements(List<AwakenAspect.AspectInstance> available, List<AwakenAspect.AspectInstance> requirements)
@@ -102,6 +127,7 @@ public class EnchantManager
     {
         xpLevel = AwakenCommon.CONFIG.XP_PER_LEVEL.get();
         maxLevel = AwakenCommon.CONFIG.MAX_ENCHANT_LEVEL.get();
+        loadFromConfig();
     }
 
     private static ItemEnchantments initItemEnchantments(

@@ -24,7 +24,15 @@ public class MixinEnchantment
         component.setStyle(ColorUtil.colorStyle(EnchantManager.calculateColor(level, enchantment.value().getMaxLevel(), enchantment.is(EnchantmentTags.CURSE))));
 
         if (enchantment.value().getMaxLevel() != 1)
-            component.append(" ").append(Component.translatable("tooltip.enchantment.level." + level));
+        {
+            String key = "tooltip.enchantment.level." + level;
+            Component lvlcomp = Component.translatable(key);
+            component.append(" ");
+            if (lvlcomp.getString().strip().equals(key.strip()))
+                component.append("" + level);
+            else
+                component.append(lvlcomp);
+        }
 
         cir.setReturnValue(component);
     }

@@ -21,8 +21,8 @@ import java.util.stream.Stream;
 public class MixinEnchantmentHelper
 {
     /**
-     * @author Fom477 (Fomdev)
-     * @reason using '@Inject' will waste too much resource
+     * @author Fom477
+     * @reason why not?
      */
     @Overwrite
     public static List<EnchantmentInstance> getAvailableEnchantmentResults(
@@ -41,10 +41,9 @@ public class MixinEnchantmentHelper
                     Enchantment ench = enchant.value();
 
                     if (
-                            EnchantManager.aspects.containsKey(enchant) &&
                             !EnchantManager.meetsRequirements(
                                     NBTUtil.deserializeAspects(stack),
-                                    EnchantManager.aspects.get(enchant)
+                                    EnchantManager.get(Objects.requireNonNull(enchant.getKey()).location())
                             )
                     )
                         return;

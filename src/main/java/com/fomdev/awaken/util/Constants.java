@@ -162,6 +162,15 @@ public class Constants
             "health_boost|10000|10"
     };
 
+    public static final String[] enchantmentAspects = new String[]{
+//            "protection|awaken:humanity = 500",
+//            "fire_protection|awaken:humanity = 450, awaken:spiritual = 50",
+//            "feather_falling|awaken:humanity = 450, awaken:natural = 35, awaken:spiritual = 15",
+//            "blast_protection|awaken:humanity = 450, awaken:water = 40, awaken:spiritual = 10",
+//            "projectile_protection|awaken:humanity = 450, awaken:void = 50"
+    };
+
+    public static final int attributeFactor = 255;
     public static final int enchantmentMax = 255;
 
     public static final double epochChance = 100.0;

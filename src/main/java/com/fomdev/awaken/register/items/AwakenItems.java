@@ -16,6 +16,18 @@ public class AwakenItems
                     Awaken.MODID
             );
 
+    public static final DeferredItem<?> ASPECT_STONE =
+            REGISTER.registerItem(
+                    "aspect_stone",
+                    Item::new
+            );
+
+    public static final DeferredItem<?> SOUL_BOTTLE =
+            REGISTER.registerItem(
+                    "soul_bottle",
+                    Item::new
+            );
+
     public static final DeferredItem<?> UNKNOWN_ITEM =
             REGISTER.registerItem(
                     "unawaken_item",

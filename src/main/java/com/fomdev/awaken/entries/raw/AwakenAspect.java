@@ -27,6 +27,13 @@ public class AwakenAspect extends Registry
         return this.color;
     }
 
+    public AspectInstance toInstance(
+            int value
+    )
+    {
+        return new AspectInstance(this, value);
+    }
+
     public static class AspectInstance implements INBTSerializable<CompoundTag>
     {
         private AwakenAspect aspect;

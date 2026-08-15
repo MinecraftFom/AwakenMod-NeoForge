@@ -85,6 +85,64 @@ public class AwakenDataComponents
                     Records.AwakenEpochComponent::new
             );
 
+    public static final Codec<Records.AwakenMedicineComponent> AWAKEN_MEDICINE_CODEC =
+            RecordCodecBuilder.create(
+                    inst ->
+                            inst
+                                    .group(
+                                            Codec.STRING
+                                                    .fieldOf("medicine")
+                                                    .forGetter(Records.AwakenMedicineComponent::medicineType)
+                                    )
+                                    .and(
+                                            Codec.FLOAT
+                                                    .fieldOf("amount")
+                                                    .forGetter(Records.AwakenMedicineComponent::value)
+                                    )
+                                    .apply(
+                                            inst,
+                                            Records.AwakenMedicineComponent::new
+                                    )
+            );
+
+    public static final StreamCodec<ByteBuf, Records.AwakenMedicineComponent> AWAKEN_MEDICINE_STREAM_CODEC =
+            StreamCodec.composite(
+                    ByteBufCodecs.STRING_UTF8,
+                    Records.AwakenMedicineComponent::medicineType,
+                    ByteBufCodecs.FLOAT,
+                    Records.AwakenMedicineComponent::value,
+                    Records.AwakenMedicineComponent::new
+            );
+
+    public static final Codec<Records.AwakenSoulComponent> AWAKEN_SOUL_CODEC =
+            RecordCodecBuilder.create(
+                    inst ->
+                            inst
+                                    .group(
+                                            Codec.FLOAT
+                                                    .fieldOf("current")
+                                                    .forGetter(Records.AwakenSoulComponent::current)
+                                    )
+                                    .and(
+                                            Codec.FLOAT
+                                                    .fieldOf("maximum")
+                                                    .forGetter(Records.AwakenSoulComponent::maximum)
+                                    )
+                                    .apply(
+                                            inst,
+                                            Records.AwakenSoulComponent::new
+                                    )
+            );
+
+    public static final StreamCodec<ByteBuf, Records.AwakenSoulComponent> AWAKEN_SOUL_STREAM_CODEC =
+            StreamCodec.composite(
+                    ByteBufCodecs.FLOAT,
+                    Records.AwakenSoulComponent::current,
+                    ByteBufCodecs.FLOAT,
+                    Records.AwakenSoulComponent::maximum,
+                    Records.AwakenSoulComponent::new
+            );
+
     @AutoRegister.Registrable
     public static final DeferredRegister.DataComponents COMPONENT_REGISTER =
             DeferredRegister.createDataComponents(
@@ -119,6 +177,15 @@ public class AwakenDataComponents
                                     .networkSynchronized(AWAKEN_DESCRIBER_STREAM_CODEC)
             );
 
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Records.AwakenMedicineComponent>> AWAKEN_MEDICINE_STORAGE =
+            COMPONENT_REGISTER.registerComponentType(
+                    "awaken_medicine",
+                    builder ->
+                            builder
+                                    .persistent(AWAKEN_MEDICINE_CODEC)
+                                    .networkSynchronized(AWAKEN_MEDICINE_STREAM_CODEC)
+            );
+
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> AWAKEN_OWNER =
             COMPONENT_REGISTER.registerComponentType(
                     "awaken_owner",
@@ -144,6 +211,15 @@ public class AwakenDataComponents
                             builder
                                     .persistent(Codec.STRING)
                                     .networkSynchronized(ByteBufCodecs.STRING_UTF8)
+            );
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Records.AwakenSoulComponent>> AWAKEN_SOUL_STORAGE =
+            COMPONENT_REGISTER.registerComponentType(
+                    "awaken_soul",
+                    builder ->
+                            builder
+                                    .persistent(AWAKEN_SOUL_CODEC)
+                                    .networkSynchronized(AWAKEN_SOUL_STREAM_CODEC)
             );
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> AWAKEN_SPIRITUAL_STORAGE =

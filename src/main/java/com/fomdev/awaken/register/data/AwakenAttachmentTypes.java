@@ -40,19 +40,54 @@ public class AwakenAttachmentTypes
                     Records.AwakenLevelComponent::new
             );
 
+    public static final Codec<Records.AwakenKnowledgeComponent> AWAKEN_KNOWLEDGE_CODEC =
+            RecordCodecBuilder.create(
+                    inst ->
+                            inst
+                                    .group(
+                                            Codec.FLOAT
+                                                    .fieldOf("experience")
+                                                    .forGetter(Records.AwakenKnowledgeComponent::experience)
+                                    )
+                                    .and(
+                                            Codec.FLOAT
+                                                    .fieldOf("insight")
+                                                    .forGetter(Records.AwakenKnowledgeComponent::insight)
+                                    )
+                                    .and(
+                                            Codec.FLOAT
+                                                    .fieldOf("proficiency")
+                                                    .forGetter(Records.AwakenKnowledgeComponent::proficiency)
+                                    )
+                                    .and(
+                                            Codec.FLOAT
+                                                    .fieldOf("skill")
+                                                    .forGetter(Records.AwakenKnowledgeComponent::skill)
+                                    )
+                                    .apply(
+                                            inst,
+                                            Records.AwakenKnowledgeComponent::new
+                                    )
+            );
+
+    public static final StreamCodec<ByteBuf, Records.AwakenKnowledgeComponent> AWAKEN_KNOWLEDGE_STREAM_CODEC =
+            StreamCodec.composite(
+                    ByteBufCodecs.FLOAT,
+                    Records.AwakenKnowledgeComponent::experience,
+                    ByteBufCodecs.FLOAT,
+                    Records.AwakenKnowledgeComponent::insight,
+                    ByteBufCodecs.FLOAT,
+                    Records.AwakenKnowledgeComponent::proficiency,
+                    ByteBufCodecs.FLOAT,
+                    Records.AwakenKnowledgeComponent::skill,
+                    Records.AwakenKnowledgeComponent::new
+            );
+
     @AutoRegister.Registrable
     public static final DeferredRegister<AttachmentType<?>> REGISTER =
             DeferredRegister.create(
                     NeoForgeRegistries.ATTACHMENT_TYPES,
                     Awaken.MODID
-            );
-
-    public static final Supplier<AttachmentType<Integer>> IS_ATTACKED =
-            REGISTER.register("attacked",
-                    () -> AttachmentType.builder(() -> 0)
-                            .serialize(Codec.INT)
-                            .sync(ByteBufCodecs.INT)
-                            .build()
             );
 
     public static final Supplier<AttachmentType<Boolean>> IS_AWAKEN =
@@ -75,6 +110,14 @@ public class AwakenAttachmentTypes
                     () -> AttachmentType.builder(() -> new Records.AwakenLevelComponent(0.0F))
                             .serialize(AWAKEN_LEVEL_CODEC)
                             .sync((holder, to) -> holder == to, AWAKEN_LEVEL_STREAM_CODEC)
+                            .build()
+            );
+
+    public static final Supplier<AttachmentType<Records.AwakenKnowledgeComponent>> PLAYER_AWAKEN_KNOWLEDGE_ATTACHMENT =
+            REGISTER.register("awaken_knowledge",
+                    () -> AttachmentType.<Records.AwakenKnowledgeComponent>builder(() -> new Records.AwakenKnowledgeComponent(0.0F, 0.0F, 0.0F, 0.0F))
+                            .serialize(AWAKEN_KNOWLEDGE_CODEC)
+                            .sync((holder, to) -> holder == to, AWAKEN_KNOWLEDGE_STREAM_CODEC)
                             .build()
             );
 

@@ -32,6 +32,29 @@ public class Records
             )
     {}
 
+    public record AwakenKnowledgeComponent
+            (
+                    float experience,
+                    float insight,
+                    float proficiency,
+                    float skill
+            )
+    {}
+
+    public record AwakenMedicineComponent
+            (
+                    String medicineType,
+                    float value
+            )
+    {}
+
+    public record AwakenSoulComponent
+            (
+                    float current,
+                    float maximum
+            )
+    {}
+
     public record AttributeHolder
             (
                     Holder<Attribute> attr,

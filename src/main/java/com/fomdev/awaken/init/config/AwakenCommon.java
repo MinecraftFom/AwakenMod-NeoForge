@@ -18,6 +18,7 @@ public class AwakenCommon
 
     public final ModConfigSpec.ConfigValue<List<? extends String>> ENTITIES;
     public final ModConfigSpec.ConfigValue<List<? extends String>> RIDE_ENTITIES;
+    public final ModConfigSpec.ConfigValue<List<? extends String>> EFFECTS;
 
     public final ModConfigSpec.ConfigValue<List<? extends String>> NAMES_FIRST;
     public final ModConfigSpec.ConfigValue<List<? extends String>> NAMES_LAST;
@@ -29,8 +30,9 @@ public class AwakenCommon
     public final ModConfigSpec.ConfigValue<List<? extends String>> LEGGINGS;
     public final ModConfigSpec.ConfigValue<List<? extends String>> BOOTS;
 
-    public final ModConfigSpec.ConfigValue<List<? extends String>> EFFECTS;
+    public final ModConfigSpec.ConfigValue<List<? extends String>> ENCHANT_ASPECTS;
 
+    public final ModConfigSpec.ConfigValue<Integer> MAX_ATTRIBUTE;
     public final ModConfigSpec.ConfigValue<Integer> MAX_ACCEPTABLE_ENCHANT;
     public final ModConfigSpec.ConfigValue<Integer> MAX_ENCHANT_ABILITY;
     public final ModConfigSpec.ConfigValue<Integer> MAX_ENCHANT_LEVEL;
@@ -178,6 +180,17 @@ public class AwakenCommon
         builder.pop();
         builder.pop();
 
+        builder.push("enchant");
+        ENCHANT_ASPECTS = builder
+                .comment("The aspects required for each enchantment. Structure: [ENCHANTMENT_ID]|[aspect] = [amount], [aspect1] = [amount1], ......")
+                        .defineList(
+                                "enchant_aspects",
+                                List.of(
+                                        Constants.enchantmentAspects
+                                ),
+                                Objects::nonNull
+                        );
+
         builder.push("tweaks");
         MAX_HEALTH = builder
                 .comment("Max health of mobs")
@@ -188,10 +201,18 @@ public class AwakenCommon
                 );
 
         MAX_ACCEPTABLE_ENCHANT = builder
-                .comment("The limit of the enchantment levels that game can recognize and accpet legally")
+                .comment("The limit of the enchantment levels that game can recognize and accept legally")
                 .define(
                         "max_acceptable_enchantment_level",
                         Constants.maxAcceptableEnchant,
+                        Objects::nonNull
+                );
+
+        MAX_ATTRIBUTE = builder
+                .comment("The attribute factor of the max value")
+                .define(
+                        "max_attribute_level_factor",
+                        Constants.attributeFactor,
                         Objects::nonNull
                 );
 

@@ -12,6 +12,8 @@ public class AwakenCommon
     public static final AwakenCommon CONFIG;
     public static final ModConfigSpec SPEC;
 
+    public final ModConfigSpec.ConfigValue<Double> MAX_DURABILITY_FACTOR;
+
     public final ModConfigSpec.ConfigValue<Double> EPOCH_RARITY;
     public final ModConfigSpec.ConfigValue<Double> MAX_HEALTH;
     public final ModConfigSpec.ConfigValue<Integer> CARRIER_GENERATION;
@@ -42,8 +44,17 @@ public class AwakenCommon
             ModConfigSpec.Builder builder
     )
     {
-        builder.push("literature");
+        builder.push("forge");
+        this.MAX_DURABILITY_FACTOR = builder
+                .comment("The max durability factor can the game accept")
+                .define(
+                        "max_durability_factor",
+                        Constants.maxDurabilityFactor,
+                        Objects::nonNull
+                );
 
+        builder.pop();
+        builder.push("literature");
         builder.push("name_entries");
         this.NAMES_FIRST = builder
                 .comment("Names for generating mobs (first_name), structure: [NAME]|[CHANCE]")
@@ -54,7 +65,6 @@ public class AwakenCommon
                         ),
                         Objects::nonNull
                 );
-
         this.NAMES_LAST = builder
                 .comment("Names for generating mobs (last_name), structure: [NAME]|[CHANCE]")
                 .defineList(
@@ -64,12 +74,9 @@ public class AwakenCommon
                         ),
                         Objects::nonNull
                 );
-
         builder.pop();
         builder.pop();
-
         builder.push("spawn");
-
         EPOCH_RARITY = builder
                 .comment(
                         "The chance of having 'epoch' attribute on tools"
@@ -79,7 +86,6 @@ public class AwakenCommon
                         Constants.epochChance,
                         Objects::nonNull
                 );
-
         ENTITIES = builder
                 .comment(
                         "Decides mobs that will be generated. Structure: MOB_TYPE_ID | DIM0 & DIM1 & ... & DIM_N"
@@ -91,7 +97,6 @@ public class AwakenCommon
                         ),
                         Objects::nonNull
                 );
-
         CARRIER_GENERATION = builder
                 .comment("Decides when mobs will have carriers")
                 .define(
@@ -99,7 +104,6 @@ public class AwakenCommon
                         Constants.carrierGenerateDiff,
                         Objects::nonNull
                 );
-
         RIDE_ENTITIES = builder
                 .comment("Decides mobs that may generate as carriers while rare mobs generate")
                 .defineList(
@@ -109,7 +113,6 @@ public class AwakenCommon
                         ),
                         Objects::nonNull
                 );
-
         EFFECTS =
                 builder
                         .comment("Effects that will be generated on mobs. Structure: [EFFECT_ID]|[DURATION]|[MAX_LEVEL]")
@@ -120,7 +123,6 @@ public class AwakenCommon
                                 ),
                                 Objects::nonNull
                         );
-
         builder.push("equipments");
         MAIN_HAND = builder
                 .comment("Equipments to be generated on the main hand. Structure: [ITEM_ID]|[CHANCE]|MINIMUM_DIFFICULTY")
@@ -179,7 +181,6 @@ public class AwakenCommon
 
         builder.pop();
         builder.pop();
-
         builder.push("enchant");
         ENCHANT_ASPECTS = builder
                 .comment("The aspects required for each enchantment. Structure: [ENCHANTMENT_ID]|[aspect] = [amount], [aspect1] = [amount1], ......")
@@ -190,7 +191,6 @@ public class AwakenCommon
                                 ),
                                 Objects::nonNull
                         );
-
         builder.push("tweaks");
         MAX_HEALTH = builder
                 .comment("Max health of mobs")
@@ -199,7 +199,6 @@ public class AwakenCommon
                         Constants.maxHealth,
                         Objects::nonNull
                 );
-
         MAX_ACCEPTABLE_ENCHANT = builder
                 .comment("The limit of the enchantment levels that game can recognize and accept legally")
                 .define(
@@ -215,7 +214,6 @@ public class AwakenCommon
                         Constants.attributeFactor,
                         Objects::nonNull
                 );
-
         MAX_ENCHANT_ABILITY = builder
                 .comment("Max enchantment ability can a enchanting table have")
                 .define(
@@ -223,7 +221,6 @@ public class AwakenCommon
                         Constants.enchantmentMax,
                         Objects::nonNull
                 );
-
         MAX_ENCHANT_LEVEL = builder
                 .comment("Max enchantment level accepted")
                 .define(
@@ -231,7 +228,6 @@ public class AwakenCommon
                         Constants.maxEnchant,
                         Objects::nonNull
                 );
-
         XP_PER_LEVEL = builder
                 .comment("Experience required for each level")
                 .comment("WARNING: If you change this, some of your saves will break, and you aren't able to regain xp")

@@ -5,6 +5,7 @@ import com.fomdev.awaken.register.data.AwakenAttachmentTypes;
 import com.fomdev.awaken.register.data.AwakenDataComponents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.server.IntegratedServer;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -68,6 +69,16 @@ public class NBTUtil
     )
     {
         return stack.get(AwakenDataComponents.AWAKEN_EPOCH_STORAGE);
+    }
+
+    public static Records.AwakenKnowledgeComponent deserializeKnowledge(
+            Player player
+    )
+    {
+        if (!player.hasData(AwakenAttachmentTypes.PLAYER_AWAKEN_KNOWLEDGE_ATTACHMENT))
+            serializeKnowledge(player, new Records.AwakenKnowledgeComponent(0.0F, 0.0F, 0.0F, 0.0F));
+
+        return player.getData(AwakenAttachmentTypes.PLAYER_AWAKEN_KNOWLEDGE_ATTACHMENT);
     }
 
     public static float deserializeAwakenLevel(
@@ -263,6 +274,14 @@ public class NBTUtil
         stack.set(AwakenDataComponents.AWAKEN_EPOCH_STORAGE, epoch);
     }
 
+    public static void serializeKnowledge(
+            Player player,
+            Records.AwakenKnowledgeComponent knowledge
+    )
+    {
+        player.setData(AwakenAttachmentTypes.PLAYER_AWAKEN_KNOWLEDGE_ATTACHMENT, knowledge);
+    }
+
     public static void serializePlayer(
             ItemStack stack,
             ServerPlayer player
@@ -277,6 +296,24 @@ public class NBTUtil
     )
     {
         stack.set(AwakenDataComponents.AWAKEN_QUALITY_STORAGE, quality.getLocation().toString());
+    }
+
+    public static void setDurability(
+            ItemStack stack,
+            int target
+    )
+    {
+        int max = stack.getMaxDamage();
+        int toSet = Math.max(max, target);
+        stack.set(DataComponents.DAMAGE, toSet);
+    }
+
+    public static void setMaxDurability(
+            ItemStack stack,
+            int target
+    )
+    {
+        stack.set(DataComponents.MAX_DAMAGE, target);
     }
 
     private static Records.AwakenDescriberComponent deserializeDescriber(

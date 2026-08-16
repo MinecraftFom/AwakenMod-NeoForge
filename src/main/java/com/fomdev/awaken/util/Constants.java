@@ -181,4 +181,6 @@ public class Constants
     public static final int xpLevel = 200;
 
     public static final int carrierGenerateDiff = 10000;
+
+    public static final double maxDurabilityFactor = 1000.0;
 }

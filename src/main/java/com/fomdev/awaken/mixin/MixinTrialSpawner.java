@@ -2,6 +2,7 @@ package com.fomdev.awaken.mixin;
 
 import com.fomdev.awaken.difficulty.DifficultyManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.world.level.block.entity.trialspawner.TrialSpawner;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,7 +18,12 @@ public class MixinTrialSpawner
     )
     {
         int original = cir.getReturnValue();
-        float diff = DifficultyManager.getLevelDifficulty(Minecraft.getInstance().getSingleplayerServer().overworld());
+        // patch: getSingleplayerServer() may result in null when unloading game
+        IntegratedServer server = Minecraft.getInstance().getSingleplayerServer();
+        if (server == null)
+            return;
+
+        float diff = DifficultyManager.getLevelDifficulty(server.overworld());
         cir.setReturnValue(original / Math.max((int) Math.pow(diff, 1.0 / 20.0), 1));
     }
 }

@@ -34,6 +34,9 @@ public class AwakenCommon
 
     public final ModConfigSpec.ConfigValue<List<? extends String>> ENCHANT_ASPECTS;
 
+    public final ModConfigSpec.ConfigValue<Double> DEFAULT_SOUL;
+    public final ModConfigSpec.ConfigValue<Double> DEFAULT_SOUL_FACTOR;
+
     public final ModConfigSpec.ConfigValue<Integer> MAX_ATTRIBUTE;
     public final ModConfigSpec.ConfigValue<Integer> MAX_ACCEPTABLE_ENCHANT;
     public final ModConfigSpec.ConfigValue<Integer> MAX_ENCHANT_ABILITY;
@@ -74,7 +77,26 @@ public class AwakenCommon
                         ),
                         Objects::nonNull
                 );
-        builder.pop();
+        builder.pop(2);
+        builder.push("soul");
+        DEFAULT_SOUL = builder
+                .comment(
+                        "The default soul required for each soul bottle"
+                )
+                .define(
+                        "soul",
+                        Constants.defaultRequiredSoul,
+                        Objects::nonNull
+                );
+        DEFAULT_SOUL_FACTOR = builder
+                .comment(
+                        "The default factor of soul upgrading"
+                )
+                .define(
+                        "soul_factor",
+                        Constants.defaultSoulFactor,
+                        Objects::nonNull
+                );
         builder.pop();
         builder.push("spawn");
         EPOCH_RARITY = builder
@@ -179,8 +201,7 @@ public class AwakenCommon
                         Objects::nonNull
                 );
 
-        builder.pop();
-        builder.pop();
+        builder.pop(2);
         builder.push("enchant");
         ENCHANT_ASPECTS = builder
                 .comment("The aspects required for each enchantment. Structure: [ENCHANTMENT_ID]|[aspect] = [amount], [aspect1] = [amount1], ......")

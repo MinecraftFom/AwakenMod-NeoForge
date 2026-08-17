@@ -1,6 +1,7 @@
 package com.fomdev.awaken.register.data;
 
 import com.fomdev.awaken.init.Awaken;
+import com.fomdev.awaken.util.HealthUtil;
 import com.fomdev.awaken.util.Records;
 import com.fomdev.flame.annotation.AutoRegister;
 import com.mojang.serialization.Codec;
@@ -83,6 +84,28 @@ public class AwakenAttachmentTypes
                     Records.AwakenKnowledgeComponent::new
             );
 
+    public static final Codec<HealthUtil.AwakenAdditionalHealth> AWAKEN_ADDITIONAL_HEALTH_CODEC =
+            RecordCodecBuilder.create(
+                    inst ->
+                            inst
+                                    .group(
+                                            Codec.FLOAT
+                                                    .fieldOf("health")
+                                                    .forGetter(HealthUtil.AwakenAdditionalHealth::health)
+                                    )
+                                    .apply(
+                                            inst,
+                                            HealthUtil.AwakenAdditionalHealth::new
+                                    )
+            );
+
+    public static final StreamCodec<ByteBuf, HealthUtil.AwakenAdditionalHealth> AWAKEN_ADDITIONAL_HEALTH_STREAM_CODEC =
+            StreamCodec.composite(
+                    ByteBufCodecs.FLOAT,
+                    HealthUtil.AwakenAdditionalHealth::health,
+                    HealthUtil.AwakenAdditionalHealth::new
+            );
+
     @AutoRegister.Registrable
     public static final DeferredRegister<AttachmentType<?>> REGISTER =
             DeferredRegister.create(
@@ -98,10 +121,11 @@ public class AwakenAttachmentTypes
                             .build()
             );
 
-    public static final Supplier<AttachmentType<Float>> PLAYER_ADDITIONAL_HEALTH =
+    public static final Supplier<AttachmentType<HealthUtil.AwakenAdditionalHealth>> PLAYER_ADDITIONAL_HEALTH =
             REGISTER.register("additional_health",
-                    () -> AttachmentType.builder(() -> 0.0F)
-                            .serialize(Codec.FLOAT)
+                    () -> AttachmentType.builder(() -> new HealthUtil.AwakenAdditionalHealth(1.0F))
+                            .serialize(AWAKEN_ADDITIONAL_HEALTH_CODEC)
+                            .sync((holder, to) -> holder == to, AWAKEN_ADDITIONAL_HEALTH_STREAM_CODEC)
                             .build()
             );
 
@@ -115,7 +139,7 @@ public class AwakenAttachmentTypes
 
     public static final Supplier<AttachmentType<Records.AwakenKnowledgeComponent>> PLAYER_AWAKEN_KNOWLEDGE_ATTACHMENT =
             REGISTER.register("awaken_knowledge",
-                    () -> AttachmentType.<Records.AwakenKnowledgeComponent>builder(() -> new Records.AwakenKnowledgeComponent(0.0F, 0.0F, 0.0F, 0.0F))
+                    () -> AttachmentType.builder(() -> new Records.AwakenKnowledgeComponent(0.0F, 0.0F, 0.0F, 0.0F))
                             .serialize(AWAKEN_KNOWLEDGE_CODEC)
                             .sync((holder, to) -> holder == to, AWAKEN_KNOWLEDGE_STREAM_CODEC)
                             .build()

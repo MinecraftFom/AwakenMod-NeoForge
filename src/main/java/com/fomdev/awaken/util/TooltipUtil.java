@@ -394,6 +394,24 @@ public class TooltipUtil
         return components;
     }
 
+    public static List<Component> castSoulTooltip(
+            Records.AwakenSoulComponent soul
+    )
+    {
+        return List.of(
+                Component
+                        .translatable("tooltip.soul_current.info")
+                        .append(": ")
+                        .append("" + soul.current())
+                        .withStyle(ChatFormatting.GRAY),
+                Component
+                        .translatable("tooltip.soul_max.info")
+                        .append(": ")
+                        .append("" + soul.maximum())
+                        .withStyle(ChatFormatting.GRAY)
+        );
+    }
+
     public static List<Component> castSporeTooltip(
             TooltipFlag flag,
             AwakenSpore.SporeInstance spore

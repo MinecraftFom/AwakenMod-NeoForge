@@ -25,6 +25,12 @@ public class AwakenItems
     public static final DeferredItem<?> SOUL_BOTTLE =
             REGISTER.registerItem(
                     "soul_bottle",
+                    AwakenSoulBottle::new
+            );
+
+    public static final DeferredItem<?> SOUL_FRAGMENT =
+            REGISTER.registerItem(
+                    "soul_fragment",
                     Item::new
             );
 

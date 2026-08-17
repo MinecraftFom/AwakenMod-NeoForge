@@ -3,12 +3,18 @@ package com.fomdev.awaken.util;
 import com.fomdev.awaken.difficulty.DifficultyManager;
 import com.fomdev.awaken.init.config.AwakenCommon;
 import com.fomdev.awaken.register.data.AwakenAttachmentTypes;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 public class HealthUtil
 {
+    public record AwakenAdditionalHealth(
+            float health
+    ) {}
+
     public static void addAdditionalHealthPersistent(
             Player player,
             float amount
@@ -36,11 +42,24 @@ public class HealthUtil
             Player player
     )
     {
-        Float original = player.getData(AwakenAttachmentTypes.PLAYER_ADDITIONAL_HEALTH);
+        if (player == null)
+            return 0.0F;
+
+        if (player instanceof ServerPlayer sp)
+        {
+            if (sp.connection == null)
+                return 0.0F;
+        } else if (player instanceof LocalPlayer lp)
+        {
+            if (lp.connection == null)
+                return 0.0F;
+        }
+
+        float original = player.getData(AwakenAttachmentTypes.PLAYER_ADDITIONAL_HEALTH).health();
         if (original < 0.0F)
             serializeAdditionalHealthPersistent(player, 0.0F);
 
-        return player.getData(AwakenAttachmentTypes.PLAYER_ADDITIONAL_HEALTH);
+        return player.getData(AwakenAttachmentTypes.PLAYER_ADDITIONAL_HEALTH).health();
     }
 
     public static void serializeAdditionalHealthPersistent(
@@ -48,6 +67,6 @@ public class HealthUtil
             float amount
     )
     {
-        player.setData(AwakenAttachmentTypes.PLAYER_ADDITIONAL_HEALTH, amount);
+        player.setData(AwakenAttachmentTypes.PLAYER_ADDITIONAL_HEALTH, new AwakenAdditionalHealth(amount));
     }
 }

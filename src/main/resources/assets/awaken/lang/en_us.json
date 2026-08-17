@@ -1,4 +1,7 @@
 {
+  "bar.increased_health.info": "Gained %d Points Of Health!",
+  "bar.not_enough.info": "Not Enough Soul Stored: %s / %s",
+
   "gui.knowledge.experience.info": "Experience",
   "gui.knowledge.insight.info": "Insight",
   "gui.knowledge.proficiency.info": "Proficiency",
@@ -280,5 +283,8 @@
   "tooltip.pollinate.info": "Pollinate",
   "tooltip.pollinate.when.info": "When %s, give %s %s %s",
   "tooltip.quality.info": "Quality",
-  "tooltip.quality.factor.info": "Factor"
+  "tooltip.quality.factor.info": "Factor",
+
+  "tooltip.soul_current.info": "Current Soul Stored",
+  "tooltip.soul_max.info": "Maximum Soul Storing"
 }

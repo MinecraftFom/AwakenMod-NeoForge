@@ -2,6 +2,7 @@ package com.fomdev.awaken.events;
 
 import com.fomdev.awaken.entries.raw.*;
 import com.fomdev.awaken.init.Awaken;
+import com.fomdev.awaken.register.items.AwakenItems;
 import com.fomdev.awaken.util.NBTUtil;
 import com.fomdev.awaken.util.TooltipUtil;
 import net.minecraft.network.chat.Component;
@@ -25,6 +26,9 @@ public class TooltipRenderEvents
         ItemStack stack = event.getItemStack();
         TooltipFlag flag = event.getFlags();
         List<Component> list = event.getToolTip();
+
+        if (stack.is(AwakenItems.SOUL_BOTTLE))
+            list.addAll(1, TooltipUtil.castSoulTooltip(NBTUtil.deserializeSoul(stack)));
 
         AwakenInfix infix = NBTUtil.deserializeInfix(stack);
         AwakenPrefix prefix = NBTUtil.deserializePrefix(stack);

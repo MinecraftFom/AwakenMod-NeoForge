@@ -1,6 +1,7 @@
 package com.fomdev.awaken.util;
 
 import com.fomdev.awaken.entries.raw.*;
+import com.fomdev.awaken.init.config.AwakenCommon;
 import com.fomdev.awaken.register.data.AwakenAttachmentTypes;
 import com.fomdev.awaken.register.data.AwakenDataComponents;
 import net.minecraft.client.Minecraft;
@@ -26,6 +27,16 @@ public class NBTUtil
     )
     {
         serializeAwakenLevel(player, deserializeAwakenLevel(player) + amount);
+    }
+
+    public static void addSoul(
+            ItemStack stack,
+            float soul
+    )
+    {
+        Records.AwakenSoulComponent original = deserializeSoul(stack);
+        float value = original.current() + soul;
+        serializeSoul(stack, new Records.AwakenSoulComponent((int) (Math.min(value, original.maximum()) * 100) / 100.0F, original.maximum()));
     }
 
     public static void clearPlayer(
@@ -167,6 +178,16 @@ public class NBTUtil
         return AwakenRegistries.AWAKEN_PREFIX.getRegistry(ResourceLocation.parse(desc.prefix()));
     }
 
+    public static Records.AwakenSoulComponent deserializeSoul(
+            ItemStack stack
+    )
+    {
+        if (!stack.has(AwakenDataComponents.AWAKEN_SOUL_STORAGE))
+            stack.set(AwakenDataComponents.AWAKEN_SOUL_STORAGE, new Records.AwakenSoulComponent(0.0F, AwakenCommon.CONFIG.DEFAULT_SOUL.get().floatValue()));
+
+        return stack.get(AwakenDataComponents.AWAKEN_SOUL_STORAGE);
+    }
+
     public static AwakenSuffix deserializeSuffix(
             ItemStack stack
     )
@@ -296,6 +317,14 @@ public class NBTUtil
     )
     {
         stack.set(AwakenDataComponents.AWAKEN_QUALITY_STORAGE, quality.getLocation().toString());
+    }
+
+    public static void serializeSoul(
+            ItemStack stack,
+            Records.AwakenSoulComponent soul
+    )
+    {
+        stack.set(AwakenDataComponents.AWAKEN_SOUL_STORAGE, soul);
     }
 
     public static void setDurability(

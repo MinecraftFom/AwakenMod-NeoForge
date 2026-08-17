@@ -39,5 +39,6 @@ public class PlayerDataCopyEvents
     {
         float originalAmount = HealthUtil.deserializeAdditionalHealthPersistent(original);
         HealthUtil.serializeAdditionalHealthPersistent(current, originalAmount);
+        current.setHealth(original.getMaxHealth());
     }
 }

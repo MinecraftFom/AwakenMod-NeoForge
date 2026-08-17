@@ -3,11 +3,15 @@ package com.fomdev.awaken.mixin;
 import com.fomdev.awaken.difficulty.DifficultyManager;
 import com.fomdev.awaken.register.data.AwakenDataComponents;
 import com.fomdev.awaken.util.HealthUtil;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -38,6 +42,9 @@ public abstract class MixinLivingEntity
     @Shadow
     public abstract int getExperienceReward(ServerLevel p_345212_, @org.jetbrains.annotations.Nullable Entity p_345512_);
 
+    @Shadow
+    public abstract float getMaxHealth();
+
     @Inject(method = "dropExperience", at = @At("HEAD"), cancellable = true)
     private void getCustomExp(Entity entity, CallbackInfo ci)
     {
@@ -62,6 +69,40 @@ public abstract class MixinLivingEntity
         }
     }
 
+    @Inject(method = "getAttributeBaseValue", at = @At("RETURN"), cancellable = true)
+    private void getAttributeBaseValue(
+            Holder<Attribute> attribute,
+            CallbackInfoReturnable<Double> cir
+    )
+    {
+        LivingEntity self = (LivingEntity) (Object) this;
+
+        if (!attribute.is(Attributes.MAX_HEALTH))
+            return;
+
+        if (self instanceof ServerPlayer player)
+            cir.setReturnValue(cir.getReturnValue() + HealthUtil.deserializeAdditionalHealthPersistent(player));
+        else if (self instanceof LocalPlayer player)
+            cir.setReturnValue(cir.getReturnValue() + HealthUtil.deserializeAdditionalHealthPersistent(player));
+    }
+
+    @Inject(method = "getAttributeValue", at = @At("RETURN"), cancellable = true)
+    private void getAttributeValue(
+            Holder<Attribute> attribute,
+            CallbackInfoReturnable<Double> cir
+    )
+    {
+        LivingEntity self = (LivingEntity) (Object) this;
+
+        if (!attribute.is(Attributes.MAX_HEALTH))
+            return;
+
+        if (self instanceof ServerPlayer player && player.connection != null)
+            cir.setReturnValue(cir.getReturnValue() + HealthUtil.deserializeAdditionalHealthPersistent(player));
+        else if (self instanceof LocalPlayer player && player.connection != null)
+            cir.setReturnValue(cir.getReturnValue() + HealthUtil.deserializeAdditionalHealthPersistent(player));
+    }
+
     @Inject(method = "getEquipmentSlotForItem", at = @At("RETURN"), cancellable = true)
     private void getEquipmentSlotForItem(
             ItemStack stack,
@@ -79,12 +120,7 @@ public abstract class MixinLivingEntity
     {
         LivingEntity self = (LivingEntity) (Object) this;
 
-        if (!(self.level() instanceof ServerLevel))
-            return;
-
         if (!(self instanceof Player player))
             cir.setReturnValue(HealthUtil.calculateMobHealth(self, cir.getReturnValue()));
-        else
-            cir.setReturnValue(cir.getReturnValue() + HealthUtil.deserializeAdditionalHealthPersistent(player));
     }
 }

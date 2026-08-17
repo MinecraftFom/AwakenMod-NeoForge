@@ -1,4 +1,7 @@
 {
+  "bar.increased_health.info": "获得了 %d 点生命值!",
+  "bar.not_enough.info": "灵魂点数未达到需求: %s / %s",
+
   "gui.knowledge.experience.info": "经验",
   "gui.knowledge.insight.info": "见识",
   "gui.knowledge.proficiency.info": "熟练度",
@@ -280,5 +283,8 @@
   "tooltip.pollinate.info": "花粉",
   "tooltip.pollinate.when.info": "当 %s 时, 给予 %s %s %s",
   "tooltip.quality.info": "品质",
-  "tooltip.quality.factor.info": "参数"
+  "tooltip.quality.factor.info": "倍率",
+
+  "tooltip.soul_current.info": "当前存储的灵魂",
+  "tooltip.soul_max.info": "总可存储灵魂"
 }

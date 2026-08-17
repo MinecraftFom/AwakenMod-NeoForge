@@ -183,4 +183,7 @@ public class Constants
     public static final int carrierGenerateDiff = 10000;
 
     public static final double maxDurabilityFactor = 1000.0;
+
+    public static final double defaultRequiredSoul = 100.0;
+    public static final double defaultSoulFactor = 2.5;
 }

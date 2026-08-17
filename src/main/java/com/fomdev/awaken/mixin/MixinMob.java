@@ -1,6 +1,10 @@
 package com.fomdev.awaken.mixin;
 
 import com.fomdev.awaken.difficulty.DifficultyManager;
+import com.fomdev.awaken.register.data.AwakenAttachmentTypes;
+import com.fomdev.awaken.register.items.AwakenItems;
+import com.fomdev.awaken.util.NBTUtil;
+import com.fomdev.awaken.util.Records;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -49,6 +53,13 @@ public abstract class MixinMob
 
             self.spawnAtLocation(stack);
             setItemSlot(slot, ItemStack.EMPTY);
+        }
+
+        if (self.hasData(AwakenAttachmentTypes.IS_AWAKEN))
+        {
+            ItemStack stack = new ItemStack(AwakenItems.SOUL_FRAGMENT.asItem());
+            NBTUtil.serializeSoul(stack, new Records.AwakenSoulComponent(self.getRandom().nextInt(100) + 1, 100));
+            self.spawnAtLocation(stack);
         }
     }
 }

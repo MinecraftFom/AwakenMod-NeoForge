@@ -1,4 +1,9 @@
 {
+  "gui.knowledge.experience.info": "Experience",
+  "gui.knowledge.insight.info": "Insight",
+  "gui.knowledge.proficiency.info": "Proficiency",
+  "gui.knowledge.skill.info": "Skill",
+
   "gui.difficulty.info": "Current Awaken Difficulty",
   "gui.level.info": "Awaken Level",
 

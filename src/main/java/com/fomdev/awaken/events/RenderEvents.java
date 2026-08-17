@@ -1,6 +1,7 @@
 package com.fomdev.awaken.events;
 
 import com.fomdev.awaken.gui.AwakenDataGUI;
+import com.fomdev.awaken.gui.AwakenKnowledgeGUI;
 import com.fomdev.awaken.init.Awaken;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -21,6 +22,14 @@ public class RenderEvents
                         "info_gui"
                 ),
                 new AwakenDataGUI()
+        );
+
+        event.registerAboveAll(
+                ResourceLocation.fromNamespaceAndPath(
+                        Awaken.MODID,
+                        "info_gui_2"
+                ),
+                new AwakenKnowledgeGUI()
         );
     }
 }

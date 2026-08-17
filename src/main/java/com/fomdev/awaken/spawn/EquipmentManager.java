@@ -2,6 +2,7 @@ package com.fomdev.awaken.spawn;
 
 import com.fomdev.awaken.entries.raw.*;
 import com.fomdev.awaken.init.config.AwakenCommon;
+import com.fomdev.awaken.register.data.AwakenDataComponents;
 import com.fomdev.awaken.spawn.shuffle.ShuffledRegistries;
 import com.fomdev.awaken.util.NBTUtil;
 import com.fomdev.awaken.util.Records;
@@ -235,6 +236,8 @@ public class EquipmentManager
             RandomSource random
     )
     {
+        stack.set(AwakenDataComponents.AWAKEN_SLOT_STORAGE, slot);
+
         float d = diff * factor;
         enchant(stack, level, diff, factor, random);
         if (shouldShuffleEpoch())

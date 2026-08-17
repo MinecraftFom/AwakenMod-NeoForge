@@ -1,13 +1,16 @@
 package com.fomdev.awaken.mixin;
 
 import com.fomdev.awaken.difficulty.DifficultyManager;
+import com.fomdev.awaken.register.data.AwakenDataComponents;
 import com.fomdev.awaken.util.HealthUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.neoforged.neoforge.event.EventHooks;
 import org.spongepowered.asm.mixin.Mixin;
@@ -59,6 +62,17 @@ public abstract class MixinLivingEntity
         }
     }
 
+    @Inject(method = "getEquipmentSlotForItem", at = @At("RETURN"), cancellable = true)
+    private void getEquipmentSlotForItem(
+            ItemStack stack,
+            CallbackInfoReturnable<EquipmentSlot> cir
+    )
+    {
+        if (!stack.has(AwakenDataComponents.AWAKEN_SLOT_STORAGE))
+            return;
+
+        cir.setReturnValue(stack.get(AwakenDataComponents.AWAKEN_SLOT_STORAGE));
+    }
 
     @Inject(method = "getMaxHealth", at = @At("RETURN"), cancellable = true)
     private void getCustomHealth(CallbackInfoReturnable<Float> cir)

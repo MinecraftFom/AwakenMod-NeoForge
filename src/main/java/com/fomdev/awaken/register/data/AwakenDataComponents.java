@@ -11,6 +11,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -211,6 +212,15 @@ public class AwakenDataComponents
                             builder
                                     .persistent(Codec.STRING)
                                     .networkSynchronized(ByteBufCodecs.STRING_UTF8)
+            );
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<EquipmentSlot>> AWAKEN_SLOT_STORAGE =
+            COMPONENT_REGISTER.registerComponentType(
+                    "awaken_slot",
+                    builder ->
+                            builder
+                                    .persistent(EquipmentSlot.CODEC)
+                                    .networkSynchronized(ByteBufCodecs.fromCodecWithRegistries(EquipmentSlot.CODEC))
             );
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Records.AwakenSoulComponent>> AWAKEN_SOUL_STORAGE =

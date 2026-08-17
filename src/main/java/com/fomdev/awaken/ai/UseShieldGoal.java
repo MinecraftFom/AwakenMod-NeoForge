@@ -29,7 +29,7 @@ public class UseShieldGoal extends Goal
     @Override
     public boolean canContinueToUse()
     {
-        return mob.getTarget() != null && use <= 0;
+        return mob.getTarget() != null && use <= 0 && (mob.getTarget().getMainHandItem().is(ItemTags.AXES) || mob.getTarget().getMainHandItem().is(ItemTags.SWORDS));
     }
 
     @Override

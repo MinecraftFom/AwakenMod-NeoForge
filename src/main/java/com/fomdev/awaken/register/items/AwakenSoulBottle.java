@@ -7,8 +7,10 @@ import com.fomdev.awaken.util.NBTUtil;
 import com.fomdev.awaken.util.Records;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -111,6 +113,8 @@ public class AwakenSoulBottle extends Item
 
         serverPlayer.connection.send(new ClientboundSetActionBarTextPacket(Component.translatable("bar.increased_health.info", heart).withStyle(ChatFormatting.GREEN)));
         player.getCooldowns().addCooldown(this, 40);
+        if (level instanceof ServerLevel serverLevel)
+            serverLevel.players().forEach(p -> serverLevel.sendParticles(p, ParticleTypes.HEART, false, player.getX(), player.getY() + 1, player.getZ(), 20, 1.0, 1.0, 1.0, 0.0));
         return stack;
     }
 
@@ -146,15 +150,8 @@ public class AwakenSoulBottle extends Item
             return;
 
         player.playSound(SoundEvents.GENERIC_DRINK);
-    }
-
-    @Override
-    public int getBarWidth(
-            @NotNull ItemStack stack
-    )
-    {
-        Records.AwakenSoulComponent soul = NBTUtil.deserializeSoul(stack);
-        return (int) (soul.current() / soul.maximum());
+        if (level instanceof ServerLevel serverLevel)
+            serverLevel.players().forEach(p -> serverLevel.sendParticles(p, ParticleTypes.SCULK_SOUL, false, player.getX(), player.getY() + 1, player.getZ(), 20, 1.0, 1.0, 1.0, 0.0));
     }
 
     @Override
@@ -166,12 +163,35 @@ public class AwakenSoulBottle extends Item
     }
 
     @Override
-    public int getDamage(
+    public int getBarWidth(
             @NotNull ItemStack stack
     )
     {
+        return Math.round(13.0F - getDamage(stack) * 13.0F / this.getMaxDamage(stack));
+    }
+
+    @Override
+    public boolean isDamaged(
+            @NotNull ItemStack stack
+    )
+    {
+        return getDamage(stack) > 0;
+    }
+
+    @Override
+    public boolean isBarVisible(
+            @NotNull ItemStack stack
+    )
+    {
+        return isDamaged(stack);
+    }
+
+    @Override
+    public int getDamage(
+            @NotNull ItemStack stack)
+    {
         Records.AwakenSoulComponent soul = NBTUtil.deserializeSoul(stack);
-        return (int) soul.current();
+        return (int) (soul.maximum() * 100 - soul.current() * 100);
     }
 
     @Override
@@ -180,6 +200,14 @@ public class AwakenSoulBottle extends Item
     )
     {
         Records.AwakenSoulComponent soul = NBTUtil.deserializeSoul(stack);
-        return (int) soul.maximum();
+        return (int) (soul.maximum() * 100);
+    }
+
+    @Override
+    public boolean isDamageable(
+            @NotNull ItemStack stack
+    )
+    {
+        return true;
     }
 }

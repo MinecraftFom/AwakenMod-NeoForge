@@ -3,12 +3,15 @@ package com.fomdev.awaken.events;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.register.items.AwakenItems;
 import com.fomdev.awaken.util.NBTUtil;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
@@ -34,11 +37,13 @@ public class PlayerKillEvents
 
         ItemStack mainhand = player.getItemInHand(InteractionHand.MAIN_HAND);
         ItemStack offhand = player.getItemInHand(InteractionHand.OFF_HAND);
-        processSoulAdd(mainhand, factor2, random);
-        processSoulAdd(offhand, factor2, random);
+        processSoulAdd(player.level(), player, mainhand, factor2, random);
+        processSoulAdd(player.level(), player, offhand, factor2, random);
     }
 
     private static void processSoulAdd(
+            Level level,
+            Player player,
             ItemStack stack,
             float factor,
             RandomSource random
@@ -51,5 +56,7 @@ public class PlayerKillEvents
         float factor2 = (float) Math.sqrt(max);
         float soul = random.nextFloat() % (factor * factor2);
         NBTUtil.addSoul(stack, soul);
+        if (level instanceof ServerLevel serverLevel)
+            serverLevel.players().forEach(p -> serverLevel.sendParticles(p, ParticleTypes.SCULK_SOUL, false, player.getX(), player.getY() + 1, player.getZ(), 20, 1.0, 1.0, 1.0, 0.0));
     }
 }

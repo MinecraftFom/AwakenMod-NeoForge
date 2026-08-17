@@ -5,6 +5,8 @@ import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.register.items.AwakenItems;
 import com.fomdev.awaken.util.NBTUtil;
 import com.fomdev.awaken.util.Records;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -54,5 +56,7 @@ public class ItemStackEvents
             NBTUtil.addSoul(event.getPlayer().getItemInHand(InteractionHand.OFF_HAND), soul.current());
 
         stack.copyAndClear();
+        if (event.getPlayer().level() instanceof ServerLevel serverLevel)
+            serverLevel.players().forEach(p -> serverLevel.sendParticles(p, ParticleTypes.SCULK_SOUL, false, event.getPlayer().getX(), event.getPlayer().getY() + 1, event.getPlayer().getZ(), 20, 1.0, 1.0, 1.0, 0.0));
     }
 }

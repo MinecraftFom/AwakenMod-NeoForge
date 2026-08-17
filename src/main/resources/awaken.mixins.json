@@ -5,7 +5,10 @@
   "compatibilityLevel": "JAVA_21",
   "mixins":
   [
+    "MixinAnvilMenu",
+    "MixinAnvilScreen",
     "MixinAttribute",
+    "MixinCraftingTableMenu",
     "MixinDataComponents",
     "MixinEnchantment",
     "MixinEnchantmentHelper",

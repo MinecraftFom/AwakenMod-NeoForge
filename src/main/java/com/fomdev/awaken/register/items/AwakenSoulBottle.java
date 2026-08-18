@@ -106,7 +106,7 @@ public class AwakenSoulBottle extends Item
                 heart
         );
 
-        NBTUtil.serializeSoul(stack, new Records.AwakenSoulComponent(0.0F, AwakenCommon.CONFIG.DEFAULT_SOUL_FACTOR.get().floatValue() * soul.maximum()));
+        NBTUtil.serializeSoul(stack, new Records.AwakenSoulComponent(0.0F, (int) (100 * AwakenCommon.CONFIG.DEFAULT_SOUL_FACTOR.get().floatValue() * soul.maximum()) / 100.0F));
         player.playSound(SoundEvents.PLAYER_LEVELUP);
         if (!(player instanceof ServerPlayer serverPlayer))
             return stack;

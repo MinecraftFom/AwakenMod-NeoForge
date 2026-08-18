@@ -10,6 +10,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.entity.decoration.ItemFrame;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import org.spongepowered.asm.mixin.Mixin;
@@ -105,7 +107,9 @@ public abstract class MixinItemStack implements DataComponentHolder
             return;
 
         Player player = Minecraft.getInstance().player;
-        if (player == null || player.isCreative() || !player.getInventory().contains(self::equals))
+        if (player == null || player.isCreative())
+            return;
+        if (!player.getInventory().contains(self::equals) && !(self.getEntityRepresentation() instanceof ItemFrame || self.getEntityRepresentation() instanceof ItemEntity))
             return;
 
         Records.AwakenEpochComponent epoch = NBTUtil.deserializeEpoch(self);

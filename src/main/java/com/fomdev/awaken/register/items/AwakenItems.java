@@ -22,6 +22,18 @@ public class AwakenItems
                     Item::new
             );
 
+    public static final DeferredItem<?> AWAKEN_ESSENCE =
+            REGISTER.registerItem(
+                    "awaken_essence",
+                    Item::new
+            );
+
+    public static final DeferredItem<?> AWAKEN_PREFIX_BOOK =
+            REGISTER.registerItem(
+                    "awaken_prefix_book",
+                    AwakenPrefixBooks::new
+            );
+
     public static final DeferredItem<?> SOUL_BOTTLE =
             REGISTER.registerItem(
                     "soul_bottle",

@@ -57,6 +57,8 @@ public class ItemStackEvents
             NBTUtil.addSoul(event.getPlayer().getItemInHand(InteractionHand.MAIN_HAND), soul.current());
         else if (event.getPlayer().getItemInHand(InteractionHand.OFF_HAND).is(AwakenItems.SOUL_BOTTLE))
             NBTUtil.addSoul(event.getPlayer().getItemInHand(InteractionHand.OFF_HAND), soul.current());
+        else
+            return;
 
         stack.copyAndClear();
         if (event.getPlayer().level() instanceof ServerLevel serverLevel)

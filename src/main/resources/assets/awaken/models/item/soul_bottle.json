@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "awaken:item/soul_bottle_0"
+    "layer0": "awaken:item/soul_bottle_4"
   },
   "overrides": [
     {

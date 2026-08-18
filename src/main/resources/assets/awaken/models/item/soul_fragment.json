@@ -1,0 +1,32 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "soul_fragment_0"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "awaken:soul": 0
+      },
+      "model": "awaken:item/soul_fragment_3"
+    },
+    {
+      "predicate": {
+        "awaken:soul": 33
+      },
+      "model": "awaken:item/soul_fragment_2"
+    },
+    {
+      "predicate": {
+        "awaken:soul": 66
+      },
+      "model": "awaken:item/soul_fragment_1"
+    },
+    {
+      "predicate": {
+        "awaken:soul": 100
+      },
+      "model": "awaken:item/soul_fragment_0"
+    }
+  ]
+}

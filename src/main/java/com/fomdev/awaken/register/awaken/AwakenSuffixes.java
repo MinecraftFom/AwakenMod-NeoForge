@@ -46,7 +46,7 @@ public class AwakenSuffixes
         register$fast(Attributes.OXYGEN_BONUS, "alien", "underwater");
         register$fast(Attributes.SAFE_FALL_DISTANCE, "feather", "bird");
         register$fast(Attributes.SNEAKING_SPEED, "ninja", "assassin");
-        register$fast(Attributes.STEP_HEIGHT, "long_legged", "unstoppable");
+        register$fast(Attributes.STEP_HEIGHT, "long-legged", "unstoppable");
         register$fast(Attributes.SWEEPING_DAMAGE_RATIO, "aoe", "multi-elimination");
         register$fast(Attributes.WATER_MOVEMENT_EFFICIENCY, "fish", "water-goer");
         register$fast(NeoForgeMod.SWIM_SPEED, "swimmer", "axolotl");

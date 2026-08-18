@@ -46,9 +46,9 @@ public class TooltipRenderEvents
 
         if (infix != null && prefix != null && suffix != null)
         {
+            list.addAll(1, TooltipUtil.castSuffixTooltip(flag, suffix));
             list.addAll(1, TooltipUtil.castInfixTooltip(flag, infix, (float) ((quality != null? quality.getFactor(): 1) * (suffix.should(infix.getAttribute().attr())? suffix.factor(): 1))));
             list.addAll(1, TooltipUtil.castPrefixTooltip(flag, prefix));
-            list.addAll(1, TooltipUtil.castSuffixTooltip(flag, suffix));
         }
 
         if (quality != null)

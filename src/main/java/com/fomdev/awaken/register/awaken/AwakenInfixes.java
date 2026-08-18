@@ -51,7 +51,7 @@ public class AwakenInfixes
         register$fast(Attributes.OXYGEN_BONUS, Constants.BODY_SLOTS, "alien", "underwater");
         register$fast(Attributes.SAFE_FALL_DISTANCE, Constants.BODY_SLOTS, "feather", "bird");
         register$fast(Attributes.SNEAKING_SPEED, Constants.BODY_SLOTS, "ninja", "assassin");
-        register$fast(Attributes.STEP_HEIGHT, Constants.BODY_SLOTS, "long_legged", "unstoppable");
+        register$fast(Attributes.STEP_HEIGHT, Constants.BODY_SLOTS, "long-legged", "unstoppable");
         register$fast(Attributes.SWEEPING_DAMAGE_RATIO, Constants.HAND_SLOTS, "aoe", "multi-elimination");
         register$fast(Attributes.WATER_MOVEMENT_EFFICIENCY, Constants.BODY_SLOTS, "fish", "water-goer");
         register$fast(NeoForgeMod.SWIM_SPEED, Constants.BODY_SLOTS, "swimmer", "axolotl");

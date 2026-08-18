@@ -34,6 +34,12 @@ public class AwakenItems
                     Item::new
             );
 
+    public static final DeferredItem<?> UNKNOWN_AMULET =
+            REGISTER.registerItem(
+                    "unawaken_amulet",
+                    prop -> new Item(prop.stacksTo(1))
+            );
+
     public static final DeferredItem<?> UNKNOWN_ITEM =
             REGISTER.registerItem(
                     "unawaken_item",

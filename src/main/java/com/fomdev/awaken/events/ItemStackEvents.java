@@ -26,6 +26,9 @@ public class ItemStackEvents
         if (!(player instanceof ServerPlayer serverPlayer) || player.isCreative())
             return;
 
+        if (player.getInventory().contains(stack -> stack.is(AwakenItems.UNKNOWN_AMULET)))
+            return;
+
         ItemStack stack = event.getItemEntity().getItem();
         float diff = DifficultyManager.getLevelDifficulty(serverPlayer.serverLevel());
         float awakenLevel = NBTUtil.deserializeAwakenLevel(player);

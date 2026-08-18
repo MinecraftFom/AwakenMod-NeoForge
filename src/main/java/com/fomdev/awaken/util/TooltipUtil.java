@@ -531,7 +531,7 @@ public class TooltipUtil
     {
         List<Component> components = new ArrayList<>();
         for (MobEffectInstance instance: instances)
-            components.add(Component.empty().append(Component.translatable("tooltip.effect.whenhold.info", Component.translatable(instance.getDescriptionId()).getString(), Util.castTickToString(instance.getAmplifier()))).withStyle(ChatFormatting.GRAY));
+            components.add(Component.empty().append(Component.translatable("tooltip.effect.whenhold.info", Component.translatable(instance.getDescriptionId()).getString(), Util.castTickToString(instance.getDuration()))).withStyle(ChatFormatting.GRAY));
 
         return components;
     }

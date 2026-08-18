@@ -25,6 +25,7 @@ public class AwakenAspects
     public static final AwakenAspect ASPECT_LONELINESS = register("loneliness", Color.LIGHT_GRAY); // Sa Bi Shi I
     public static final AwakenAspect ASPECT_NATURAL = register("natural", Color.CYAN);
     public static final AwakenAspect ASPECT_SPIRITUAL = register("spiritual", Color.BLUE);
+    public static final AwakenAspect ASPECT_VINTAGE = register("vintage", Color.DARK_GRAY);
     public static final AwakenAspect ASPECT_VIVIDITY = register("vividity", Color.GREEN);
     public static final AwakenAspect ASPECT_VOID = register("void", new Color(255, 255, 255, 0));
     public static final AwakenAspect ASPECT_WATER = register("water", Color.BLUE);

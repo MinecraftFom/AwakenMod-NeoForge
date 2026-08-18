@@ -33,14 +33,14 @@ public class AwakenPrefix extends Registry
             String id,
             List<AwakenAspect.AspectInstance> aspects,
             int durability,
-            MobEffect[] effects
+            Holder<MobEffect>[] effects
     )
     {
         this(
                 id,
                 aspects,
                 durability,
-                Arrays.stream(effects).map(e -> new MobEffectInstance(new Holder.Direct<>(e))).toArray(MobEffectInstance[]::new)
+                Arrays.stream(effects).map(MobEffectInstance::new).toArray(MobEffectInstance[]::new)
         );
     }
 

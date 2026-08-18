@@ -219,12 +219,19 @@ public class EquipmentManager
             RandomSource random
     )
     {
-        float minDiff = (float) (random.nextFloat() % (factor * Math.sqrt(diff / 2)));
+        int factor1 = (int) diff;
+        int factor2 = Math.max(factor1, 1);
+        int factor3 = random.nextInt(factor2 * 2);
+        float result1 = (int) (factor3 * factor * 100) / 100.0F;
         double maxLevel = AwakenRegistries.AWAKEN_LEVEL.getMaxLevel();
         if (maxLevel <= 0)
-            return new Records.AwakenEpochComponent(minDiff, 0.0F);
-        double minLevel = (float) (random.nextDouble() % (factor * Math.sqrt(maxLevel)));
-        return new Records.AwakenEpochComponent(minLevel, minDiff);
+            return new Records.AwakenEpochComponent(0.0F, result1);
+
+        int factor4 = (int) maxLevel;
+        int factor5 = random.nextInt(factor4);
+        int factor6 = (int) (factor5 * Math.sqrt(factor));
+        float result2 = (int) (factor6 * 100) / 100.0F;
+        return new Records.AwakenEpochComponent(result2, result1);
     }
 
     public static void shuffleForItemStack(

@@ -77,7 +77,7 @@ public abstract class MixinItemStack implements DataComponentHolder
         cir.setReturnValue(component);
     }
 
-    @Inject(method = "getTooltipLines", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "getTooltipLines", at = @At("HEAD"), cancellable = true)
     private void fancyTooltip(Item.TooltipContext context, Player player, TooltipFlag flag, CallbackInfoReturnable<List<Component>> cir)
     {
         ItemStack self = (ItemStack) (Object) this;
@@ -93,8 +93,8 @@ public abstract class MixinItemStack implements DataComponentHolder
                 TooltipUtil.castEpochTooltip(
                         flag,
                         epoch,
-                        ClientDifficultyManager.getDifficulty(),
-                        NBTUtil.deserializeAwakenLevel(player)
+                        NBTUtil.deserializeAwakenLevel(player),
+                        ClientDifficultyManager.getDifficulty()
                 )
         );
     }

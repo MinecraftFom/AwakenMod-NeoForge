@@ -24,7 +24,7 @@
 
   "tooltip.aspect.info": "Aspect",
 
-  "tooltip.durability.additional.info": "Additional durability",
+  "tooltip.durability.additional.info": "%s of additional durability",
 
   "tooltip.effect.whenhold.info": "When held, give %s %s",
 

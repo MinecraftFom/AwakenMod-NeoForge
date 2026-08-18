@@ -38,6 +38,8 @@ public class TooltipRenderEvents
         List<AwakenPollinate.PollinateInstance> pollinates = NBTUtil.deserializePollinates(stack);
         List<AwakenSpore.SporeInstance> spores = NBTUtil.deserializeSpores(stack);
 
+        list.addAll(1, TooltipUtil.castAspectTooltip(flag, aspects));
+
         for (AwakenPollinate.PollinateInstance instance: pollinates)
             list.addAll(1 ,TooltipUtil.castPollinateTooltip(flag, instance));
 

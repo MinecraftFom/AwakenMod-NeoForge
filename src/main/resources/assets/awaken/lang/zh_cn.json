@@ -75,7 +75,7 @@
   "tier.awaken.reinforce.name": "强化",
   "tier.awaken.skilled.name": "高手",
   "tooltip.aspect.info": "附魔要素",
-  "tooltip.durability.additional.info": "额外耐久度",
+  "tooltip.durability.additional.info": "%s 点额外耐久度",
   "tooltip.effect.whenhold.info": "当手持时，给予 %s %s",
   "tooltip.enchantment.level.1": "I",
   "tooltip.enchantment.level.10": "X",

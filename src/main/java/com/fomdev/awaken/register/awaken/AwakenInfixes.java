@@ -34,7 +34,7 @@ public class AwakenInfixes
         register$fast(Attributes.ATTACK_SPEED, Constants.HAND_SLOTS, "proficiency", "efficiency");
         register$fast(Attributes.BLOCK_BREAK_SPEED, Constants.HAND_SLOTS,"miner", "mineral");
         register$fast(Attributes.BLOCK_INTERACTION_RANGE, Constants.HAND_SLOTS, "future", "observant");
-        register$fast(Attributes.BURNING_TIME, Constants.BODY_SLOTS,"breeze", "freeze");
+        register$fast$opposite(Attributes.BURNING_TIME, Constants.BODY_SLOTS,"breeze", "freeze");
         register$fast(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, Constants.BODY_SLOTS, "liquidize", "destroy");
         register$fast(Attributes.ENTITY_INTERACTION_RANGE, Constants.HAND_SLOTS, "eliminate", "telepathy");
         register$fast(Attributes.FALL_DAMAGE_MULTIPLIER, Constants.HAND_SLOTS, "lite", "light");

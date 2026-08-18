@@ -29,7 +29,7 @@ public class AwakenSuffixes
         register$fast(Attributes.ATTACK_SPEED, "proficiency", "efficiency");
         register$fast(Attributes.BLOCK_BREAK_SPEED, "miner", "mineral");
         register$fast(Attributes.BLOCK_INTERACTION_RANGE, "future", "observant");
-        register$fast(Attributes.BURNING_TIME, "breeze", "freeze");
+        register$fast$opposite(Attributes.BURNING_TIME, "breeze", "freeze");
         register$fast(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, "liquidize", "destroy");
         register$fast(Attributes.ENTITY_INTERACTION_RANGE, "eliminate", "telepathy");
         register$fast(Attributes.FALL_DAMAGE_MULTIPLIER, "lite", "light");

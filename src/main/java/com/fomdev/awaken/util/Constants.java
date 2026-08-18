@@ -184,6 +184,6 @@ public class Constants
 
     public static final double maxDurabilityFactor = 1000.0;
 
-    public static final double defaultRequiredSoul = 100.0;
-    public static final double defaultSoulFactor = 2.5;
+    public static final double defaultRequiredSoul = 10.0;
+    public static final double defaultSoulFactor = 1.5;
 }

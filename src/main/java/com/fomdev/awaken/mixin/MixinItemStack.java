@@ -113,7 +113,8 @@ public abstract class MixinItemStack implements DataComponentHolder
         Player player = Minecraft.getInstance().player;
         if (player == null || player.isCreative() || player.level() instanceof ServerLevel)
             return;
-        if (!player.getInventory().contains(self::equals) && !(self.getEntityRepresentation() instanceof ItemFrame || self.getEntityRepresentation() instanceof ItemEntity))
+
+        if (!player.getInventory().contains(self::equals))
             return;
 
         Records.AwakenEpochComponent epoch = NBTUtil.deserializeEpoch(self);

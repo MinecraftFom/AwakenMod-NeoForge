@@ -2,6 +2,7 @@ package com.fomdev.awaken.register.items;
 
 import com.fomdev.awaken.init.config.AwakenCommon;
 import com.fomdev.awaken.register.data.AwakenDataComponents;
+import com.fomdev.awaken.util.Constants;
 import com.fomdev.awaken.util.HealthUtil;
 import com.fomdev.awaken.util.NBTUtil;
 import com.fomdev.awaken.util.Records;
@@ -38,7 +39,7 @@ public class AwakenSoulBottle extends Item
                         .stacksTo(1)
                         .component(
                                 AwakenDataComponents.AWAKEN_SOUL_STORAGE,
-                                new Records.AwakenSoulComponent(0.0F, 100.0F)
+                                new Records.AwakenSoulComponent(0.0F, (float) Constants.defaultRequiredSoul)
                         )
                         .component(
                                 DataComponents.UNBREAKABLE,

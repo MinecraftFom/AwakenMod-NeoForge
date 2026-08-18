@@ -10,6 +10,8 @@
   "gui.difficulty.info": "Current Awaken Difficulty",
   "gui.level.info": "Awaken Level",
 
+  "item.awaken.soul_bottle": "Soul Bottle",
+
   "tier.awaken.naive.name": "Naive",
   "tier.awaken.reinforce.name": "Reinforced",
   "tier.awaken.learner.name": "Learner",

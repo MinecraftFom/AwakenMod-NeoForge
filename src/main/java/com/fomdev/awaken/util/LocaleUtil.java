@@ -70,7 +70,7 @@ public class LocaleUtil
     {
         List<Component> components = new ArrayList<>();
         for (EquipmentSlot slot: slots)
-            components.add(Component.empty().append(Component.translatable("tooltip.slot.avaiable.info")).append(Component.translatable(slot.getName())).withStyle(ChatFormatting.GRAY));
+            components.add(Component.empty().append(Component.translatable("tooltip.slot.available.info", Component.translatable("tooltip.slot." + slot.getName() + ".name"))).withStyle(ChatFormatting.GRAY));
 
         return components;
     }

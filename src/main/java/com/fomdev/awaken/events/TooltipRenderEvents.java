@@ -38,9 +38,6 @@ public class TooltipRenderEvents
         List<AwakenPollinate.PollinateInstance> pollinates = NBTUtil.deserializePollinates(stack);
         List<AwakenSpore.SporeInstance> spores = NBTUtil.deserializeSpores(stack);
 
-        if (quality != null)
-            list.addAll(1, TooltipUtil.castQualityTooltip(flag, quality));
-
         for (AwakenPollinate.PollinateInstance instance: pollinates)
             list.addAll(1 ,TooltipUtil.castPollinateTooltip(flag, instance));
 
@@ -49,9 +46,12 @@ public class TooltipRenderEvents
 
         if (infix != null && prefix != null && suffix != null)
         {
-            list.addAll(1, TooltipUtil.castInfixTooltip(flag, infix, (float) (quality != null? quality.getFactor() * suffix.factor(): suffix.factor())));
+            list.addAll(1, TooltipUtil.castInfixTooltip(flag, infix, (float) ((quality != null? quality.getFactor(): 1) * (suffix.should(infix.getAttribute().attr())? suffix.factor(): 1))));
             list.addAll(1, TooltipUtil.castPrefixTooltip(flag, prefix));
             list.addAll(1, TooltipUtil.castSuffixTooltip(flag, suffix));
         }
+
+        if (quality != null)
+            list.addAll(1, TooltipUtil.castQualityTooltip(flag, quality));
     }
 }

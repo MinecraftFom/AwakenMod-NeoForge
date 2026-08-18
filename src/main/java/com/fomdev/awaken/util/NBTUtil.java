@@ -36,7 +36,7 @@ public class NBTUtil
     {
         Records.AwakenSoulComponent original = deserializeSoul(stack);
         float value = original.current() + soul;
-        serializeSoul(stack, new Records.AwakenSoulComponent((int) (Math.min(value, original.maximum()) * 100) / 100.0F, original.maximum()));
+        serializeSoul(stack, new Records.AwakenSoulComponent((int) (value * 100) / 100.0F, original.maximum()));
     }
 
     public static void clearPlayer(

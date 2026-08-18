@@ -60,6 +60,6 @@ public class ItemStackEvents
 
         stack.copyAndClear();
         if (event.getPlayer().level() instanceof ServerLevel serverLevel)
-            serverLevel.players().forEach(p -> serverLevel.sendParticles(p, ParticleTypes.SCULK_SOUL, false, event.getPlayer().getX(), event.getPlayer().getY() + 1, event.getPlayer().getZ(), 20, 1.0, 1.0, 1.0, 0.0));
+            serverLevel.players().forEach(p -> serverLevel.sendParticles(p, ParticleTypes.SCULK_SOUL, false, event.getPlayer().getX(), event.getPlayer().getY() + 1, event.getPlayer().getZ(), (int) (20 * soul.current()) , 1.0, 1.0, 1.0, 0.0));
     }
 }

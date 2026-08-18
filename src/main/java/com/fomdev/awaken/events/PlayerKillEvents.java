@@ -57,6 +57,6 @@ public class PlayerKillEvents
         float soul = random.nextFloat() % (factor * factor2);
         NBTUtil.addSoul(stack, soul);
         if (level instanceof ServerLevel serverLevel)
-            serverLevel.players().forEach(p -> serverLevel.sendParticles(p, ParticleTypes.SCULK_SOUL, false, player.getX(), player.getY() + 1, player.getZ(), 20, 1.0, 1.0, 1.0, 0.0));
+            serverLevel.players().forEach(p -> serverLevel.sendParticles(p, ParticleTypes.SCULK_SOUL, false, player.getX(), player.getY() + 1, player.getZ(), (int) (20 * soul), 1.0, 1.0, 1.0, 0.0));
     }
 }

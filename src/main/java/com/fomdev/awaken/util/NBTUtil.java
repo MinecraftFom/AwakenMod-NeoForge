@@ -53,11 +53,14 @@ public class NBTUtil
         if (stack.is(Items.AIR))
             return List.of();
 
+        List<AwakenAspect.AspectInstance> instances = new ArrayList<>();
+        AwakenPrefix prefix = NBTUtil.deserializePrefix(stack);
+        if (prefix != null)
+            instances.addAll(prefix.aspects());
         List<CompoundTag> component = stack.get(AwakenDataComponents.AWAKEN_ASPECT_STORAGE.get());
         if (component == null)
-            return List.of();
+            return instances;
 
-        List<AwakenAspect.AspectInstance> instances = new ArrayList<>();
         for (CompoundTag tag: component)
         {
             if (!tag.contains("id") || !tag.contains("level"))
@@ -71,6 +74,7 @@ public class NBTUtil
 
             instances.add(new AwakenAspect.AspectInstance(aspect, level));
         }
+
 
         return instances;
     }

@@ -78,15 +78,17 @@ public class EnchantManager
         AwakenCommon.CONFIG.ENCHANT_ASPECTS.get().stream().map(EnchantManager::loadFromString).forEach(data -> aspects.computeIfAbsent(data.getA(), d -> new ArrayList<>()).addAll(data.getB()));
     }
 
-    public static List<AwakenAspect.AspectInstance> get(ResourceLocation location)
+    public static List<AwakenAspect.AspectInstance> get(ResourceLocation location, int lvl)
     {
-        return aspects.getOrDefault(location, Collections.singletonList(AwakenAspects.ASPECT_DIVERSITY.toInstance(100)));
+        return aspects.getOrDefault(location, Collections.singletonList(AwakenAspects.ASPECT_DIVERSITY.toInstance(100))).stream().map(v -> v.aspect().toInstance(v.amount() * lvl)).toList();
     }
 
     public static boolean meetsRequirements(List<AwakenAspect.AspectInstance> available, List<AwakenAspect.AspectInstance> requirements)
     {
         for (AwakenAspect.AspectInstance req: requirements)
         {
+            boolean flag1 = false;
+
             for (AwakenAspect.AspectInstance ava: available)
             {
                 if (ava.aspect() != req.aspect())
@@ -94,7 +96,15 @@ public class EnchantManager
 
                 if (ava.amount() < req.amount())
                     return false;
+                else
+                {
+                    flag1 = true;
+                    break;
+                }
             }
+
+            if (!flag1)
+                return false;
         }
 
         return true;

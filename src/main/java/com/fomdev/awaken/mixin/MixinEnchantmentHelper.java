@@ -40,18 +40,19 @@ public class MixinEnchantmentHelper
                 .forEach(enchant -> {
                     Enchantment ench = enchant.value();
 
-                    if (
-                            !EnchantManager.meetsRequirements(
-                                    NBTUtil.deserializeAspects(stack),
-                                    EnchantManager.get(Objects.requireNonNull(enchant.getKey()).location())
-                            )
-                    )
-                        return;
 
                     for(int i = ench.getMaxLevel(); i >= ench.getMinLevel(); i--)
                     {
                         if (ench.getMinCost(i) <= cost && cost <= ench.getMaxCost(i))
                         {
+                            if (
+                                !EnchantManager.meetsRequirements(
+                                        NBTUtil.deserializeAspects(stack),
+                                        EnchantManager.get(Objects.requireNonNull(enchant.getKey()).location(), i)
+                                )
+                            )
+                                return;
+
                             list.add(new EnchantmentInstance(enchant, i));
                             break;
                         }

@@ -1,7 +1,11 @@
 package com.fomdev.awaken.mixin;
 
+import com.fomdev.awaken.difficulty.DifficultyManager;
 import com.fomdev.awaken.knowledge.KnowledgeHelper;
+import com.fomdev.awaken.util.NBTUtil;
+import com.fomdev.awaken.util.Records;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -58,6 +62,15 @@ public class MixinCraftingTableMenu
         }
 
         stack = KnowledgeHelper.getResult(player, stack);
+        float awakenLevel = NBTUtil.deserializeAwakenLevel(player);
+        float difficulty = DifficultyManager.getLevelDifficulty((ServerLevel) level);
+        NBTUtil.serializeEpoch(
+                stack,
+                new Records.AwakenEpochComponent(
+                        awakenLevel,
+                        difficulty
+                )
+        );
 
         resultSlots.setItem(0, stack);
         menu.setRemoteSlot(0, stack);

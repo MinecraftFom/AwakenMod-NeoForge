@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -89,14 +90,17 @@ public abstract class MixinItemStack implements DataComponentHolder
         if (epoch == null)
             return;
 
-        cir.setReturnValue(
-                TooltipUtil.castEpochTooltip(
-                        flag,
-                        epoch,
-                        NBTUtil.deserializeAwakenLevel(player),
-                        ClientDifficultyManager.getDifficulty()
-                )
-        );
+        float difficulty = ClientDifficultyManager.getDifficulty();
+        float level = NBTUtil.deserializeAwakenLevel(player);
+        if (difficulty < epoch.requiredMinDifficulty() || level < epoch.requiredAwakenLevel())
+            cir.setReturnValue(
+                    TooltipUtil.castEpochTooltip(
+                            flag,
+                            epoch,
+                            NBTUtil.deserializeAwakenLevel(player),
+                            ClientDifficultyManager.getDifficulty()
+                    )
+            );
     }
 
     @Inject(method = "getItem", at = @At("RETURN"), cancellable = true)
@@ -107,7 +111,7 @@ public abstract class MixinItemStack implements DataComponentHolder
             return;
 
         Player player = Minecraft.getInstance().player;
-        if (player == null || player.isCreative())
+        if (player == null || player.isCreative() || player.level() instanceof ServerLevel)
             return;
         if (!player.getInventory().contains(self::equals) && !(self.getEntityRepresentation() instanceof ItemFrame || self.getEntityRepresentation() instanceof ItemEntity))
             return;
@@ -120,6 +124,6 @@ public abstract class MixinItemStack implements DataComponentHolder
         float level = NBTUtil.deserializeAwakenLevel(player);
 
         if (difficulty < epoch.requiredMinDifficulty() || level < epoch.requiredAwakenLevel())
-            cir.setReturnValue(AwakenItems.UNKNOWN_ITEM.asItem());
+             cir.setReturnValue(AwakenItems.UNKNOWN_ITEM.asItem());
     }
 }

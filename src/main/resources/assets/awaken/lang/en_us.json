@@ -11,6 +11,8 @@
   "gui.level.info": "Awaken Level",
 
   "item.awaken.soul_bottle": "Soul Bottle",
+  "item.awaken.unawaken_amulet": "Unawaken Amulet",
+  "item.awaken.unawaken_item": "Unawaken Item",
 
   "tier.awaken.naive.name": "Naive",
   "tier.awaken.reinforce.name": "Reinforced",

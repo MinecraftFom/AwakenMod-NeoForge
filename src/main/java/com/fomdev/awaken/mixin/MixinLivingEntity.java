@@ -123,4 +123,20 @@ public abstract class MixinLivingEntity
         if (!(self instanceof Player player))
             cir.setReturnValue(HealthUtil.calculateMobHealth(self, cir.getReturnValue()));
     }
+
+    @Inject(method = "onAttributeUpdated", at = @At("HEAD"), cancellable = true)
+    private void onAttributeUpdated(
+            Holder<Attribute> attribute,
+            CallbackInfo ci
+    )
+    {
+        LivingEntity self = (LivingEntity) (Object) this;
+        if (!(self instanceof Player player))
+            return;
+
+        if (player instanceof LocalPlayer player1 && player1.connection == null)
+            ci.cancel();
+        else if (player instanceof ServerPlayer player1 && player1.connection == null)
+            ci.cancel();
+    }
 }

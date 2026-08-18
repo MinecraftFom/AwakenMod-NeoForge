@@ -9,6 +9,7 @@ import com.fomdev.awaken.util.ColorUtil;
 import com.fomdev.awaken.util.LocaleUtil;
 import com.fomdev.awaken.util.NBTUtil;
 import com.fomdev.awaken.util.Records;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
@@ -41,6 +42,19 @@ public abstract class MixinPlayer
 
     @Shadow
     public abstract void setItemSlot(EquipmentSlot slot, ItemStack stack);
+
+    @Inject(method = "aiStep", at = @At("RETURN"), cancellable = true)
+    private void aiStep(
+            CallbackInfo ci
+    )
+    {
+        Player self = (Player) (Object) this;
+
+        if (self instanceof LocalPlayer player && player.connection == null)
+            ci.cancel();
+        else if (self instanceof ServerPlayer player && player.connection == null)
+            ci.cancel();
+    }
 
     @Inject(method = "getDisplayName", at = @At("RETURN"), cancellable = true)
     private void fancyName(CallbackInfoReturnable<Component> cir)

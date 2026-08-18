@@ -2,7 +2,6 @@ package com.fomdev.awaken.register.awaken;
 
 import com.fomdev.awaken.entries.raw.AwakenInfix;
 import com.fomdev.awaken.entries.raw.AwakenRegistries;
-import com.fomdev.awaken.entries.raw.AwakenSuffix;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.register.attribute.AwakenAttributes;
 import com.fomdev.awaken.spawn.shuffle.ShuffledRegistries;
@@ -26,7 +25,7 @@ public class AwakenInfixes
     public static final RegistryTable<AwakenInfix> REGISTRY =
             new RegistryTable<>(Awaken.MODID, AwakenRegistries.AWAKEN_INFIX);
 
-    static
+    public static void init()
     {
         register$fast(Attributes.ARMOR, Constants.BODY_SLOTS, "normal", "imperfect");
         register$fast(Attributes.ARMOR_TOUGHNESS, Constants.BODY_SLOTS, "strength", "toughness");
@@ -62,6 +61,7 @@ public class AwakenInfixes
     @AutoProxy.Proxied(AutoProxy.ProxyProtocol.MOD_INIT)
     public static void register()
     {
+        init();
         REGISTRY.register();
     }
 
@@ -75,10 +75,14 @@ public class AwakenInfixes
         {
             register(str, 0.5F, target, slots, 500.0F, 0.0F);
             register(str + "_2", 1.0F, target, slots, 450.0F, 50.0F);
-            register(str + "_3", 2.5F, target, slots, 200.0F, 500.0F);
-            register(str + "_4", 5.0F,  target, slots, 100.0F, 1000.0F);
-            register(str + "_5", 10.0F,  target, slots, 50.0F, 5000.0F);
-            register(str + "_6", 15.0F, target, slots, 25.0F, 10000.0F);
+            register(str + "_3", 1.25F, target, slots, 200.0F, 500.0F);
+            register(str + "_4", 2.0F,  target, slots, 100.0F, 1000.0F);
+            register(str + "_5", 2.25F,  target, slots, 50.0F, 5000.0F);
+            register(str + "_6", 2.5F, target, slots, 25.0F, 10000.0F);
+            register(str + "_7", 5.0F, target, slots, 10.0F, 12500.0F);
+            register(str + "_8", 7.5F, target, slots, 1.5F, 50000.0F);
+            register(str + "_9", 10.0F, target, slots, 0.25F, 100000.0F);
+            register(str + "_10", 50.0F, target, slots, 0.0001F, 100000.0F);
         }
     }
 
@@ -92,10 +96,14 @@ public class AwakenInfixes
         {
             register(str, -0.5F, target, slots, 500.0F, 0.0F);
             register(str + "_2", -1.0F, target, slots, 450.0F, 50.0F);
-            register(str + "_3", -2.5F, target, slots, 200.0F, 500.0F);
-            register(str + "_4", -5.0F,  target, slots, 100.0F, 1000.0F);
-            register(str + "_5", -10.0F,  target, slots, 50.0F, 5000.0F);
-            register(str + "_6", -15.0F, target, slots, 25.0F, 10000.0F);
+            register(str + "_3", -1.25F, target, slots, 200.0F, 500.0F);
+            register(str + "_4", -2.0F,  target, slots, 100.0F, 1000.0F);
+            register(str + "_5", -2.25F,  target, slots, 50.0F, 5000.0F);
+            register(str + "_6", -2.5F, target, slots, 25.0F, 10000.0F);
+            register(str + "_7", -5.0F, target, slots, 10.0F, 12500.0F);
+            register(str + "_8", -7.5F, target, slots, 1.5F, 50000.0F);
+            register(str + "_9", -10.0F, target, slots, 0.25F, 100000.0F);
+            register(str + "_10", -50.0F, target, slots, 0.0001F, 100000.0F);
         }
     }
 
@@ -126,15 +134,14 @@ public class AwakenInfixes
             float diff
     )
     {
-        for (EquipmentSlot slot: slots)
-            register(
-                    new AwakenInfix(
-                            id,
-                            new Records.AttributeHolder(target, amount, slot)
-                    ),
-                    chance,
-                    diff
-            );
+        register(
+                new AwakenInfix(
+                        id,
+                        new Records.AttributeHolder(target, amount, AttributeModifier.Operation.ADD_VALUE, slots)
+                ),
+                chance,
+                diff
+        );
     }
 
 

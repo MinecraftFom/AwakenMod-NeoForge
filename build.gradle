@@ -80,7 +80,7 @@ configurations {
 }
 
 dependencies {
-     implementation files("libs/flame_lib-1.0.7.jar")
+     implementation files("libs/flame_lib-1.0.8.jar")
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {

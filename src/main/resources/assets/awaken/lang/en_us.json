@@ -1,6 +1,10 @@
 {
+  "bar.block.cant_pickup.info": "You can't pickup that item. Awaken Level (%s / %s), Difficulty (%s / %s); Or you can use an Unawaken Amulet",
   "bar.increased_health.info": "Gained %d Points Of Health!",
   "bar.not_enough.info": "Not Enough Soul Stored: %s / %s",
+
+  "bar.rank.not_enough.block.info": "You can't break this block with the current rank. (%s / %s)",
+  "bar.rank.not_enough.entity.info": "You can't attack that entity with the current rank. (%s / %s)",
 
   "gui.knowledge.experience.info": "Experience",
   "gui.knowledge.insight.info": "Insight",
@@ -296,6 +300,7 @@
   "tooltip.pollinate.info": "Pollinate",
   "tooltip.pollinate.when.info": "When %s, give %s %s %s",
 
+  "tooltip.prefix.immunise.info": "When holding, immunise to %s",
   "tooltip.prefix.info": "Prefix",
   "tooltip.prefix.effect.info": "Effects",
 

@@ -6,6 +6,8 @@ import com.fomdev.awaken.register.items.AwakenItems;
 import com.fomdev.awaken.util.NBTUtil;
 import com.fomdev.awaken.util.Records;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -41,7 +43,18 @@ public class ItemStackEvents
             return;
 
         if (epoch.requiredMinDifficulty() > diff || epoch.requiredAwakenLevel() > awakenLevel)
+        {
             event.setCanPickup(TriState.FALSE);
+            serverPlayer.connection.send(new ClientboundSetActionBarTextPacket(
+                    Component.translatable(
+                            "bar.block.cant_pickup.info",
+                            diff,
+                            epoch.requiredMinDifficulty(),
+                            awakenLevel,
+                            epoch.requiredAwakenLevel()
+                    )
+            ));
+        }
     }
 
     @SubscribeEvent

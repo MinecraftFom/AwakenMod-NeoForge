@@ -5,6 +5,7 @@ import com.fomdev.awaken.entries.raw.*;
 import com.fomdev.awaken.register.data.AwakenDataComponents;
 import com.fomdev.awaken.register.items.AwakenItems;
 import com.fomdev.awaken.util.*;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.component.DataComponentHolder;
@@ -15,6 +16,8 @@ import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -76,6 +79,22 @@ public abstract class MixinItemStack implements DataComponentHolder
             component.withStyle(ColorUtil.colorStyle(ColorUtil.render(quality.getColors(), quality.getPattern()).backEnd()));
 
         cir.setReturnValue(component);
+    }
+
+    @Inject(method = "getTagEnchantments", at = @At("RETURN"), cancellable = true)
+    private void getTagEnchantments(
+            CallbackInfoReturnable<ItemEnchantments> cir
+    )
+    {
+        ItemStack stack = (ItemStack) (Object) this;
+        AwakenPrefix prefix = NBTUtil.deserializePrefix(stack);
+        if (prefix == null)
+            return;
+
+        ImmutableList<EnchantmentInstance> enchs = prefix.getBaseEnchantments();
+        ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(cir.getReturnValue());
+        enchs.forEach(ench -> mutable.set(ench.enchantment, ench.level));
+        cir.setReturnValue(mutable.toImmutable());
     }
 
     @Inject(method = "getTooltipLines", at = @At("HEAD"), cancellable = true)

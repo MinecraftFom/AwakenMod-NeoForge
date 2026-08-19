@@ -308,10 +308,6 @@ public class TooltipUtil
                                     .withStyle(ChatFormatting.GRAY)
                     );
             components
-                    .addAll(
-                            translateEffects(prefix.effects())
-                    );
-            components
                     .add(
                             Component
                                     .empty()
@@ -319,11 +315,24 @@ public class TooltipUtil
                                             Component
                                                     .translatable(
                                                             "tooltip.durability.additional.info",
-                                                            prefix.addition()
+                                                            prefix.getDurability()
                                                     )
                                     )
                                     .withStyle(ChatFormatting.GRAY)
                     );
+
+            for (AwakenSpore spore: prefix.getImmuniseAmounts())
+                components
+                        .add(
+                                Component
+                                        .empty()
+                                        .append(
+                                                Component.translatable(
+                                                        "tooltip.prefix.immunise.info",
+                                                        LocaleUtil.localizeSpore(spore)
+                                                )
+                                        )
+                        );
         } else
             components
                     .add(

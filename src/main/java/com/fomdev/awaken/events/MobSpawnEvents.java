@@ -5,16 +5,20 @@ import com.fomdev.awaken.difficulty.DifficultyManager;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.register.data.AwakenAttachmentTypes;
 import com.fomdev.awaken.spawn.MobSpawnManager;
+import com.fomdev.awaken.util.NBTUtil;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.RangedAttackMob;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 
 @EventBusSubscriber(modid = Awaken.MODID)
 public class MobSpawnEvents
@@ -61,6 +65,23 @@ public class MobSpawnEvents
                 event.getLevel().getLevel(),
                 random
         );
+    }
+
+    @SubscribeEvent
+    public static void onMobDeath(
+            LivingDeathEvent event
+    )
+    {
+        Entity source = event.getSource().getEntity();
+        LivingEntity target = event.getEntity();
+
+        if (!(source instanceof Player player))
+            return;
+
+        if (!isAwaken(target))
+            return;
+
+        NBTUtil.addAwakenLevel(player, player.getRandom().nextInt((int) target.getMaxHealth()));
     }
 
     public static boolean isAwaken(

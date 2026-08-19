@@ -1,75 +1,52 @@
 package com.fomdev.awaken.entries.raw;
 
 import com.fomdev.flame.register.Registry;
-import net.minecraft.core.Holder;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class AwakenPrefix extends Registry
+public abstract class AwakenPrefix extends Registry
 {
-    private final List<AwakenAspect.AspectInstance> aspects;
     private final int durability;
-    private final MobEffectInstance[] effects;
+    private final float rank;
+    private final List<EnchantmentInstance> baseEnchantments;
+    private final List<AwakenSpore> immunise;
 
     public AwakenPrefix(
             String id,
-            List<AwakenAspect.AspectInstance> aspects,
             int durability,
-            MobEffectInstance[] effects
+            float rankFactor,
+            List<EnchantmentInstance> baseEnchantments,
+            List<AwakenSpore> immunise
     )
     {
         super(id);
 
-        this.aspects = new ArrayList<>(aspects);
         this.durability = durability;
-        this.effects = effects;
+        this.rank = rankFactor;
+
+        this.baseEnchantments = List.copyOf(baseEnchantments);
+        this.immunise = List.copyOf(immunise);
     }
 
-    public AwakenPrefix(
-            String id,
-            List<AwakenAspect.AspectInstance> aspects,
-            int durability,
-            Holder<MobEffect>[] effects
-    )
-    {
-        this(
-                id,
-                aspects,
-                durability,
-                Arrays.stream(effects).map(MobEffectInstance::new).toArray(MobEffectInstance[]::new)
-        );
-    }
-
-    public AwakenPrefix(
-            String id,
-            List<AwakenAspect.AspectInstance> aspects,
-            int durability
-    )
-    {
-        this(
-                id,
-                aspects,
-                durability,
-                new MobEffectInstance[]{}
-        );
-    }
-
-    public int addition()
+    public int getDurability()
     {
         return this.durability;
     }
 
-    public List<AwakenAspect.AspectInstance> aspects()
+    public float getRankFactor()
     {
-        return this.aspects;
+        return this.rank;
     }
 
-    public MobEffectInstance[] effects()
+    public ImmutableList<EnchantmentInstance> getBaseEnchantments()
     {
-        return this.effects;
+        return ImmutableList.copyOf(this.baseEnchantments);
+    }
+
+    public ImmutableList<AwakenSpore> getImmuniseAmounts()
+    {
+        return ImmutableList.copyOf(this.immunise);
     }
 }

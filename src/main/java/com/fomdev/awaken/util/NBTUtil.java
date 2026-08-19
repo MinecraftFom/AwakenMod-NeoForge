@@ -10,7 +10,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.players.PlayerList;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -54,9 +54,6 @@ public class NBTUtil
             return List.of();
 
         List<AwakenAspect.AspectInstance> instances = new ArrayList<>();
-        AwakenPrefix prefix = NBTUtil.deserializePrefix(stack);
-        if (prefix != null)
-            instances.addAll(prefix.aspects());
         List<CompoundTag> component = stack.get(AwakenDataComponents.AWAKEN_ASPECT_STORAGE.get());
         if (component == null)
             return instances;
@@ -97,14 +94,14 @@ public class NBTUtil
     }
 
     public static float deserializeAwakenLevel(
-            Player player
+            Entity entity
     )
     {
-        Records.AwakenLevelComponent data = player.getExistingDataOrNull(AwakenAttachmentTypes.PLAYER_AWAKEN_LEVEL_ATTACHMENT);
+        Records.AwakenLevelComponent data = entity.getExistingDataOrNull(AwakenAttachmentTypes.PLAYER_AWAKEN_LEVEL_ATTACHMENT);
         if (data == null)
-            serializeAwakenLevel(player, 0.0F);
+            serializeAwakenLevel(entity, 0.0F);
 
-        data = player.getExistingDataOrNull(AwakenAttachmentTypes.PLAYER_AWAKEN_LEVEL_ATTACHMENT);
+        data = entity.getExistingDataOrNull(AwakenAttachmentTypes.PLAYER_AWAKEN_LEVEL_ATTACHMENT);
         assert data != null;
         return data.level();
     }
@@ -268,11 +265,11 @@ public class NBTUtil
     }
 
     public static void serializeAwakenLevel(
-            Player player,
+            Entity entity,
             float level
     )
     {
-        player.setData(AwakenAttachmentTypes.PLAYER_AWAKEN_LEVEL_ATTACHMENT, new Records.AwakenLevelComponent(level));
+        entity.setData(AwakenAttachmentTypes.PLAYER_AWAKEN_LEVEL_ATTACHMENT, new Records.AwakenLevelComponent(level));
     }
 
     public static void serializeDescriber(

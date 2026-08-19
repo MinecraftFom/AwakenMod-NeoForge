@@ -2,9 +2,11 @@ package com.fomdev.awaken.spawn;
 
 import com.fomdev.awaken.init.config.AwakenCommon;
 import com.fomdev.awaken.literature.Literature;
+import com.fomdev.awaken.rank.RankHelper;
 import com.fomdev.awaken.register.data.AwakenAttachmentTypes;
 import com.fomdev.awaken.spawn.shuffle.ShuffledRegistries;
 import com.fomdev.awaken.util.ColorUtil;
+import com.fomdev.awaken.util.NBTUtil;
 import com.fomdev.awaken.util.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -178,6 +180,8 @@ public class MobSpawnManager
             return;
         if (!(original instanceof EquipmentUser user))
             return;
+
+        NBTUtil.serializeAwakenLevel(original, RankHelper.randomizeRank(server, factor, random));
 
         original.setCustomName(
                 Component.empty().append(title).withStyle(ColorUtil.colorStyle(color))

@@ -1,6 +1,9 @@
 {
+  "bar.block.cant_pickup.info": "你不能捡起那个物品. 觉醒等级 (%s / %s), 难度 (%s / %s); 或者你可以使用未觉醒护符",
   "bar.increased_health.info": "获得了 %d 点生命值!",
   "bar.not_enough.info": "灵魂点数未达到需求: %s / %s",
+  "bar.rank.not_enough.block.info": "你目前不能在该位阶下破坏这个方块. (%s / %s)",
+  "bar.rank.not_enough.entity.info": "你目前不能在该位阶下攻击这个实体. (%s / %s)",
   "gui.difficulty.info": "当前难度",
   "gui.knowledge.experience.info": "经验",
   "gui.knowledge.insight.info": "见识",
@@ -339,6 +342,7 @@
   "tooltip.infix.info": "中缀",
   "tooltip.pollinate.info": "花粉",
   "tooltip.pollinate.when.info": "当 %s 时, 给予 %s %s %s",
+  "tooltip.prefix.immunise.info": "当手持时，对%s免疫",
   "tooltip.prefix.effect.info": "效果",
   "tooltip.prefix.info": "前缀",
   "tooltip.quality.factor.info": "倍率",

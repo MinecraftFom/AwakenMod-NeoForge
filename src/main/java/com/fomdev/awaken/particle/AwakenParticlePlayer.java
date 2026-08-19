@@ -343,7 +343,7 @@ public class AwakenParticlePlayer
         );
     }
 
-    private static <T extends ParticleOptions> void playCircle(
+    public static <T extends ParticleOptions> void playCircle(
             ServerLevel level,
             ServerPlayer player,
             T particle,
@@ -351,8 +351,6 @@ public class AwakenParticlePlayer
             double radius
     )
     {
-//        if (points < 3) points = 3;
-
         int points = (int)(2 * Math.PI * radius * 2);
         double step = 2 * Math.PI / points;
 
@@ -378,7 +376,7 @@ public class AwakenParticlePlayer
         }
     }
 
-    private static <T extends ParticleOptions> void playLine(
+    public static <T extends ParticleOptions> void playLine(
             ServerLevel level,
             ServerPlayer player,
             T particle,
@@ -413,7 +411,7 @@ public class AwakenParticlePlayer
         }
     }
 
-    private static <T extends ParticleOptions> void playBeacon(
+    public static <T extends ParticleOptions> void playBeacon(
             ServerLevel level,
             ServerPlayer player,
             T particle,

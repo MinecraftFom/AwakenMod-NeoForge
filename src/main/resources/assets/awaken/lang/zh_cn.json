@@ -77,17 +77,5 @@
   "prefix.parachute.name": "滑翔",
   "prefix.firstaid.name": "急救",
   "prefix.fish.name": "鱼雷",
-  "prefix.infinity.name": "无   限",
-  "aspect.blood.name": "血液",
-  "aspect.death.name": "死亡",
-  "aspect.diversity.name": "多态",
-  "aspect.humanity.name": "人性",
-  "aspect.insanity.name": "疯狂",
-  "aspect.loneliness.name": "孤独",
-  "aspect.natural.name": "自然",
-  "aspect.spiritual.name": "灵气",
-  "aspect.vintage.name": "远古",
-  "aspect.vividity.name": "生机",
-  "aspect.void.name": "虚无",
-  "aspect.water.name": "水源"
+  "prefix.infinity.name": "无   限"
 }

@@ -39,6 +39,8 @@ public class PlayerKillEvents
         ItemStack offhand = player.getItemInHand(InteractionHand.OFF_HAND);
         processSoulAdd(player.level(), player, mainhand, factor2, random);
         processSoulAdd(player.level(), player, offhand, factor2, random);
+
+        NBTUtil.addAwakenLevel(player, NBTUtil.deserializeAwakenLevel(vic));
     }
 
     private static void processSoulAdd(

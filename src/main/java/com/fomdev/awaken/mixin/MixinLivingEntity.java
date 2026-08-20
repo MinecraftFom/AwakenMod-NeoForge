@@ -97,10 +97,16 @@ public abstract class MixinLivingEntity
         if (!attribute.is(Attributes.MAX_HEALTH))
             return;
 
-        if (self instanceof ServerPlayer player && player.connection != null)
+        if (self.level().isClientSide())
+        {
+            if (self instanceof ServerPlayer player && player.connection != null)
+                cir.setReturnValue(cir.getReturnValue() + HealthUtil.deserializeAdditionalHealthPersistent(player));
+            else if (self instanceof LocalPlayer player && player.connection != null)
+                cir.setReturnValue(cir.getReturnValue() + HealthUtil.deserializeAdditionalHealthPersistent(player));
+        } else if (self instanceof Player player)
+        {
             cir.setReturnValue(cir.getReturnValue() + HealthUtil.deserializeAdditionalHealthPersistent(player));
-        else if (self instanceof LocalPlayer player && player.connection != null)
-            cir.setReturnValue(cir.getReturnValue() + HealthUtil.deserializeAdditionalHealthPersistent(player));
+        }
     }
 
     @Inject(method = "getEquipmentSlotForItem", at = @At("RETURN"), cancellable = true)
@@ -122,6 +128,8 @@ public abstract class MixinLivingEntity
 
         if (!(self instanceof Player player))
             cir.setReturnValue(HealthUtil.calculateMobHealth(self, cir.getReturnValue()));
+        else if (!player.level().isClientSide())
+            cir.setReturnValue(cir.getReturnValue() + HealthUtil.deserializeAdditionalHealthPersistent(player));
     }
 
     @Inject(method = "onAttributeUpdated", at = @At("HEAD"), cancellable = true)

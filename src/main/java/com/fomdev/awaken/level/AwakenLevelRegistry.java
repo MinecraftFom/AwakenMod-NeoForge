@@ -123,21 +123,21 @@ public class AwakenLevelRegistry extends FreezingRegistry<AwakenLevel>
                     continue;
                 }
 
-                AwakenLevel centerLevel = sortedFrozenCache.get(centerCoordinates);
-                AwakenLevel lastLevel = sortedFrozenCache.get(centerCoordinates - 1);
+                double curr = sortedFrozenCache.get(centerCoordinates).getMin();
+                double last = centerCoordinates - 1 <= 0? 0.0F: sortedFrozenCache.get(centerCoordinates - 1).getMin();
 
-                if (lastLevel.getMin() <= value && value <= centerLevel.getMin())
+                if (last <= value && value <= curr)
                 {
                     // Perfect situation!
                     cord = centerCoordinates;
                     found = true;
                 }
-                else if (value < centerLevel.getMin() && value < lastLevel.getMin())
+                else if (value < curr && value < last)
                 {
                     // The coordinates are TOO big!
                     max = centerCoordinates - 1; // Makes sure size isn't 0
                 }
-                else if (centerLevel.getMin() < value && lastLevel.getMin() < value)
+                else if (curr < value && last < value)
                 {
                     // The coordinates are TOO small!
                     min = centerCoordinates + 1; // Makes sure size isn't 0

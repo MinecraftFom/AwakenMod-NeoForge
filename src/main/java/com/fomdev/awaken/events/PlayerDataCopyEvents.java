@@ -1,11 +1,13 @@
 package com.fomdev.awaken.events;
 
 import com.fomdev.awaken.init.Awaken;
+import com.fomdev.awaken.register.data.AwakenAttachmentTypes;
 import com.fomdev.awaken.util.HealthUtil;
 import com.fomdev.awaken.util.NBTUtil;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 @EventBusSubscriber(modid = Awaken.MODID)
@@ -21,6 +23,17 @@ public class PlayerDataCopyEvents
 
         cloneAwakenEvent(original, current);
         cloneHealthEvent(original, current);
+    }
+
+    @SubscribeEvent
+    public static void onJoin(
+            EntityJoinLevelEvent event
+    )
+    {
+        if (!(event.getEntity() instanceof Player player))
+            return;
+
+        player.syncData(AwakenAttachmentTypes.PLAYER_ADDITIONAL_HEALTH);
     }
 
     private static void cloneAwakenEvent(

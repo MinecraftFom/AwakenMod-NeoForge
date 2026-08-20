@@ -93,17 +93,5 @@
   "prefix.parachute.name": "Parachute",
   "prefix.firstaid.name": "First-aid",
   "prefix.fish.name": "Fish",
-  "prefix.infinity.name": "INFINITY",
-  "aspect.blood.name": "Blood",
-  "aspect.death.name": "Death",
-  "aspect.diversity.name": "Diversity",
-  "aspect.humanity.name": "Humanity",
-  "aspect.insanity.name": "Insanity",
-  "aspect.loneliness.name": "Loneliness",
-  "aspect.natural.name": "Natural",
-  "aspect.spiritual.name": "Spiritual",
-  "aspect.vintage.name": "Vintage",
-  "aspect.vividity.name": "Vividity",
-  "aspect.void.name": "Void",
-  "aspect.water.name": "Water"
+  "prefix.infinity.name": "INFINITY"
 }

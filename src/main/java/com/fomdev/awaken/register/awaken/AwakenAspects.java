@@ -17,18 +17,27 @@ public class AwakenAspects
                     AwakenRegistries.AWAKEN_ASPECT
             );
 
-    public static final AwakenAspect ASPECT_BLOOD = register("blood", Color.RED);
-    public static final AwakenAspect ASPECT_DEATH = register("death", Color.BLACK);
     public static final AwakenAspect ASPECT_DIVERSITY = register("diversity", Color.WHITE); // Placeholder for un-registered enchantments, default requirement is 100
-    public static final AwakenAspect ASPECT_HUMANITY = register("humanity", Color.GREEN);
-    public static final AwakenAspect ASPECT_INSANITY = register("insanity", Color.PINK);
-    public static final AwakenAspect ASPECT_LONELINESS = register("loneliness", Color.LIGHT_GRAY); // Sa Bi Shi I
-    public static final AwakenAspect ASPECT_NATURAL = register("natural", Color.CYAN);
-    public static final AwakenAspect ASPECT_SPIRITUAL = register("spiritual", Color.BLUE);
-    public static final AwakenAspect ASPECT_VINTAGE = register("vintage", Color.DARK_GRAY);
-    public static final AwakenAspect ASPECT_VIVIDITY = register("vividity", Color.GREEN);
-    public static final AwakenAspect ASPECT_VOID = register("void", new Color(255, 255, 255, 0));
-    public static final AwakenAspect ASPECT_WATER = register("water", Color.BLUE);
+
+    public static void init()
+    {
+        register("abyss", "advent", "ascend", "blood", "cell", "death", "destiny", "doom", "earth", "fate", "faith", "grace", "greed", "hearty", "humanity", "ice", "kill", "liquidize", "luxury", "misery", "natural", "oomph", "peace", "quality", "rock", "sanity", "soul", "truth", "vintage", "vividity", "void", "water", "world", "zen");
+    }
+
+    public static void register(
+            String... values
+    )
+    {
+        int max = values.length;
+        float per = 360.0F / max;
+
+        for (int i = 0; i < max; i++)
+        {
+            float ch = i * per;
+            Color color = Color.getHSBColor(ch, 1.0F, 1.0F);
+            register(values[i], color);
+        }
+    }
 
     public static AwakenAspect register(
             String id,
@@ -41,8 +50,9 @@ public class AwakenAspects
     }
 
     @AutoProxy.Proxied(AutoProxy.ProxyProtocol.MOD_INIT)
-    public static void onRegister()
+    public static void register()
     {
+        init();
         REGISTRY.register();
     }
 }

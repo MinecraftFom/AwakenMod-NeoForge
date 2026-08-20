@@ -7,6 +7,8 @@ import com.fomdev.awaken.spawn.shuffle.ShuffledRegistries;
 import com.fomdev.flame.annotation.AutoProxy;
 import com.fomdev.flame.register.RegistryTable;
 
+import java.util.List;
+
 @AutoProxy
 public class AwakenPrefixes
 {
@@ -15,6 +17,11 @@ public class AwakenPrefixes
 
     public static void init()
     {
+        register(
+                new AwakenPrefix("normal", 0, 1.0F, List.of(), List.of()),
+                500.0F,
+                0.0F
+        );
     }
 
     @AutoProxy.Proxied(AutoProxy.ProxyProtocol.MOD_INIT)

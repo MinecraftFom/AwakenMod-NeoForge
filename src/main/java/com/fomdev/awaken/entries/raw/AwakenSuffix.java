@@ -45,4 +45,24 @@ public class AwakenSuffix extends Registry
     {
         return this.target == attribute;
     }
+
+    public static class SuffixInstance extends AwakenSuffix
+    {
+        private final int level;
+
+        public SuffixInstance(
+                AwakenSuffix parent,
+                int level
+        )
+        {
+            super(parent.id(), parent.addition() * level, parent.factor() * Math.sqrt(level), parent.getTarget());
+            this.level = level;
+            setLocation(parent.getLocation());
+        }
+
+        public int getLevel()
+        {
+            return this.level;
+        }
+    }
 }

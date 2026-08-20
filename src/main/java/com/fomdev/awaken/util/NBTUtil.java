@@ -106,7 +106,7 @@ public class NBTUtil
         return data.level();
     }
 
-    public static AwakenInfix deserializeInfix(
+    public static AwakenInfix.InfixInstance deserializeInfix(
             ItemStack stack
     )
     {
@@ -117,7 +117,14 @@ public class NBTUtil
         if (desc.infix() == null)
             return null;
 
-        return AwakenRegistries.AWAKEN_INFIX.getRegistry(ResourceLocation.parse(desc.infix()));
+        String id = desc.infix().getString("id");
+        int lvl = desc.infix().getInt("level");
+        ResourceLocation path = ResourceLocation.parse(id);
+        AwakenInfix infix = AwakenRegistries.AWAKEN_INFIX.getRegistry(path);
+        if (infix == null)
+            return null;
+
+        return new AwakenInfix.InfixInstance(infix, lvl);
     }
 
     public static ServerPlayer deserializePlayer(
@@ -165,7 +172,7 @@ public class NBTUtil
         return pollinates;
     }
 
-    public static AwakenPrefix deserializePrefix(
+    public static AwakenPrefix.PrefixInstance deserializePrefix(
             ItemStack stack
     )
     {
@@ -176,7 +183,14 @@ public class NBTUtil
         if (desc.prefix() == null)
             return null;
 
-        return AwakenRegistries.AWAKEN_PREFIX.getRegistry(ResourceLocation.parse(desc.prefix()));
+        String id = desc.prefix().getString("id");
+        int lvl = desc.prefix().getInt("level");
+        ResourceLocation path = ResourceLocation.parse(id);
+        AwakenPrefix prefix = AwakenRegistries.AWAKEN_PREFIX.getRegistry(path);
+        if (prefix == null)
+            return null;
+
+        return new AwakenPrefix.PrefixInstance(prefix, lvl);
     }
 
     public static Records.AwakenSoulComponent deserializeSoul(
@@ -189,7 +203,7 @@ public class NBTUtil
         return stack.get(AwakenDataComponents.AWAKEN_SOUL_STORAGE);
     }
 
-    public static AwakenSuffix deserializeSuffix(
+    public static AwakenSuffix.SuffixInstance deserializeSuffix(
             ItemStack stack
     )
     {
@@ -200,7 +214,14 @@ public class NBTUtil
         if (desc.suffix() == null)
             return null;
 
-        return AwakenRegistries.AWAKEN_SUFFIX.getRegistry(ResourceLocation.parse(desc.suffix()));
+        String id = desc.suffix().getString("id");
+        int lvl = desc.suffix().getInt("level");
+        ResourceLocation path = ResourceLocation.parse(id);
+        AwakenSuffix suffix = AwakenRegistries.AWAKEN_SUFFIX.getRegistry(path);
+        if (suffix == null)
+            return null;
+
+        return new AwakenSuffix.SuffixInstance(suffix, lvl);
     }
 
     public static AwakenQuality deserializeQuality(
@@ -274,15 +295,26 @@ public class NBTUtil
 
     public static void serializeDescriber(
             ItemStack stack,
-            AwakenInfix infix,
-            AwakenPrefix prefix,
-            AwakenSuffix suffix
+            AwakenInfix.InfixInstance infix,
+            AwakenPrefix.PrefixInstance prefix,
+            AwakenSuffix.SuffixInstance suffix
     )
     {
+        CompoundTag infixTag = new CompoundTag();
+        CompoundTag prefixTag = new CompoundTag();
+        CompoundTag suffixTag = new CompoundTag();
+
+        infixTag.putString("id", infix.getLocation().toString());
+        prefixTag.putString("id", prefix.getLocation().toString());
+        suffixTag.putString("id", suffix.getLocation().toString());
+        infixTag.putInt("level", infix.getLevel());
+        prefixTag.putInt("level", prefix.getLevel());
+        suffixTag.putInt("level", suffix.getLevel());
+
         Records.AwakenDescriberComponent component = new Records.AwakenDescriberComponent(
-                infix.getLocation().toString(),
-                prefix.getLocation().toString(),
-                suffix.getLocation().toString()
+                infixTag,
+                prefixTag,
+                suffixTag
         );
 
         stack.set(AwakenDataComponents.AWAKEN_DESCRIBER_STORAGE, component);

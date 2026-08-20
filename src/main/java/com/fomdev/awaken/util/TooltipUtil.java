@@ -131,7 +131,7 @@ public class TooltipUtil
 
     public static List<Component> castInfixTooltip(
             TooltipFlag flag,
-            AwakenInfix infix,
+            AwakenInfix.InfixInstance infix,
             float factor
     )
     {
@@ -267,7 +267,7 @@ public class TooltipUtil
 
     public static List<Component> castPrefixTooltip(
             TooltipFlag flag,
-            AwakenPrefix prefix
+            AwakenPrefix.PrefixInstance prefix
     )
     {
         List<Component> components = new ArrayList<>();
@@ -477,7 +477,7 @@ public class TooltipUtil
 
     public static List<Component> castSuffixTooltip(
             TooltipFlag flag,
-            AwakenSuffix suffix
+            AwakenSuffix.SuffixInstance suffix
     )
     {
         List<Component> components = new ArrayList<>();

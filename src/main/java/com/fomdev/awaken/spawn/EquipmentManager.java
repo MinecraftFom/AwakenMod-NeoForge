@@ -269,11 +269,19 @@ public class EquipmentManager
         if (Util.ifNull(quality, infix, prefix, suffix))
             return;
 
+        float factor1 = (float) Math.pow(AwakenCommon.CONFIG.GENERATABLE_MAX.get(), 1.0 / 4.0);
+        float factor2 = factor1 * (float) Math.pow(factor, 1.0 / 5.0);
+        int result1 = (int) factor2;
+        int result2 = Math.max(result1, 1);
+        int infixLevel = random.nextInt(result2) + 1;
+        int prefixLevel = random.nextInt(result2) + 1;
+        int suffixLevel = random.nextInt(result2) + 1;
+
         NBTUtil.serializeDescriber(
                 stack,
-                infix,
-                prefix,
-                suffix
+                new AwakenInfix.InfixInstance(infix, infixLevel),
+                new AwakenPrefix.PrefixInstance(prefix, prefixLevel),
+                new AwakenSuffix.SuffixInstance(suffix, suffixLevel)
         );
 
         NBTUtil.serializeQuality(

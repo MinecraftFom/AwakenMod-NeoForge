@@ -26,10 +26,10 @@ public class LocaleUtil
     }
 
     public static Component localizeInfix(
-            AwakenInfix infix
+            AwakenInfix.InfixInstance infix
     )
     {
-        return Component.translatable("infix." + infix.id() + ".name");
+        return Component.translatable("infix." + infix.id() + ".name").append(" ").append(Component.translatable("tooltip.enchantment.level." + infix.getLevel())); // Copied from enchantments
     }
 
     public static String localizeOperation(
@@ -51,10 +51,10 @@ public class LocaleUtil
     }
 
     public static Component localizePrefix(
-            AwakenPrefix prefix
+            AwakenPrefix.PrefixInstance prefix
     )
     {
-        return Component.translatable("prefix." + prefix.id() + ".name");
+        return Component.translatable("prefix." + prefix.id() + ".name").append(" ").append(Component.translatable("tooltip.enchantment.level." + prefix.getLevel()));
     }
 
     public static Component localizeQuality(
@@ -84,10 +84,10 @@ public class LocaleUtil
     }
 
     public static Component localizeSuffix(
-            AwakenSuffix suffix
+            AwakenSuffix.SuffixInstance suffix
     )
     {
-        return Component.translatable("suffix." + suffix.id() + ".name");
+        return Component.translatable("suffix." + suffix.id() + ".name").append(" ").append(Component.translatable("tooltip.enchantment.level." + suffix.getLevel()));
     }
 
     public static Component localizeTarget(

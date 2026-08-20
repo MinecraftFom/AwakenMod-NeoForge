@@ -66,18 +66,7 @@ public class AwakenSuffixes
     )
     {
         for (String str: id)
-        {
             register(str, 5, 0.5F, target,500.0F, 0.0F);
-            register(str + "_2", 10, 1.0F, target, 450.0F, 50.0F);
-            register(str + "_3", 25, 1.25F, target, 200.0F, 500.0F);
-            register(str + "_4", 50, 2.0F,  target, 100.0F, 1000.0F);
-            register(str + "_5", 100, 2.25F,  target, 50.0F, 5000.0F);
-            register(str + "_6", 250, 2.5F, target, 25.0F, 10000.0F);
-            register(str + "_7", 500, 5.0F, target, 10.0F, 12500.0F);
-            register(str + "_8", 750, 7.5F, target, 1.5F, 50000.0F);
-            register(str + "_9", 1000, 10.0F, target, 0.25F, 100000.0F);
-            register(str + "_10", 10000, 50.0F, target, 0.0001F, 100000.0F);
-        }
     }
 
     private static void register$fast$opposite(
@@ -86,18 +75,7 @@ public class AwakenSuffixes
     )
     {
         for (String str: id)
-        {
             register(str, 5, 1 / 0.5F, target,500.0F, 0.0F);
-            register(str + "_2", 10, 1, target, 450.0F, 50.0F);
-            register(str + "_3", 25, 1 / 1.25F, target, 200.0F, 500.0F);
-            register(str + "_4", 50, 1 / 2.0F,  target, 100.0F, 1000.0F);
-            register(str + "_5", 100, 1 / 2.25F,  target, 50.0F, 5000.0F);
-            register(str + "_6", 250, 1 / 2.5F, target, 25.0F, 10000.0F);
-            register(str + "_7", 500, 1 / 5.0F, target, 10.0F, 12500.0F);
-            register(str + "_8", 750, 1 / 7.5F, target, 1.5F, 50000.0F);
-            register(str + "_9", 1000, 1 / 10.0F, target, 0.25F, 100000.0F);
-            register(str + "_10", 10000, 1 / 50.0F, target, 0.0001F, 100000.0F);
-        }
     }
 
     private static void register$fast(

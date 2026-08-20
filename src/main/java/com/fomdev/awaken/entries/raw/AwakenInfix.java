@@ -21,4 +21,24 @@ public class AwakenInfix extends Registry
     {
         return this.attribute;
     }
+
+    public static class InfixInstance extends AwakenInfix
+    {
+        private final int level;
+
+        public InfixInstance(
+                AwakenInfix parent,
+                int level
+        )
+        {
+            super(parent.id(), new Records.AttributeHolder(parent.getAttribute().attr(), parent.getAttribute().amount() * level / 2, parent.getAttribute().operation(), parent.getAttribute().slot()));
+            this.level = level;
+            setLocation(parent.getLocation());
+        }
+
+        public int getLevel()
+        {
+            return this.level;
+        }
+    }
 }

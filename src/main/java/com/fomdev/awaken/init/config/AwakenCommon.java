@@ -22,6 +22,8 @@ public class AwakenCommon
     public final ModConfigSpec.ConfigValue<List<? extends String>> RIDE_ENTITIES;
     public final ModConfigSpec.ConfigValue<List<? extends String>> EFFECTS;
 
+    public final ModConfigSpec.ConfigValue<Integer> GENERATABLE_MAX;
+
     public final ModConfigSpec.ConfigValue<List<? extends String>> NAMES_FIRST;
     public final ModConfigSpec.ConfigValue<List<? extends String>> NAMES_LAST;
 
@@ -133,6 +135,13 @@ public class AwakenCommon
                         List.of(
                                 Constants.defaultRideEntities
                         ),
+                        Objects::nonNull
+                );
+        GENERATABLE_MAX = builder
+                .comment("Decides the max affix a item can hold")
+                .define(
+                        "generatable_max",
+                        Constants.defaultGeneratingLevel,
                         Objects::nonNull
                 );
         EFFECTS =

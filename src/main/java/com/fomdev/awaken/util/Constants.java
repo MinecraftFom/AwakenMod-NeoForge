@@ -221,4 +221,6 @@ public class Constants
 
     public static final double defaultRequiredSoul = 10.0;
     public static final double defaultSoulFactor = 1.5;
+
+    public static final int defaultGeneratingLevel = 20;
 }

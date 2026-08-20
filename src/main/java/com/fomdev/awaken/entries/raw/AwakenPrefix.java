@@ -6,7 +6,7 @@ import net.minecraft.world.item.enchantment.EnchantmentInstance;
 
 import java.util.List;
 
-public abstract class AwakenPrefix extends Registry
+public class AwakenPrefix extends Registry
 {
     private final int durability;
     private final float rank;
@@ -48,5 +48,38 @@ public abstract class AwakenPrefix extends Registry
     public ImmutableList<AwakenSpore> getImmuniseAmounts()
     {
         return ImmutableList.copyOf(this.immunise);
+    }
+
+    public static class PrefixInstance extends AwakenPrefix
+    {
+        private final int level;
+
+        public PrefixInstance(
+                AwakenPrefix parent,
+                int level
+        )
+        {
+            super(parent.id(), parent.getDurability() * level, parent.getRankFactor() * (float) Math.pow(level, 1.0 / 4.0), AwakenPrefix.castEnchantments(parent.getBaseEnchantments(), level), parent.getImmuniseAmounts());
+            this.level = level;
+            setLocation(parent.getLocation());
+        }
+
+        public int getLevel()
+        {
+            return this.level;
+        }
+    }
+
+    private static List<EnchantmentInstance> castEnchantments(
+            ImmutableList<EnchantmentInstance> original,
+            int level
+    )
+    {
+        return ImmutableList.copyOf(
+                original
+                        .stream()
+                        .map(inst -> new EnchantmentInstance(inst.enchantment, inst.level * (int) Math.sqrt(level)))
+                        .toList()
+        );
     }
 }

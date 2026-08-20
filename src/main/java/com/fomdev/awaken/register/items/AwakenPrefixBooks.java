@@ -55,14 +55,14 @@ public class AwakenPrefixBooks extends Item
         if (!(entity instanceof ServerPlayer player))
             return stack;
 
-        AwakenPrefix prefix = NBTUtil.deserializePrefix(stack);
+        AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializePrefix(stack);
 
         if (prefix == null)
             return stack;
 
         ItemStack target = entity.getMainHandItem();
-        AwakenInfix infix = NBTUtil.deserializeInfix(target);
-        AwakenSuffix suffix = NBTUtil.deserializeSuffix(target);
+        AwakenInfix.InfixInstance infix = NBTUtil.deserializeInfix(target);
+        AwakenSuffix.SuffixInstance suffix = NBTUtil.deserializeSuffix(target);
         if (infix == null || suffix == null)
         {
             player.connection.send(new ClientboundSetActionBarTextPacket(Component.translatable("bar.invalid_item_stack.info")));

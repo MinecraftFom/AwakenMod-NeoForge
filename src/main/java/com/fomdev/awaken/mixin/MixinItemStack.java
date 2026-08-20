@@ -51,7 +51,7 @@ public abstract class MixinItemStack implements DataComponentHolder
             cir.setReturnValue(
                     Component
                             .translatable(
-                                    "item.unawaken.name"
+                                    "item.awaken.unawaken_item"
                             )
                             .withStyle(
                                     ChatFormatting.OBFUSCATED
@@ -65,9 +65,9 @@ public abstract class MixinItemStack implements DataComponentHolder
         }
 
         AwakenQuality quality = NBTUtil.deserializeQuality(self);
-        AwakenInfix infix = NBTUtil.deserializeInfix(self);
-        AwakenPrefix prefix = NBTUtil.deserializePrefix(self);
-        AwakenSuffix suffix = NBTUtil.deserializeSuffix(self);
+        AwakenInfix.InfixInstance infix = NBTUtil.deserializeInfix(self);
+        AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializePrefix(self);
+        AwakenSuffix.SuffixInstance suffix = NBTUtil.deserializeSuffix(self);
         MutableComponent component = Component.empty();
 
         if (infix != null && prefix != null && suffix != null)

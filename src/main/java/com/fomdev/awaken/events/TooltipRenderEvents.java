@@ -30,9 +30,9 @@ public class TooltipRenderEvents
         if (stack.is(AwakenItems.SOUL_BOTTLE))
             list.addAll(1, TooltipUtil.castSoulTooltip(NBTUtil.deserializeSoul(stack)));
 
-        AwakenInfix infix = NBTUtil.deserializeInfix(stack);
-        AwakenPrefix prefix = NBTUtil.deserializePrefix(stack);
-        AwakenSuffix suffix = NBTUtil.deserializeSuffix(stack);
+        AwakenInfix.InfixInstance infix = NBTUtil.deserializeInfix(stack);
+        AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializePrefix(stack);
+        AwakenSuffix.SuffixInstance suffix = NBTUtil.deserializeSuffix(stack);
         AwakenQuality quality = NBTUtil.deserializeQuality(stack);
         List<AwakenAspect.AspectInstance> aspects = NBTUtil.deserializeAspects(stack);
         List<AwakenPollinate.PollinateInstance> pollinates = NBTUtil.deserializePollinates(stack);

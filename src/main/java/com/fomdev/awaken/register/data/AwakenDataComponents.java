@@ -26,17 +26,17 @@ public class AwakenDataComponents
                     inst ->
                             inst
                                     .group(
-                                            Codec.STRING
+                                            CompoundTag.CODEC
                                                     .fieldOf("infix")
                                                     .forGetter(Records.AwakenDescriberComponent::infix)
                                     )
                                     .and(
-                                            Codec.STRING
+                                            CompoundTag.CODEC
                                                     .fieldOf("prefix")
                                                     .forGetter(Records.AwakenDescriberComponent::prefix)
                                     )
                                     .and(
-                                            Codec.STRING
+                                            CompoundTag.CODEC
                                                     .fieldOf("suffix")
                                                     .forGetter(Records.AwakenDescriberComponent::suffix)
                                     )
@@ -48,11 +48,11 @@ public class AwakenDataComponents
 
     public static final StreamCodec<ByteBuf, Records.AwakenDescriberComponent> AWAKEN_DESCRIBER_STREAM_CODEC =
             StreamCodec.composite(
-                    ByteBufCodecs.STRING_UTF8,
+                    ByteBufCodecs.COMPOUND_TAG,
                     Records.AwakenDescriberComponent::infix,
-                    ByteBufCodecs.STRING_UTF8,
+                    ByteBufCodecs.COMPOUND_TAG,
                     Records.AwakenDescriberComponent::prefix,
-                    ByteBufCodecs.STRING_UTF8,
+                    ByteBufCodecs.COMPOUND_TAG,
                     Records.AwakenDescriberComponent::suffix,
                     Records.AwakenDescriberComponent::new
             );

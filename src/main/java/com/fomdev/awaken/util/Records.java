@@ -7,7 +7,6 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
 import java.awt.*;
-import java.util.List;
 
 public class Records
 {
@@ -19,9 +18,9 @@ public class Records
 
     public record AwakenDescriberComponent
             (
-                    String infix,
-                    String prefix,
-                    String suffix
+                    CompoundTag infix,
+                    CompoundTag prefix,
+                    CompoundTag suffix
             )
     {}
 

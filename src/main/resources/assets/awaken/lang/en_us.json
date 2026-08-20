@@ -1,10 +1,15 @@
 {
   "bar.block.cant_pickup.info": "You can't pickup that item. Awaken Level (%s / %s), Difficulty (%s / %s); Or you can use an Unawaken Amulet",
   "bar.increased_health.info": "Gained %d Points Of Health!",
+  "bar.invalid_item_stack.info": "Invalid item!",
   "bar.not_enough.info": "Not Enough Soul Stored: %s / %s",
 
   "bar.rank.not_enough.block.info": "You can't break this block with the current rank. (%s / %s)",
   "bar.rank.not_enough.entity.info": "You can't attack that entity with the current rank. (%s / %s)",
+
+  "bar.set_infix.info": "Successfully set %s to the target item",
+  "bar.set_prefix.info": "Successfully set %s to the target item",
+  "bar.set_suffix.info": "Successfully set %s to the target item",
 
   "gui.knowledge.experience.info": "Experience",
   "gui.knowledge.insight.info": "Insight",

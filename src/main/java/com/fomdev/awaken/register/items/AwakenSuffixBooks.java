@@ -26,9 +26,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class AwakenPrefixBooks extends Item
+public class AwakenSuffixBooks extends Item
 {
-    public AwakenPrefixBooks(Properties properties)
+    public AwakenSuffixBooks(Properties properties)
     {
         super(properties.stacksTo(1));
     }
@@ -60,15 +60,15 @@ public class AwakenPrefixBooks extends Item
         if (!(entity instanceof ServerPlayer player))
             return stack;
 
-        AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializePrefix(stack);
+        AwakenSuffix.SuffixInstance suffix = NBTUtil.deserializeSuffix(stack);
 
-        if (prefix == null)
+        if (suffix == null)
             return stack;
 
         ItemStack target = entity.getMainHandItem();
         AwakenInfix.InfixInstance infix = NBTUtil.deserializeInfix(target);
-        AwakenSuffix.SuffixInstance suffix = NBTUtil.deserializeSuffix(target);
-        if (infix == null || suffix == null)
+        AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializePrefix(target);
+        if (infix == null || prefix == null)
         {
             player.connection.send(new ClientboundSetActionBarTextPacket(Component.translatable("bar.invalid_item_stack.info").withStyle(ChatFormatting.RED)));
             return stack;
@@ -78,7 +78,7 @@ public class AwakenPrefixBooks extends Item
         if (level instanceof ServerLevel serverLevel)
             serverLevel.players().forEach(p -> serverLevel.sendParticles(p, ParticleTypes.EXPLOSION, true, player.getX(), player.getY(), player.getZ(), 100, 1.0F, 1.0F, 1.0F, 0));
 
-        player.connection.send(new ClientboundSetActionBarTextPacket(Component.translatable("bar.set_prefix.info", LocaleUtil.localizePrefix(prefix)).withStyle(ChatFormatting.GREEN)));
+        player.connection.send(new ClientboundSetActionBarTextPacket(Component.translatable("bar.set_suffix.info", LocaleUtil.localizeSuffix(suffix)).withStyle(ChatFormatting.GREEN)));
         stack.copyAndClear();
         return ItemStack.EMPTY;
     }
@@ -127,10 +127,10 @@ public class AwakenPrefixBooks extends Item
             @NotNull TooltipFlag flag
     )
     {
-        AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializePrefix(stack);
-        if (prefix == null)
+        AwakenSuffix.SuffixInstance suffix = NBTUtil.deserializeSuffix(stack);
+        if (suffix == null)
             return;
 
-        lines.add(1, Component.translatable("tooltip.prefix.info").append(": ").append(LocaleUtil.localizePrefix(prefix)));
+        lines.add(1, Component.translatable("tooltip.suffix.info").append(": ").append(LocaleUtil.localizeSuffix(suffix)));
     }
 }

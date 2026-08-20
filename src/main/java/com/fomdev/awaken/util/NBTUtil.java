@@ -14,6 +14,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -295,21 +296,32 @@ public class NBTUtil
 
     public static void serializeDescriber(
             ItemStack stack,
-            AwakenInfix.InfixInstance infix,
-            AwakenPrefix.PrefixInstance prefix,
-            AwakenSuffix.SuffixInstance suffix
+            @Nullable AwakenInfix.InfixInstance infix,
+            @Nullable AwakenPrefix.PrefixInstance prefix,
+            @Nullable AwakenSuffix.SuffixInstance suffix
     )
     {
         CompoundTag infixTag = new CompoundTag();
         CompoundTag prefixTag = new CompoundTag();
         CompoundTag suffixTag = new CompoundTag();
 
-        infixTag.putString("id", infix.getLocation().toString());
-        prefixTag.putString("id", prefix.getLocation().toString());
-        suffixTag.putString("id", suffix.getLocation().toString());
-        infixTag.putInt("level", infix.getLevel());
-        prefixTag.putInt("level", prefix.getLevel());
-        suffixTag.putInt("level", suffix.getLevel());
+        if (infix != null)
+        {
+            infixTag.putString("id", infix.getLocation().toString());
+            infixTag.putInt("level", infix.getLevel());
+        }
+
+        if (prefix != null)
+        {
+            prefixTag.putString("id", prefix.getLocation().toString());
+            prefixTag.putInt("level", prefix.getLevel());
+        }
+
+        if (suffix != null)
+        {
+            suffixTag.putString("id", suffix.getLocation().toString());
+            suffixTag.putInt("level", suffix.getLevel());
+        }
 
         Records.AwakenDescriberComponent component = new Records.AwakenDescriberComponent(
                 infixTag,

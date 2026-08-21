@@ -22,6 +22,7 @@
     "MixinMob",
     "MixinMutable",
     "MixinPlayer",
+    "MixinMobCount",
     "MixinTrialSpawner",
     "MixinTrialSpawnerConfig",
     "MixinVaultServerData"

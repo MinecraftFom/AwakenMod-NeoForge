@@ -98,9 +98,10 @@ public class MobSpawnManager
             RandomSource random
     )
     {
-        float h = random.nextFloat() % 360;
+        float h = random.nextFloat() % 360.0F;
+        float s = random.nextFloat() % 360.0F;
 
-        return Color.getHSBColor(h, 1.0F, 1.0f);
+        return Color.getHSBColor(h, s, 1.0f);
     }
 
     public static Component shuffleTitle(

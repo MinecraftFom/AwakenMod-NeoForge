@@ -27,7 +27,7 @@ public class NBTUtil
             float amount
     )
     {
-        serializeAwakenLevel(player, deserializeAwakenLevel(player) + amount);
+        serializeAwakenLevel(player, (int) (100 * (deserializeAwakenLevel(player) + amount)) / 100.0F);
     }
 
     public static void addSoul(

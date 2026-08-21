@@ -7,6 +7,8 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 
 public class HealthUtil
@@ -20,7 +22,16 @@ public class HealthUtil
             float amount
     )
     {
-        serializeAdditionalHealthPersistent(player, deserializeAdditionalHealthPersistent(player) + amount);
+//        serializeAdditionalHealthPersistent(player, deserializeAdditionalHealthPersistent(player) + amount);
+
+        AttributeInstance maxHealth = player.getAttribute(Attributes.MAX_HEALTH);
+        if (maxHealth == null) // How is this even possible?
+            return;
+
+        double original = maxHealth.getBaseValue();
+        double current = original + amount;
+        double legal = (int) (100 * current) / 100.0D;
+        maxHealth.setBaseValue(legal);
     }
 
     public static float calculateMobHealth(

@@ -18,6 +18,7 @@
 
   "gui.difficulty.info": "Current Awaken Difficulty",
   "gui.level.info": "Awaken Level",
+  "gui.rank.info": "Rank",
 
   "item.awaken.soul_bottle": "Soul Bottle",
   "item.awaken.unawaken_amulet": "Unawaken Amulet",

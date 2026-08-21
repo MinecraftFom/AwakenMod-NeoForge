@@ -3,6 +3,7 @@ package com.fomdev.awaken.gui;
 import com.fomdev.awaken.difficulty.ClientDifficultyManager;
 import com.fomdev.awaken.entries.raw.AwakenLevel;
 import com.fomdev.awaken.entries.raw.AwakenRegistries;
+import com.fomdev.awaken.rank.RankHelper;
 import com.fomdev.awaken.util.LocaleUtil;
 import com.fomdev.awaken.util.NBTUtil;
 import net.minecraft.client.DeltaTracker;
@@ -32,5 +33,8 @@ public class AwakenDataGUI implements LayeredDraw.Layer
 
         String levelText = Component.translatable("gui.level.info").getString() + ": " + (level == null? "None": LocaleUtil.localizeAwakenLevel(level).getString() + " (" + data + ")");
         graphics.drawString(minecraft.font, levelText, 10, 20, level == null? Color.CYAN.getRGB(): level.getColor().getRGB(), true);
+
+        String rankText = Component.translatable("gui.rank.info").getString() + ": " + RankHelper.getRank(player);
+        graphics.drawString(minecraft.font, rankText, 10, 30, Color.MAGENTA.getRGB(), true);
     }
 }

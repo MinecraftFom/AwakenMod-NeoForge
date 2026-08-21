@@ -19,6 +19,12 @@ public class AwakenItems
     public static final DeferredItem<?> ASPECT_STONE =
             REGISTER.registerItem(
                     "aspect_stone",
+                    AwakenAspectStone::new
+            );
+
+    public static final DeferredItem<?> ATTRIBUTE_STONE =
+            REGISTER.registerItem(
+                    "attribute_stone",
                     Item::new
             );
 

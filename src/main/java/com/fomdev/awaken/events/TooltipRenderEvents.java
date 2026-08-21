@@ -34,11 +34,8 @@ public class TooltipRenderEvents
         AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializePrefix(stack);
         AwakenSuffix.SuffixInstance suffix = NBTUtil.deserializeSuffix(stack);
         AwakenQuality quality = NBTUtil.deserializeQuality(stack);
-        List<AwakenAspect.AspectInstance> aspects = NBTUtil.deserializeAspects(stack);
         List<AwakenPollinate.PollinateInstance> pollinates = NBTUtil.deserializePollinates(stack);
         List<AwakenSpore.SporeInstance> spores = NBTUtil.deserializeSpores(stack);
-
-        list.addAll(1, TooltipUtil.castAspectTooltip(flag, aspects));
 
         for (AwakenPollinate.PollinateInstance instance: pollinates)
             list.addAll(1 ,TooltipUtil.castPollinateTooltip(flag, instance));

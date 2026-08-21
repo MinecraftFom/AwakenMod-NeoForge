@@ -22,6 +22,16 @@ import java.util.UUID;
 
 public class NBTUtil
 {
+    public static void addAspect(
+            ItemStack stack,
+            AwakenAspect.AspectInstance instance
+    )
+    {
+        List<AwakenAspect.AspectInstance> insts = deserializeAspects(stack);
+        insts.add(instance);
+        serializeAspects(stack, insts);
+    }
+
     public static void addAwakenLevel(
             Player player,
             float amount
@@ -292,6 +302,26 @@ public class NBTUtil
     )
     {
         entity.setData(AwakenAttachmentTypes.PLAYER_AWAKEN_LEVEL_ATTACHMENT, new Records.AwakenLevelComponent(level));
+    }
+
+    public static void serializeAspects(
+            ItemStack stack,
+            List<AwakenAspect.AspectInstance> instances
+    )
+    {
+        if (stack.is(Items.AIR))
+            return;
+
+        List<CompoundTag> tags = new ArrayList<>();
+        for (AwakenAspect.AspectInstance aspect: instances)
+        {
+            CompoundTag tag = new CompoundTag();
+            tag.putString("id", aspect.aspect().getLocation().toString());
+            tag.putInt("level", aspect.amount());
+            tags.add(tag);
+        }
+
+        stack.set(AwakenDataComponents.AWAKEN_ASPECT_STORAGE, tags);
     }
 
     public static void serializeDescriber(

@@ -2,7 +2,9 @@ package com.fomdev.awaken.events;
 
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.network.DifficultyHandler;
+import com.fomdev.awaken.network.SpeechHandler;
 import com.fomdev.awaken.packet.DifficultySyncPacketPayloadResponder;
+import com.fomdev.awaken.packet.SpeechSyncPacketPayload;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -22,6 +24,11 @@ public class NetworkingEvents
                 DifficultySyncPacketPayloadResponder.TYPE,
                 DifficultySyncPacketPayloadResponder.STREAM_CODEC,
                 DifficultyHandler::handleResponse
+        );
+        registrar.playToServer(
+                SpeechSyncPacketPayload.TYPE,
+                SpeechSyncPacketPayload.STREAM_CODEC,
+                SpeechHandler::handleResponse
         );
     }
 }

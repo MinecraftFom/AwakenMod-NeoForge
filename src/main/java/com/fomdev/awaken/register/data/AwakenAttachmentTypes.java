@@ -1,6 +1,7 @@
 package com.fomdev.awaken.register.data;
 
 import com.fomdev.awaken.init.Awaken;
+import com.fomdev.awaken.speech.SpeechInstance;
 import com.fomdev.awaken.util.HealthUtil;
 import com.fomdev.awaken.util.Records;
 import com.fomdev.flame.annotation.AutoRegister;
@@ -14,6 +15,7 @@ import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 @AutoRegister
@@ -71,6 +73,26 @@ public class AwakenAttachmentTypes
                                     )
             );
 
+    public static final Codec<SpeechInstance> AWAKEN_SPEECH_CODEC =
+            RecordCodecBuilder.create(
+                    inst ->
+                            inst
+                                    .group(
+                                            SpeechInstance.COMPONENT_CODEC.listOf()
+                                                    .fieldOf("speeches")
+                                                    .forGetter(SpeechInstance::getSpeech)
+                                    )
+                                    .and(
+                                            Codec.INT
+                                                    .fieldOf("delay")
+                                                    .forGetter(SpeechInstance::getRemainingDelay)
+                                    )
+                                    .apply(
+                                            inst,
+                                            SpeechInstance::new
+                                    )
+            );
+
     public static final StreamCodec<ByteBuf, Records.AwakenKnowledgeComponent> AWAKEN_KNOWLEDGE_STREAM_CODEC =
             StreamCodec.composite(
                     ByteBufCodecs.FLOAT,
@@ -104,6 +126,15 @@ public class AwakenAttachmentTypes
                     ByteBufCodecs.FLOAT,
                     HealthUtil.AwakenAdditionalHealth::health,
                     HealthUtil.AwakenAdditionalHealth::new
+            );
+
+    public static final StreamCodec<ByteBuf, SpeechInstance> AWAKEN_SPEECH_STREAM_CODEC =
+            StreamCodec.composite(
+                    SpeechInstance.COMPONENT_STREAM_CODEC.apply(ByteBufCodecs.list()),
+                    SpeechInstance::getSpeech,
+                    ByteBufCodecs.INT,
+                    SpeechInstance::getRemainingDelay,
+                    SpeechInstance::new
             );
 
     @AutoRegister.Registrable
@@ -142,6 +173,14 @@ public class AwakenAttachmentTypes
                     () -> AttachmentType.builder(() -> new Records.AwakenKnowledgeComponent(0.0F, 0.0F, 0.0F, 0.0F))
                             .serialize(AWAKEN_KNOWLEDGE_CODEC)
                             .sync((holder, to) -> holder == to, AWAKEN_KNOWLEDGE_STREAM_CODEC)
+                            .build()
+            );
+
+    public static final Supplier<AttachmentType<SpeechInstance>> PLAYER_SPEECH_QUEUE =
+            REGISTER.register("awaken_speech",
+                    () -> AttachmentType.<SpeechInstance>builder(() -> new SpeechInstance(List.of(), 0))
+                            .serialize(AWAKEN_SPEECH_CODEC)
+                            .sync(AWAKEN_SPEECH_STREAM_CODEC)
                             .build()
             );
 

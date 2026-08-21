@@ -264,16 +264,10 @@ public class NBTUtil
     }
 
     public static List<AwakenSpore.SporeInstance> deserializeSpores(
-            ItemStack stack
+            Entity entity
     )
     {
-        if (stack.is(Items.AIR))
-            return List.of();
-
-        List<CompoundTag> component = stack.get(AwakenDataComponents.AWAKEN_SPORE_STORAGE.get());
-        if (component == null)
-            return List.of();
-
+        List<CompoundTag> component = entity.getData(AwakenAttachmentTypes.SPORE_ATTACHMENT.get());
         if (component.isEmpty())
             return List.of();
 

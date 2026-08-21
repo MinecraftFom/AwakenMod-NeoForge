@@ -37,13 +37,11 @@ public interface MixinIItemStackExtension
             return;
 
         ItemAttributeModifiers modifiers = cir.getReturnValue();
-//        List<ItemAttributeModifiers.Entry> entries = new ArrayList<>(modifiers.modifiers());
 
         AwakenPrefix prefix = NBTUtil.deserializePrefix(stack);
         AwakenSuffix suffix = NBTUtil.deserializeSuffix(stack);
         AwakenInfix infix = NBTUtil.deserializeInfix(stack);
         AwakenQuality quality = NBTUtil.deserializeQuality(stack);
-        List<AwakenSpore.SporeInstance> spore = NBTUtil.deserializeSpores(stack);
 
         double factor = quality == null? 1D: quality.getFactor();
 
@@ -64,29 +62,6 @@ public interface MixinIItemStackExtension
                                 ),
                                 amount,
                                 operation
-                        ),
-                        EquipmentSlotGroup.bySlot(slot)
-                );
-        }
-
-        for (AwakenSpore.SporeInstance instance: spore)
-        {
-            AwakenSpore value = instance.getSpore();
-            int level = instance.getLevel();
-            double amount = value.getAmount(level) * factor;
-            Holder<Attribute> attribute = value.getAttribute();
-            EquipmentSlot slot = EquipmentManager.forSlot(stack);
-
-            if (Arrays.asList(value.getSlots()).contains(slot))
-                modifiers = modifiers.withModifierAdded(
-                        attribute,
-                        new AttributeModifier(
-                                ResourceLocation.fromNamespaceAndPath(
-                                        value.id(),
-                                        attribute.unwrapKey().orElseThrow().location().getPath() + "_" + slot.getName()
-                                ),
-                                amount,
-                                AttributeModifier.Operation.ADD_VALUE
                         ),
                         EquipmentSlotGroup.bySlot(slot)
                 );

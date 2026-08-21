@@ -241,15 +241,6 @@ public class AwakenDataComponents
                                     .networkSynchronized(ByteBufCodecs.STRING_UTF8)
             );
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<CompoundTag>>> AWAKEN_SPORE_STORAGE =
-            COMPONENT_REGISTER.registerComponentType(
-                    "awaken_spore",
-                    builder ->
-                            builder
-                                    .persistent(CompoundTag.CODEC.listOf())
-                                    .networkSynchronized(ByteBufCodecs.COMPOUND_TAG.apply(ByteBufCodecs.list()))
-            );
-
     public static void register(
             IEventBus bus
     )

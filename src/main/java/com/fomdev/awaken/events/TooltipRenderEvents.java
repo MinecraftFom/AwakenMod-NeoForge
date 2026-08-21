@@ -35,13 +35,9 @@ public class TooltipRenderEvents
         AwakenSuffix.SuffixInstance suffix = NBTUtil.deserializeSuffix(stack);
         AwakenQuality quality = NBTUtil.deserializeQuality(stack);
         List<AwakenPollinate.PollinateInstance> pollinates = NBTUtil.deserializePollinates(stack);
-        List<AwakenSpore.SporeInstance> spores = NBTUtil.deserializeSpores(stack);
 
         for (AwakenPollinate.PollinateInstance instance: pollinates)
             list.addAll(1 ,TooltipUtil.castPollinateTooltip(flag, instance));
-
-        for (AwakenSpore.SporeInstance instance: spores)
-            list.addAll(1, TooltipUtil.castSporeTooltip(flag, instance));
 
         if (infix != null && prefix != null && suffix != null)
         {

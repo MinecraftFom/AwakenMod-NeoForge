@@ -8,6 +8,7 @@ import com.fomdev.flame.annotation.AutoRegister;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.bus.api.IEventBus;
@@ -197,6 +198,15 @@ public class AwakenAttachmentTypes
                     () -> AttachmentType.builder(() -> 0)
                             .serialize(Codec.INT)
                             .sync((holder, to) -> true, ByteBufCodecs.INT)
+                            .build()
+            );
+
+    public static final Supplier<AttachmentType<List<CompoundTag>>> SPORE_ATTACHMENT =
+            REGISTER.register(
+                    "awaken_spore",
+                    () -> AttachmentType.builder(() -> List.<CompoundTag>of())
+                            .serialize(CompoundTag.CODEC.listOf())
+                            .sync(ByteBufCodecs.COMPOUND_TAG.apply(ByteBufCodecs.list()))
                             .build()
             );
 

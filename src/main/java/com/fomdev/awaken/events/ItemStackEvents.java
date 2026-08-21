@@ -17,6 +17,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
+import top.theillusivec4.curios.api.CuriosApi;
 
 @EventBusSubscriber(modid = Awaken.MODID)
 public class ItemStackEvents
@@ -28,7 +29,7 @@ public class ItemStackEvents
         if (!(player instanceof ServerPlayer serverPlayer) || player.isCreative())
             return;
 
-        if (player.getInventory().contains(stack -> stack.is(AwakenItems.UNKNOWN_AMULET)))
+        if (player.getInventory().contains(stack -> stack.is(AwakenItems.UNKNOWN_AMULET)) || CuriosApi.getCuriosInventory(player).orElseThrow().isEquipped(AwakenItems.UNKNOWN_AMULET.asItem()))
             return;
 
         ItemStack stack = event.getItemEntity().getItem();

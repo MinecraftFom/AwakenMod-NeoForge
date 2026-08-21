@@ -1,7 +1,7 @@
 {
   "size": 1,
   "order": 999,
-  "icon": "curios:slot/empty_ring_slot",
+  "icon": "awaken:slot/empty_amulet_slot",
   "add_cosmetic": false,
   "use_native_gui": true,
   "render_toggle": true,

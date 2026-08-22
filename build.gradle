@@ -85,6 +85,7 @@ configurations {
 
 dependencies {
      implementation files("libs/flame_lib-1.0.8.jar")
+     implementation files("libs/atlas_lib-0.0.2.jar")
      implementation "top.theillusivec4.curios:curios-neoforge:9.3.0+1.21.1"
 }
 

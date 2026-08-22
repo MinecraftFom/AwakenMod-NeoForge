@@ -1,5 +1,7 @@
 package com.fomdev.awaken.spawn;
 
+import com.fomdev.atlas.color.ColorHolder;
+import com.fomdev.atlas.register.data.AtlasDataComponents;
 import com.fomdev.awaken.entries.raw.*;
 import com.fomdev.awaken.init.config.AwakenCommon;
 import com.fomdev.awaken.register.data.AwakenDataComponents;
@@ -29,6 +31,7 @@ import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -240,10 +243,14 @@ public class EquipmentManager
             EquipmentSlot slot,
             float diff,
             float factor,
+            Color color,
             RandomSource random
     )
     {
+        float h = random.nextFloat() % 360.0F;
+
         stack.set(AwakenDataComponents.AWAKEN_SLOT_STORAGE, slot);
+        stack.set(AtlasDataComponents.COLOR_COMPONENT, new ColorHolder(h, 1.0F, 1.0F));
 
         float d = diff * factor;
         enchant(stack, level, diff, factor, random);

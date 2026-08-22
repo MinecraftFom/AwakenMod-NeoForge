@@ -215,6 +215,7 @@ public class MobSpawnManager
                     slot,
                     diff,
                     factor,
+                    color,
                     random
             );
 

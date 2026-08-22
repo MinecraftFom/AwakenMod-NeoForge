@@ -35,7 +35,6 @@
   "tooltip.infix.info": "中缀",
   "tooltip.pollinate.info": "花粉",
   "tooltip.pollinate.when.info": "当 %s 时, 给予 %s %s %s",
-  "tooltip.prefix.immunise.info": "当手持时，对%s免疫",
   "tooltip.prefix.effect.info": "效果",
   "tooltip.prefix.info": "前缀",
   "tooltip.quality.factor.info": "倍率",

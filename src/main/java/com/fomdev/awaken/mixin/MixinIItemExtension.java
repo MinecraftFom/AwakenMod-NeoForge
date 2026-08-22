@@ -4,6 +4,7 @@ import com.fomdev.awaken.entries.raw.AwakenPrefix;
 import com.fomdev.awaken.entries.raw.AwakenQuality;
 import com.fomdev.awaken.entries.raw.AwakenSuffix;
 import com.fomdev.awaken.util.NBTUtil;
+import com.fomdev.awaken.util.Records;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
@@ -50,9 +51,12 @@ public interface MixinIItemExtension
         if (prefix == null)
             return;
 
-        ImmutableList<EnchantmentInstance> enchs = prefix.getBaseEnchantments();
+        ImmutableList<Records.EnchantmentHolder> enchs = prefix.getBaseEnchantments();
         ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(cir.getReturnValue());
-        enchs.forEach(ench -> mutable.set(ench.enchantment, ench.level));
+        enchs
+                .stream()
+                .map(ench -> ench.toInstance(lookup))
+                .forEach(ench -> mutable.set(ench.enchantment, ench.level));
         cir.setReturnValue(mutable.toImmutable());
     }
 }

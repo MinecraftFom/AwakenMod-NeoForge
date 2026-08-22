@@ -320,19 +320,6 @@ public class TooltipUtil
                                     )
                                     .withStyle(ChatFormatting.GRAY)
                     );
-
-            for (AwakenSpore spore: prefix.getImmuniseAmounts())
-                components
-                        .add(
-                                Component
-                                        .empty()
-                                        .append(
-                                                Component.translatable(
-                                                        "tooltip.prefix.immunise.info",
-                                                        LocaleUtil.localizeSpore(spore)
-                                                )
-                                        )
-                        );
         } else
             components
                     .add(

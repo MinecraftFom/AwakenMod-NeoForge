@@ -25,6 +25,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
+import java.util.Objects;
 
 @Mixin(ItemStack.class)
 public abstract class MixinItemStack implements DataComponentHolder
@@ -81,8 +82,8 @@ public abstract class MixinItemStack implements DataComponentHolder
         cir.setReturnValue(component);
     }
 
-    @Inject(method = "getTagEnchantments", at = @At("RETURN"), cancellable = true)
-    private void getTagEnchantments(
+    @Inject(method = "getEnchantments", at = @At("RETURN"), cancellable = true)
+    private void getEnchantments(
             CallbackInfoReturnable<ItemEnchantments> cir
     )
     {
@@ -91,9 +92,13 @@ public abstract class MixinItemStack implements DataComponentHolder
         if (prefix == null)
             return;
 
-        ImmutableList<EnchantmentInstance> enchs = prefix.getBaseEnchantments();
+        ImmutableList<Records.EnchantmentHolder> enchs = prefix.getBaseEnchantments();
         ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(cir.getReturnValue());
-        enchs.forEach(ench -> mutable.set(ench.enchantment, ench.level));
+        enchs
+                .stream()
+                .map(Records.EnchantmentHolder::toInstance)
+                .filter(Objects::nonNull)
+                .forEach(ench -> mutable.set(ench.enchantment, ench.level));
         cir.setReturnValue(mutable.toImmutable());
     }
 

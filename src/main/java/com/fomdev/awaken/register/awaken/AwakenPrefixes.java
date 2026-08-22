@@ -4,8 +4,13 @@ import com.fomdev.awaken.entries.raw.AwakenPrefix;
 import com.fomdev.awaken.entries.raw.AwakenRegistries;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.spawn.shuffle.ShuffledRegistries;
+import com.fomdev.awaken.util.Records;
 import com.fomdev.flame.annotation.AutoProxy;
+import com.fomdev.flame.register.Registry;
 import com.fomdev.flame.register.RegistryTable;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.world.item.enchantment.Enchantments;
 
 import java.util.List;
 
@@ -18,7 +23,7 @@ public class AwakenPrefixes
     public static void init()
     {
         register(
-                new AwakenPrefix("normal", 0, 1.0F, List.of(), List.of()),
+                new AwakenPrefix("normal", 0, 1.0F, List.of(new Records.EnchantmentHolder(Enchantments.FORTUNE, 1))),
                 500.0F,
                 0.0F
         );

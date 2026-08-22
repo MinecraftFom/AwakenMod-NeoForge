@@ -4,6 +4,7 @@ import com.fomdev.awaken.entries.raw.*;
 import com.fomdev.awaken.init.config.AwakenCommon;
 import com.fomdev.awaken.register.data.AwakenAttachmentTypes;
 import com.fomdev.awaken.register.data.AwakenDataComponents;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.core.component.DataComponents;
@@ -14,10 +15,12 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class NBTUtil
@@ -85,6 +88,26 @@ public class NBTUtil
 
 
         return instances;
+    }
+
+    public static ItemEnchantments deserializeEnchantments(
+            ItemStack stack,
+            ItemEnchantments original
+    )
+    {
+        AwakenPrefix prefix = NBTUtil.deserializePrefix(stack);
+        if (prefix == null)
+            return original;
+
+        ImmutableList<Records.EnchantmentHolder> enchs = prefix.getBaseEnchantments();
+        ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(original);
+        enchs
+                .stream()
+                .map(Records.EnchantmentHolder::toInstance)
+                .filter(Objects::nonNull)
+                .forEach(ench -> mutable.set(ench.enchantment, ench.level));
+
+        return mutable.toImmutable();
     }
 
     public static Records.AwakenEpochComponent deserializeEpoch(

@@ -10,6 +10,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -18,6 +19,9 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Tuple;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
@@ -138,6 +142,26 @@ public class EnchantManager
         xpLevel = AwakenCommon.CONFIG.XP_PER_LEVEL.get();
         maxLevel = AwakenCommon.CONFIG.MAX_ENCHANT_LEVEL.get();
         loadFromConfig();
+    }
+
+    public static boolean isPrimaryItemFor(
+            ItemStack stack,
+            Holder<Enchantment> enchantment
+    )
+    {
+        if (stack.getItem() == Items.BOOK)
+            return true;
+
+        Optional<HolderSet<Item>> primaryItems = enchantment.value().definition().primaryItems();
+        return supportsEnchantment(stack, enchantment) && (primaryItems.isEmpty() || stack.is(primaryItems.get()));
+    }
+
+    public static boolean supportsEnchantment(
+            ItemStack stack,
+            Holder<Enchantment> enchantment
+    )
+    {
+        return stack.is(Items.ENCHANTED_BOOK) || enchantment.value().isSupportedItem(stack);
     }
 
     private static ItemEnchantments initItemEnchantments(

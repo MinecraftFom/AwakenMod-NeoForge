@@ -1,6 +1,7 @@
 package com.fomdev.awaken.mixin;
 
 import com.fomdev.awaken.difficulty.ClientDifficultyManager;
+import com.fomdev.awaken.enchant.EnchantManager;
 import com.fomdev.awaken.entries.raw.*;
 import com.fomdev.awaken.register.data.AwakenDataComponents;
 import com.fomdev.awaken.register.items.AwakenItems;
@@ -105,6 +106,7 @@ public abstract class MixinItemStack implements DataComponentHolder
                 .stream()
                 .map(Records.EnchantmentHolder::toInstance)
                 .filter(Objects::nonNull)
+                .filter(e -> EnchantManager.isPrimaryItemFor(self, e.enchantment))
                 .forEach(e -> mie.set(e.enchantment, e.level));
 
         PatchedDataComponentMap map = new PatchedDataComponentMap(original);

@@ -2,6 +2,7 @@ package com.fomdev.awaken.spawn;
 
 import com.fomdev.atlas.color.ColorHolder;
 import com.fomdev.atlas.register.data.AtlasDataComponents;
+import com.fomdev.awaken.enchant.EnchantManager;
 import com.fomdev.awaken.entries.raw.*;
 import com.fomdev.awaken.init.config.AwakenCommon;
 import com.fomdev.awaken.register.data.AwakenDataComponents;
@@ -189,12 +190,8 @@ public class EquipmentManager
         Registry<Enchantment> registry = level.registryAccess().registryOrThrow(Registries.ENCHANTMENT);
         List<Holder<Enchantment>> candidates = new ArrayList<>();
         for (Holder<Enchantment> holder: registry.holders().toList())
-        {
-            Enchantment enchant = holder.value();
-
-            if (enchant.isSupportedItem(stack) && !holder.is(EnchantmentTags.CURSE))
+            if (EnchantManager.isPrimaryItemFor(stack, holder) && !holder.is(EnchantmentTags.CURSE))
                 candidates.add(holder);
-        }
 
         if (candidates.isEmpty())
             return List.of();

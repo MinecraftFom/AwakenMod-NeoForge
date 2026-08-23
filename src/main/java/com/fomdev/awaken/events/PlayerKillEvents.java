@@ -1,5 +1,7 @@
 package com.fomdev.awaken.events;
 
+import com.fomdev.awaken.entries.raw.AwakenRegistries;
+import com.fomdev.awaken.entries.raw.AwakenSpore;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.register.items.AwakenItems;
 import com.fomdev.awaken.util.NBTUtil;
@@ -18,6 +20,7 @@ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.List;
 
 @EventBusSubscriber(modid = Awaken.MODID)
 public class PlayerKillEvents
@@ -43,7 +46,19 @@ public class PlayerKillEvents
         processSoulAdd(player.level(), player, mainhand, factor2.intValue(), random);
         processSoulAdd(player.level(), player, offhand, factor2.intValue(), random);
 
-        NBTUtil.addAwakenLevel(player, NBTUtil.deserializeAwakenLevel(vic));
+        NBTUtil.addAwakenLevel(player, NBTUtil.deserializeAwakenLevel(vic).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)));
+
+        if (random.nextInt(100) < 2) // %2
+        {
+            List<AwakenSpore> spores = AwakenRegistries.AWAKEN_SPORE.getRegistries();
+            if (spores.isEmpty())
+                return;
+
+            AwakenSpore spore = spores.get(random.nextInt(spores.size()));
+            int level = random.nextInt(8) * (MobSpawnEvents.isAwaken(vic)? random.nextInt(5) + 1: 1);
+            int lvl = Math.max(level, 1);
+            NBTUtil.addSpore(player, new AwakenSpore.SporeInstance(spore, lvl));
+        }
     }
 
     private static void processSoulAdd(

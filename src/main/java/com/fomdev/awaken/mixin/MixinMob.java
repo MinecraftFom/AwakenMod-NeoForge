@@ -45,11 +45,12 @@ public abstract class MixinMob
             if (stack.has(DataComponents.DAMAGE))
             {
                 int max = stack.getMaxDamage();
-                float diff = DifficultyManager.getDimensionFactor(level);
+                int max2 = Math.max(max, 1);
+                float diff = DifficultyManager.getLevelDifficulty(level).floatValue();
                 int factor = (int) (max / (diff <= 0? 1: diff));
                 int factor2 = Math.max(factor, 1);
                 int d = new Random().nextInt(factor2);
-                int d2 = Math.clamp(d, 0, max);
+                int d2 = Math.clamp(d, 0, max2);
                 stack.setDamageValue(d2);
             }
 

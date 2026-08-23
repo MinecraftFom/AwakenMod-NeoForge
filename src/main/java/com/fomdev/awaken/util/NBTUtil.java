@@ -52,6 +52,16 @@ public class NBTUtil
         serializeSoul(stack, new Records.AwakenSoulComponent((int) (value * 100) / 100.0F, original.maximum()));
     }
 
+    public static void addSpore(
+            Entity entity,
+            AwakenSpore.SporeInstance instance
+    )
+    {
+        List<AwakenSpore.SporeInstance> spores = new ArrayList<>(NBTUtil.deserializeSpores(entity));
+        spores.add(instance);
+        NBTUtil.serializeSpores(entity, spores);
+    }
+
     public static void clearPlayer(
             ItemStack stack
     )

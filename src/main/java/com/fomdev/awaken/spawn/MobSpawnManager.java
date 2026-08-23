@@ -27,6 +27,7 @@ import org.joml.Vector3f;
 
 import java.awt.*;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.*;
 import java.util.List;
@@ -131,7 +132,7 @@ public class MobSpawnManager
         if (tier == null)
             return;
 
-        int strength = random.nextInt(Math.max(diff.intValueExact() * 100, 1));
+        int strength = random.nextInt(Math.max(diff.sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).intValue() * 100, 1));
         int auraSize = random.nextInt(20);
         Color color = shuffleColor(
                 random

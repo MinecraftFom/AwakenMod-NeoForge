@@ -78,7 +78,8 @@ public class RankHelper
         if (factor2.compareTo(new BigDecimal("0")) <= 0)
             return new BigDecimal(factor);
 
-        return new BigDecimal(factor).multiply(new BigDecimal(random.nextFloat()).remainder(factor2));
+        BigDecimal factor3 = new BigDecimal(random.nextFloat());
+        return new BigDecimal(factor).multiply(factor3.remainder(factor2));
     }
 
     private static float processItemStack(

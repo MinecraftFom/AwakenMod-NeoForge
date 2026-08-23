@@ -7,6 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.TooltipFlag;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,8 +60,8 @@ public class TooltipUtil
     public static List<Component> castEpochTooltip(
             TooltipFlag flag,
             Records.AwakenEpochComponent epoch,
-            float currentLevel,
-            float currentDiff
+            BigDecimal currentLevel,
+            BigDecimal currentDiff
     )
     {
         List<Component> components = new ArrayList<>();
@@ -97,8 +98,8 @@ public class TooltipUtil
                                     Component
                                             .translatable(
                                                     "tooltip.unawaken.diff.info",
-                                                    currentDiff,
-                                                    epoch.requiredMinDifficulty()
+                                                    currentDiff.toPlainString(),
+                                                    epoch.requiredMinDifficulty().toPlainString()
                                             )
                             )
                             .withStyle(ChatFormatting.GRAY)
@@ -111,8 +112,8 @@ public class TooltipUtil
                                     Component
                                             .translatable(
                                                     "tooltip.unawaken.level.info",
-                                                    currentLevel,
-                                                    epoch.requiredAwakenLevel()
+                                                    currentLevel.toPlainString(),
+                                                    epoch.requiredAwakenLevel().toPlainString()
                                             )
                             )
                             .withStyle(ChatFormatting.GRAY)

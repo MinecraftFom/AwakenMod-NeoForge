@@ -9,6 +9,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+
 @Mixin(TrialSpawnerConfig.class)
 public class MixinTrialSpawnerConfig
 {
@@ -22,11 +25,11 @@ public class MixinTrialSpawnerConfig
         if (server == null)
             return;
 
-        float diff = DifficultyManager.getLevelDifficulty(server.overworld());
-        float factor = (float) Math.pow(diff, 1.0 / 10.0);
-        float factor2 = factor <= 0? 1: factor;
+        BigDecimal diff = DifficultyManager.getLevelDifficulty(server.overworld());
+        BigDecimal factor = diff.sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2));
+        BigDecimal factor2 = factor.compareTo(new BigDecimal(0)) <= 0? factor: new BigDecimal("1");
 
-        cir.setReturnValue((int) (factor2 * cir.getReturnValue()));
+        cir.setReturnValue(factor2.intValueExact());
     }
 
     @Inject(method = "calculateTargetSimultaneousMobs", at = @At("RETURN"), cancellable = true)
@@ -39,10 +42,10 @@ public class MixinTrialSpawnerConfig
         if (server == null)
             return;
 
-        float diff = DifficultyManager.getLevelDifficulty(server.overworld());
-        float factor = (float) Math.pow(diff, 1.0 / 10.0);
-        float factor2 = factor <= 0? 1: factor;
+        BigDecimal diff = DifficultyManager.getLevelDifficulty(server.overworld());
+        BigDecimal factor = diff.sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2));
+        BigDecimal factor2 = factor.compareTo(new BigDecimal(0)) <= 0? factor: new BigDecimal("1");
 
-        cir.setReturnValue((int) (factor2 * cir.getReturnValue()));
+        cir.setReturnValue(factor2.intValueExact());
     }
 }

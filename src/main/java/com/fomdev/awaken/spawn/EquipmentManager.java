@@ -33,6 +33,9 @@ import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 
 import java.awt.*;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +51,7 @@ public class EquipmentManager
     public static void enchant(
             ItemStack stack,
             Level level,
-            float diff,
+            BigDecimal diff,
             float factor,
             RandomSource random
     )
@@ -108,29 +111,29 @@ public class EquipmentManager
     }
 
     public static int shuffleEffectCount(
-            float diff,
+            BigDecimal diff,
             float factor,
             RandomSource random
     )
     {
-        float n = (float) Math.sqrt(Math.sqrt(diff)) * random.nextInt(Math.max((int) factor, 1)) / factor;
-        return Math.min((int) (n * EFFECTS.size()), EFFECTS.size());
+        BigDecimal n = diff.sqrt(new MathContext(2)).sqrt(new MathContext(2)).multiply(new BigDecimal(random.nextInt(Math.max((int) factor, 1)) / factor));
+        return n.multiply(new BigDecimal(EFFECTS.size())).min(new BigDecimal(EFFECTS.size())).intValueExact();
     }
 
     public static int shuffleEffectLevel(
             Tuple<ResourceLocation, Tuple<Integer, Integer>> effect,
-            float diff,
+            BigDecimal diff,
             float factor,
             RandomSource random
     )
     {
-        float n = (float) Math.sqrt(Math.sqrt(diff)) * random.nextInt(Math.max((int) factor, 1)) / factor;
-        return Math.min((int) (n * effect.getB().getB()) - 1, effect.getB().getB()); // MC Effect levels starts at 0
+        BigDecimal n = diff.sqrt(new MathContext(2)).sqrt(new MathContext(2)).multiply(new BigDecimal(random.nextInt(Math.max((int) factor, 1)) / factor));
+        return n.multiply(new BigDecimal(effect.getB().getB() - 1)).min(new BigDecimal(effect.getB().getB())).intValueExact(); // MC Effect levels starts at 0
     }
 
     public static List<MobEffectInstance> shuffleEffects(
             Level level,
-            float diff,
+            BigDecimal diff,
             float factor,
             RandomSource random
     )
@@ -159,30 +162,30 @@ public class EquipmentManager
 
     public static int shuffleEnchantmentCount(
             int max,
-            float diff,
+            BigDecimal diff,
             float factor,
             RandomSource random
     )
     {
-        float n = (float) Math.sqrt(Math.sqrt(diff)) * (random.nextInt(Math.max((int) factor, 1)) / factor);
-        return Math.min((int) (n * max), max);
+        BigDecimal n = diff.sqrt(new MathContext(2)).sqrt(new MathContext(2)).multiply(new BigDecimal(random.nextInt(Math.max((int) factor, 1)) / factor));
+        return n.multiply(new BigDecimal(max)).min(new BigDecimal(max)).intValueExact();
     }
 
     public static int shuffleEnchantmentLevel(
             int max,
-            float diff,
+            BigDecimal diff,
             float factor,
             RandomSource random
     )
     {
-        float n = (float) Math.sqrt(Math.sqrt(diff)) * (random.nextInt(Math.max((int) factor, 1)) / factor);
-        return Math.min((int) (n * max) / 2, max); // RESTRICTED: LOWER LEVEL FOR BALANCE
+        BigDecimal n = diff.sqrt(new MathContext(2)).sqrt(new MathContext(2)).multiply(new BigDecimal(random.nextInt(Math.max((int) factor, 1)) / factor));
+        return n.multiply(new BigDecimal(max)).divide(new BigDecimal(2), RoundingMode.HALF_UP).min(new BigDecimal(max)).intValueExact(); // RESTRICTED: LOWER LEVEL FOR BALANCE
     }
 
     public static List<EnchantmentInstance> shuffleEnchantments(
             ItemStack stack,
             Level level,
-            float diff,
+            BigDecimal diff,
             float factor,
             RandomSource random
     )
@@ -214,23 +217,21 @@ public class EquipmentManager
     }
 
     public static Records.AwakenEpochComponent shuffleEpoch(
-            float diff,
+            BigDecimal diff,
             float factor,
             RandomSource random
     )
     {
-        int factor1 = (int) diff;
-        int factor2 = Math.max(factor1, 1);
-        int factor3 = random.nextInt(factor2 * 2);
-        float result1 = (int) (factor3 * factor * 100) / 100.0F;
-        double maxLevel = AwakenRegistries.AWAKEN_LEVEL.getMaxLevel();
-        if (maxLevel <= 0)
-            return new Records.AwakenEpochComponent(0.0F, result1);
+        BigDecimal factor1 = diff.max(new BigDecimal("1"));
+        BigDecimal factor2 = new BigDecimal(random.nextInt()).remainder(factor1.multiply(new BigDecimal("2")));
+        BigDecimal result1 = factor2.multiply(new BigDecimal(factor)).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal maxLevel = AwakenRegistries.AWAKEN_LEVEL.getMaxLevel();
+        if (maxLevel.compareTo(new BigDecimal("0")) <= 0)
+            return new Records.AwakenEpochComponent(new BigDecimal("0.0"), result1);
 
-        int factor4 = (int) maxLevel;
-        int factor5 = random.nextInt(factor4);
-        int factor6 = (int) (factor5 * Math.sqrt(factor));
-        float result2 = (int) (factor6 * 100) / 100.0F;
+        BigDecimal factor3 = new BigDecimal(random.nextInt()).remainder(maxLevel);
+        BigDecimal factor4 = factor3.multiply(new BigDecimal(Math.sqrt(factor)));
+        BigDecimal result2 = factor4.setScale(2, RoundingMode.HALF_UP);
         return new Records.AwakenEpochComponent(result2, result1);
     }
 
@@ -238,7 +239,7 @@ public class EquipmentManager
             Level level,
             ItemStack stack,
             EquipmentSlot slot,
-            float diff,
+            BigDecimal diff,
             float factor,
             Color color,
             RandomSource random
@@ -249,7 +250,7 @@ public class EquipmentManager
         stack.set(AwakenDataComponents.AWAKEN_SLOT_STORAGE, slot);
         stack.set(AtlasDataComponents.COLOR_COMPONENT, new ColorHolder(h, 1.0F, 1.0F));
 
-        float d = diff * factor;
+        BigDecimal d = diff.multiply(new BigDecimal(factor));
         enchant(stack, level, diff, factor, random);
         if (shouldShuffleEpoch())
         {
@@ -264,11 +265,11 @@ public class EquipmentManager
             stack.set(DataComponents.TRIM, new ArmorTrim(material, pattern));
         }
 
-        AwakenQuality quality = ShuffledRegistries.WEIGHTED_AWAKEN_QUALITY.calculate(d, random);
+        AwakenQuality quality = ShuffledRegistries.WEIGHTED_AWAKEN_QUALITY.calculate(d.floatValue(), random);
 
-        AwakenInfix infix = ShuffledRegistries.WEIGHTED_AWAKEN_INFIX.calculate(slot, d, random);
-        AwakenPrefix prefix = ShuffledRegistries.WEIGHTED_AWAKEN_PREFIX.calculate(d, random);
-        AwakenSuffix suffix = ShuffledRegistries.WEIGHTED_AWAKEN_SUFFIX.calculate(d, random);
+        AwakenInfix infix = ShuffledRegistries.WEIGHTED_AWAKEN_INFIX.calculate(slot, d.floatValue(), random);
+        AwakenPrefix prefix = ShuffledRegistries.WEIGHTED_AWAKEN_PREFIX.calculate(d.floatValue(), random);
+        AwakenSuffix suffix = ShuffledRegistries.WEIGHTED_AWAKEN_SUFFIX.calculate(d.floatValue(), random);
 
         if (Util.ifNull(quality, infix, prefix, suffix))
             return;
@@ -296,28 +297,28 @@ public class EquipmentManager
 
     public static ItemStack shuffleItemStack(
             EquipmentSlot slot,
-            float diff,
+            BigDecimal diff,
             float factor,
             RandomSource random
     )
     {
-        float d = diff * factor;
+        BigDecimal d = diff.multiply(new BigDecimal(factor));
 
-        return ShuffledRegistries.WEIGHTED_AWAKEN_STACK.calculate(slot, d, random);
+        return ShuffledRegistries.WEIGHTED_AWAKEN_STACK.calculate(slot, d.floatValue(), random);
     }
 
     public static int shuffleSlotCount(
-            float diff,
+            BigDecimal diff,
             float factor,
             RandomSource random
     )
     {
-        int n = random.nextInt(Math.max((int) diff, 1)) + (int) factor;
+        int n = random.nextInt(diff.max(new BigDecimal("1")).intValueExact()) + (int) factor;
         return Math.clamp(n, 1, 7);
     }
 
     public static EquipmentSlot[] shuffleSlots(
-            float diff,
+            BigDecimal diff,
             float factor,
             RandomSource random
     )

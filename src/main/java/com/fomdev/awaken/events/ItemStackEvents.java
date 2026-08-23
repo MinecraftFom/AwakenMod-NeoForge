@@ -19,6 +19,8 @@ import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import top.theillusivec4.curios.api.CuriosApi;
 
+import java.math.BigDecimal;
+
 @EventBusSubscriber(modid = Awaken.MODID)
 public class ItemStackEvents
 {
@@ -33,8 +35,8 @@ public class ItemStackEvents
             return;
 
         ItemStack stack = event.getItemEntity().getItem();
-        float diff = DifficultyManager.getLevelDifficulty(serverPlayer.serverLevel());
-        float awakenLevel = NBTUtil.deserializeAwakenLevel(player);
+        BigDecimal diff = DifficultyManager.getLevelDifficulty(serverPlayer.serverLevel());
+        BigDecimal awakenLevel = NBTUtil.deserializeAwakenLevel(player);
 
         if (stack.isEmpty())
             return;
@@ -43,7 +45,7 @@ public class ItemStackEvents
         if ((epoch = NBTUtil.deserializeEpoch(stack)) == null)
             return;
 
-        if (epoch.requiredMinDifficulty() > diff || epoch.requiredAwakenLevel() > awakenLevel)
+        if (diff.compareTo(epoch.requiredMinDifficulty()) < 0 || awakenLevel.compareTo(epoch.requiredAwakenLevel()) < 0)
         {
             event.setCanPickup(TriState.FALSE);
             serverPlayer.connection.send(new ClientboundSetActionBarTextPacket(

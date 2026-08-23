@@ -2,6 +2,7 @@ package com.fomdev.awaken.mixin;
 
 import com.fomdev.awaken.register.attribute.AwakenAttributes;
 import com.fomdev.awaken.util.NBTUtil;
+import com.fomdev.awaken.util.Records;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.IdMap;
@@ -96,8 +97,13 @@ public abstract class MixinEnchantmentMenu extends AbstractContainerMenu
                     j += level.getBlockState(pos.offset(p)).getEnchantPowerBonus(level, pos.offset(p));
 
             Player player = level.getNearestPlayer(pos.getX(), pos.getY(), pos.getZ(), 5, true);
-            if (player != null && player.getAttribute(AwakenAttributes.ENCHANTMENT) != null)
+            if (player == null)
+                return;
+
+            if (player.getAttribute(AwakenAttributes.ENCHANTMENT) != null)
                 j += (float) Objects.requireNonNull(player.getAttribute(AwakenAttributes.ENCHANTMENT)).getValue();
+
+            Records.AwakenKnowledgeComponent knowledge = NBTUtil.deserializeKnowledge(player);
 
             this.random.setSeed(this.enchantmentSeed.get());
 
@@ -120,9 +126,10 @@ public abstract class MixinEnchantmentMenu extends AbstractContainerMenu
                     if (insts != null && !insts.isEmpty())
                     {
                         EnchantmentInstance inst = insts.get(this.random.nextInt(insts.size()));
-                        this.enchantClue[l] =
-                                idmap.getId(inst.enchantment)
-                                        + (player != null? (int) Math.pow(NBTUtil.deserializeAwakenLevel(player), 1.0 / 10.0): 0);
+                        int clueCount = Math.clamp((int) (Math.pow(knowledge.insight(), 1.0 / 5.0 * insts.size())), 1, insts.size());
+                        for (int i = 0; i < clueCount; i++)
+                            this.enchantClue[l * clueCount + i] = idmap.getId(inst.enchantment);
+
                         this.levelClue[l] = inst.level;
                     }
                 }

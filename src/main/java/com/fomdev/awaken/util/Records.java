@@ -16,12 +16,13 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 
 import java.awt.*;
+import java.math.BigDecimal;
 
 public class Records
 {
     public record AwakenLevelComponent
             (
-                    Float level
+                    BigDecimal level
             )
     {}
 
@@ -35,8 +36,8 @@ public class Records
 
     public record AwakenEpochComponent
             (
-                    double requiredAwakenLevel,
-                    float requiredMinDifficulty
+                    BigDecimal requiredAwakenLevel,
+                    BigDecimal requiredMinDifficulty
             )
     {}
 

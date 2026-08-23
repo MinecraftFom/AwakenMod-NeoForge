@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +32,7 @@ public class AwakenLevelRegistry extends FreezingRegistry<AwakenLevel>
         concludeSortedData();
     }
 
-    public AwakenLevel getLevel(double level)
+    public AwakenLevel getLevel(BigDecimal level)
     {
         if (!frozen || frozenMap == null)
             throw new IllegalStateException("Current state: registration. You have no access to this method until the registration freeze take place");
@@ -46,7 +47,7 @@ public class AwakenLevelRegistry extends FreezingRegistry<AwakenLevel>
 
             AwakenLevel curr = sortedFrozenCache.get(i);
             AwakenLevel next = sortedFrozenCache.get(i + 1);
-            if (curr.getMin() <= level && level < next.getMin())
+            if (curr.getMin().compareTo(level) < 0 && level.compareTo(next.getMin()) < 0)
                 return curr;
         }
 
@@ -58,10 +59,10 @@ public class AwakenLevelRegistry extends FreezingRegistry<AwakenLevel>
         return sortedFrozenCache.indexOf(level);
     }
 
-    public double getMaxLevel()
+    public BigDecimal getMaxLevel()
     {
         if (sortedFrozenCache.isEmpty())
-            return 0.0F;
+            return new BigDecimal("0.0");
 
         return sortedFrozenCache.getLast().getMin();
     }
@@ -99,7 +100,7 @@ public class AwakenLevelRegistry extends FreezingRegistry<AwakenLevel>
                 continue;
             }
 
-            double value = level.getMin();
+            BigDecimal value = level.getMin();
             int min = 0;
             int max = sortedFrozenCache.size() - 1;
             int cord = 0;
@@ -109,35 +110,35 @@ public class AwakenLevelRegistry extends FreezingRegistry<AwakenLevel>
             {
                 int centerCoordinates = min + (max - min) / 2; // Center coordinates
 
-                if (centerCoordinates == 0 && sortedFrozenCache.getFirst().getMin() > value)
+                if (centerCoordinates == 0 && value.compareTo(sortedFrozenCache.getFirst().getMin()) < 0)
                 {
                     // cord is defaulted to 0
                     found = true;
                     continue;
                 }
 
-                if (centerCoordinates == sortedFrozenCache.size() - 1 && sortedFrozenCache.getLast().getMin() < value)
+                if (centerCoordinates == sortedFrozenCache.size() - 1 && sortedFrozenCache.getLast().getMin().compareTo(value) < 0)
                 {
                     cord = sortedFrozenCache.size() - 1;
                     found = true;
                     continue;
                 }
 
-                double curr = sortedFrozenCache.get(centerCoordinates).getMin();
-                double last = centerCoordinates - 1 <= 0? 0.0F: sortedFrozenCache.get(centerCoordinates - 1).getMin();
+                BigDecimal curr = sortedFrozenCache.get(centerCoordinates).getMin();
+                BigDecimal last = centerCoordinates - 1 <= 0? new BigDecimal("0.0"): sortedFrozenCache.get(centerCoordinates - 1).getMin();
 
-                if (last <= value && value <= curr)
+                if (last.compareTo(value) <= 0 && value.compareTo(curr) <= 0)
                 {
                     // Perfect situation!
                     cord = centerCoordinates;
                     found = true;
                 }
-                else if (value < curr && value < last)
+                else if (value.compareTo(curr) < 0 && value.compareTo(last) < 0)
                 {
                     // The coordinates are TOO big!
                     max = centerCoordinates - 1; // Makes sure size isn't 0
                 }
-                else if (curr < value && last < value)
+                else if (curr.compareTo(value) < 0 && last.compareTo(value) < 0)
                 {
                     // The coordinates are TOO small!
                     min = centerCoordinates + 1; // Makes sure size isn't 0

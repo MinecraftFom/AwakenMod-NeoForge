@@ -26,6 +26,8 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
 import java.awt.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.List;
 
@@ -38,19 +40,21 @@ public class MobSpawnManager
     public static final List<Holder.Reference<EntityType<?>>> RIDE_ENTITIES = new ArrayList<>();
 
     public static boolean shouldRide(
-            float diff,
+            BigDecimal diff,
             float factor,
             RandomSource random
     )
     {
-        int n = random.nextInt((int) diff * (int) factor);
-        return n > diff / (factor * 10) && diff >= AwakenCommon.CONFIG.CARRIER_GENERATION.get();
+        int n = random.nextInt(diff.multiply(new BigDecimal(factor)).intValueExact());
+        BigDecimal n2 = diff.divide(new BigDecimal(factor * 10), RoundingMode.HALF_UP);
+        BigDecimal n3 = new BigDecimal(AwakenCommon.CONFIG.CARRIER_GENERATION.get());
+        return n2.compareTo(new BigDecimal(n)) < 0 && n3.compareTo(diff) <= 0;
     }
 
     public static Entity spawnRideEntity(
             Level level,
             Vector3f pos,
-            float diff,
+            BigDecimal diff,
             float factor,
             RandomSource random
     )
@@ -88,9 +92,7 @@ public class MobSpawnManager
             RandomSource random
     )
     {
-        original.setData(AwakenAttachmentTypes.IS_AWAKEN, true);
         /* TODO: ADD PARTICLE */
-
         Util.placeholder(diff, strength, auraSize, color, title, level, random);
     }
 
@@ -113,23 +115,23 @@ public class MobSpawnManager
 
     public static void spawn(
             LivingEntity entity,
-            float diff,
+            BigDecimal diff,
             Level level,
             RandomSource random
     )
     {
-        if (diff <= 0)
+        if (diff.compareTo(new BigDecimal("0")) <= 0)
             return;
 
         MobTier tier = ShuffledRegistries.WEIGHTED_AWAKEN_TIER.calculate(
-                diff,
+                diff.floatValue(),
                 random
         );
 
         if (tier == null)
             return;
 
-        int strength = random.nextInt(Math.max((int) diff * 100, 1));
+        int strength = random.nextInt(Math.max(diff.intValueExact() * 100, 1));
         int auraSize = random.nextInt(20);
         Color color = shuffleColor(
                 random
@@ -154,7 +156,7 @@ public class MobSpawnManager
 
         tier.additionalSpawn().onSpawn(
                 entity,
-                diff,
+                diff.floatValue(),
                 strength,
                 auraSize,
                 color,
@@ -166,7 +168,7 @@ public class MobSpawnManager
 
     private static void normalGenerate(
             LivingEntity original,
-            float diff,
+            BigDecimal diff,
             float factor,
             int strength,
             Color color,
@@ -182,6 +184,7 @@ public class MobSpawnManager
         if (!(original instanceof EquipmentUser user))
             return;
 
+        original.setData(AwakenAttachmentTypes.IS_AWAKEN, true);
         NBTUtil.serializeAwakenLevel(original, RankHelper.randomizeRank(server, factor, random));
 
         original.setCustomName(

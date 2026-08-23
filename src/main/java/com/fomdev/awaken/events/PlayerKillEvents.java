@@ -16,6 +16,9 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+
 @EventBusSubscriber(modid = Awaken.MODID)
 public class PlayerKillEvents
 {
@@ -31,14 +34,14 @@ public class PlayerKillEvents
             return;
 
         RandomSource random = player.getRandom();
-        float awaken = NBTUtil.deserializeAwakenLevel(player);
-        float factor = (float) Math.pow(awaken, 1.0 / 5.0);
-        float factor2 = factor <= 0? 1: factor;
+        BigDecimal awaken = NBTUtil.deserializeAwakenLevel(player);
+        BigDecimal factor = awaken.sqrt(new MathContext(2)).sqrt(new MathContext(2));
+        BigDecimal factor2 = factor.compareTo(new BigDecimal(0)) <= 0? new BigDecimal("1"): factor;
 
         ItemStack mainhand = player.getItemInHand(InteractionHand.MAIN_HAND);
         ItemStack offhand = player.getItemInHand(InteractionHand.OFF_HAND);
-        processSoulAdd(player.level(), player, mainhand, factor2, random);
-        processSoulAdd(player.level(), player, offhand, factor2, random);
+        processSoulAdd(player.level(), player, mainhand, factor2.intValue(), random);
+        processSoulAdd(player.level(), player, offhand, factor2.intValue(), random);
 
         NBTUtil.addAwakenLevel(player, NBTUtil.deserializeAwakenLevel(vic));
     }

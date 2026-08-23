@@ -24,6 +24,7 @@ import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @EventBusSubscriber(modid = Awaken.MODID)
@@ -63,7 +64,7 @@ public class MobSpawnEvents
             return;
 
         RandomSource random = event.getEntity().getRandom();
-        float diff = DifficultyManager.getLevelDifficulty(event.getLevel().getLevel());
+        BigDecimal diff = DifficultyManager.getLevelDifficulty(event.getLevel().getLevel());
 
         MobSpawnManager.spawn(
                 event.getEntity(),
@@ -94,7 +95,7 @@ public class MobSpawnEvents
         if (!isAwaken(target))
             return;
 
-        NBTUtil.addAwakenLevel(player, player.getRandom().nextInt((int) target.getMaxHealth()));
+        NBTUtil.addAwakenLevel(player, new BigDecimal(player.getRandom().nextInt((int) target.getMaxHealth())));
 
     }
 

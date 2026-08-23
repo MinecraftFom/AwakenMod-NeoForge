@@ -22,6 +22,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
 import javax.annotation.Nullable;
+import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -62,8 +63,8 @@ public class MixinCraftingTableMenu
         }
 
         stack = KnowledgeHelper.getResult(player, stack);
-        float awakenLevel = NBTUtil.deserializeAwakenLevel(player);
-        float difficulty = DifficultyManager.getLevelDifficulty((ServerLevel) level);
+        BigDecimal awakenLevel = NBTUtil.deserializeAwakenLevel(player);
+        BigDecimal difficulty = DifficultyManager.getLevelDifficulty((ServerLevel) level);
         NBTUtil.serializeEpoch(
                 stack,
                 new Records.AwakenEpochComponent(

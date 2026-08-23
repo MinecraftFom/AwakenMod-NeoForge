@@ -5,6 +5,7 @@ import net.minecraft.world.entity.EquipmentUser;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,6 +13,15 @@ import java.util.Objects;
 
 public class Util
 {
+    public static BigDecimal clamp(
+            BigDecimal value,
+            BigDecimal min,
+            BigDecimal max
+    )
+    {
+        return value.max(min).max(max);
+    }
+
     public static List<ItemStack> getStacks(
             EquipmentUser user
     )

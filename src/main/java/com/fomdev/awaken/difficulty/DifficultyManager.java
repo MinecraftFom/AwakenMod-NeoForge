@@ -10,6 +10,8 @@ import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.storage.DimensionDataStorage;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -22,16 +24,16 @@ public class DifficultyManager
 
     public static final Map<ResourceLocation, Float> dimensionFactor = new HashMap<>();
 
-    public static float getLevelDifficulty(
+    public static BigDecimal getLevelDifficulty(
             ServerLevel level
     )
     {
         if (!levels.containsKey(level))
-            return 0.0F;
+            return new BigDecimal("0.0");
 
         SavedDifficultyLevel lvl = levels.get(level);
         if (lvl == null)
-            return 0.0F;
+            return new BigDecimal("0.0");
 
         return lvl.getLevel();
     }
@@ -60,7 +62,7 @@ public class DifficultyManager
 
     public static void setLevelDifficulty(
             ServerLevel level,
-            float diff
+            BigDecimal diff
     )
     {
         if (!levels.containsKey(level))
@@ -68,7 +70,7 @@ public class DifficultyManager
 
         SavedDifficultyLevel sl = levels.get(level);
         if (sl != null)
-            sl.setLevel((int) (diff * 100.0) / 100.0F);
+            sl.setLevel(diff.setScale(2, RoundingMode.HALF_UP));
 
         level.getServer().getPlayerList().getPlayers().forEach(sp -> sp.connection.send(new DifficultySyncPacketPayloadResponder(levels.get(level).getLevel())));
     }
@@ -107,24 +109,26 @@ public class DifficultyManager
 
     public static class SavedDifficultyLevel extends SavedData
     {
-        private float level = 0.0F;
+        private BigDecimal level = new BigDecimal("0.0");
 
         public SavedDifficultyLevel() {}
 
         public static SavedDifficultyLevel load(CompoundTag tag, HolderLookup.Provider provider)
         {
             SavedDifficultyLevel data = new SavedDifficultyLevel();
-            data.level = tag.contains(namespace)? tag.getFloat(namespace): 0.0F;
+            data.level = tag.contains(namespace)? new BigDecimal(tag.getString(namespace)): new BigDecimal("0.0");
 
             return data;
         }
 
-        public float getLevel()
+        public BigDecimal getLevel()
         {
             return this.level;
         }
 
-        public void setLevel(float level)
+        public void setLevel(
+                BigDecimal level
+        )
         {
             this.level = level;
             this.setDirty();
@@ -133,7 +137,7 @@ public class DifficultyManager
         @Override
         public @NotNull CompoundTag save(@NotNull CompoundTag tag, @NotNull HolderLookup.Provider provider)
         {
-            tag.putFloat(namespace, this.level);
+            tag.putString(namespace, this.level.toPlainString());
             return tag;
         }
     }

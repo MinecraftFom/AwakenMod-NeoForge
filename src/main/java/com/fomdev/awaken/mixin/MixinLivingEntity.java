@@ -25,6 +25,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity
@@ -41,9 +43,6 @@ public abstract class MixinLivingEntity
 
     @Shadow
     public abstract int getExperienceReward(ServerLevel p_345212_, @org.jetbrains.annotations.Nullable Entity p_345512_);
-
-    @Shadow
-    public abstract float getMaxHealth();
 
     @Inject(method = "dropExperience", at = @At("HEAD"), cancellable = true)
     private void getCustomExp(Entity entity, CallbackInfo ci)
@@ -63,8 +62,11 @@ public abstract class MixinLivingEntity
                                                 level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)
                         )
         ) {
-            float factor = DifficultyManager.getLevelDifficulty(level) / 20;
-            int reward = EventHooks.getExperienceDrop(self, this.lastHurtByPlayer, this.getExperienceReward(level, entity) * (int) (Math.max(factor, 1.0F)));
+            BigDecimal factor = DifficultyManager.getLevelDifficulty(level).divide(new BigDecimal("20"), RoundingMode.HALF_UP);
+            BigDecimal factor2 = factor.max(new BigDecimal("1.0"));
+            BigDecimal factor3 = new BigDecimal(this.getExperienceReward(level, entity));
+            BigDecimal factor4 = factor2.multiply(factor3);
+            int reward = EventHooks.getExperienceDrop(self, this.lastHurtByPlayer, factor4.intValueExact());
             ExperienceOrb.award(level, self.position(), reward);
         }
     }
@@ -127,7 +129,7 @@ public abstract class MixinLivingEntity
         LivingEntity self = (LivingEntity) (Object) this;
 
         if (!(self instanceof Player player))
-            cir.setReturnValue(HealthUtil.calculateMobHealth(self, cir.getReturnValue()));
+            cir.setReturnValue(HealthUtil.calculateMobHealth(self, new BigDecimal(cir.getReturnValue())).floatValue());
         else if (!player.level().isClientSide())
             cir.setReturnValue(cir.getReturnValue() + HealthUtil.deserializeAdditionalHealthPersistent(player));
     }

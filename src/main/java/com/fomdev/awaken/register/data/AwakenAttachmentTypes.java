@@ -16,18 +16,32 @@ import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.function.Supplier;
 
 @AutoRegister
 public class AwakenAttachmentTypes
 {
+    public static final Codec<BigDecimal> BIG_DECIMAL_CODEC =
+            Codec.STRING.xmap(
+                    BigDecimal::new,
+                    BigDecimal::toPlainString
+            );
+
+    public static final StreamCodec<ByteBuf, BigDecimal> BIG_DECIMAL_STREAM_CODEC =
+            StreamCodec.composite(
+                    ByteBufCodecs.STRING_UTF8,
+                    BigDecimal::toPlainString,
+                    BigDecimal::new
+            );
+
     public static final Codec<Records.AwakenLevelComponent> AWAKEN_LEVEL_CODEC =
             RecordCodecBuilder.create(
                     inst ->
                             inst
                                     .group(
-                                            Codec.FLOAT
+                                            BIG_DECIMAL_CODEC
                                                     .fieldOf("awaken_level")
                                                     .forGetter(Records.AwakenLevelComponent::level)
                                     )
@@ -39,7 +53,7 @@ public class AwakenAttachmentTypes
 
     public static final StreamCodec<ByteBuf, Records.AwakenLevelComponent> AWAKEN_LEVEL_STREAM_CODEC =
             StreamCodec.composite(
-                    ByteBufCodecs.FLOAT,
+                    BIG_DECIMAL_STREAM_CODEC,
                     Records.AwakenLevelComponent::level,
                     Records.AwakenLevelComponent::new
             );
@@ -163,7 +177,7 @@ public class AwakenAttachmentTypes
 
     public static final Supplier<AttachmentType<Records.AwakenLevelComponent>> PLAYER_AWAKEN_LEVEL_ATTACHMENT =
             REGISTER.register("awaken_level",
-                    () -> AttachmentType.builder(() -> new Records.AwakenLevelComponent(0.0F))
+                    () -> AttachmentType.builder(() -> new Records.AwakenLevelComponent(new BigDecimal("0.0")))
                             .serialize(AWAKEN_LEVEL_CODEC)
                             .sync((holder, to) -> holder == to, AWAKEN_LEVEL_STREAM_CODEC)
                             .build()

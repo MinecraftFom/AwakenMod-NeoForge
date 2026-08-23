@@ -9,6 +9,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
+
 @Mixin(TrialSpawner.class)
 public class MixinTrialSpawner
 {
@@ -23,7 +27,11 @@ public class MixinTrialSpawner
         if (server == null)
             return;
 
-        float diff = DifficultyManager.getLevelDifficulty(server.overworld());
-        cir.setReturnValue(original / Math.max((int) Math.pow(diff, 1.0 / 20.0), 1));
+        BigDecimal diff = DifficultyManager.getLevelDifficulty(server.overworld());
+        BigDecimal factor = diff.sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2));
+        BigDecimal factor2 = factor.max(new BigDecimal("1"));
+        BigDecimal factor3 = new BigDecimal(original);
+        BigDecimal factor4 = factor3.divide(factor2, RoundingMode.HALF_UP);
+        cir.setReturnValue(factor4.intValueExact());
     }
 }

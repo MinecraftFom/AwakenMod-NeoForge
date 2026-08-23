@@ -25,6 +25,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
@@ -146,9 +147,9 @@ public abstract class MixinItemStack implements DataComponentHolder
         if (epoch == null)
             return;
 
-        float difficulty = ClientDifficultyManager.getDifficulty();
-        float level = NBTUtil.deserializeAwakenLevel(player);
-        if (difficulty < epoch.requiredMinDifficulty() || level < epoch.requiredAwakenLevel())
+        BigDecimal difficulty = ClientDifficultyManager.getDifficulty();
+        BigDecimal level = NBTUtil.deserializeAwakenLevel(player);
+        if (difficulty.compareTo(epoch.requiredMinDifficulty()) < 0 || level.compareTo(epoch.requiredAwakenLevel()) < 0)
             cir.setReturnValue(
                     TooltipUtil.castEpochTooltip(
                             flag,
@@ -177,10 +178,10 @@ public abstract class MixinItemStack implements DataComponentHolder
         if (epoch == null)
             return;
 
-        float difficulty = ClientDifficultyManager.getDifficulty();
-        float level = NBTUtil.deserializeAwakenLevel(player);
+        BigDecimal difficulty = ClientDifficultyManager.getDifficulty();
+        BigDecimal level = NBTUtil.deserializeAwakenLevel(player);
 
-        if (difficulty < epoch.requiredMinDifficulty() || level < epoch.requiredAwakenLevel())
+        if (difficulty.compareTo(epoch.requiredMinDifficulty()) < 0 || level.compareTo(epoch.requiredAwakenLevel()) < 0)
              cir.setReturnValue(AwakenItems.UNKNOWN_ITEM.asItem());
     }
 }

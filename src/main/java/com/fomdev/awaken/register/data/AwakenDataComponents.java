@@ -16,11 +16,25 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @AutoRegister
 public class AwakenDataComponents
 {
+    public static final Codec<BigDecimal> BIG_DECIMAL_CODEC =
+            Codec.STRING.xmap(
+                    BigDecimal::new,
+                    BigDecimal::toPlainString
+            );
+
+    public static final StreamCodec<ByteBuf, BigDecimal> BIG_DECIMAL_STREAM_CODEC =
+            StreamCodec.composite(
+                    ByteBufCodecs.STRING_UTF8,
+                    BigDecimal::toPlainString,
+                    BigDecimal::new
+            );
+
     public static final Codec<Records.AwakenDescriberComponent> AWAKEN_DESCRIBER_CODEC =
             RecordCodecBuilder.create(
                     inst ->
@@ -62,12 +76,12 @@ public class AwakenDataComponents
                     inst ->
                             inst
                                     .group(
-                                            Codec.DOUBLE
+                                            BIG_DECIMAL_CODEC
                                                     .fieldOf("requiredAwakenLevel")
                                                     .forGetter(Records.AwakenEpochComponent::requiredAwakenLevel)
                                     )
                                     .and(
-                                            Codec.FLOAT
+                                            BIG_DECIMAL_CODEC
                                                     .fieldOf("requiredMinDifficulty")
                                                     .forGetter(Records.AwakenEpochComponent::requiredMinDifficulty)
                                     )
@@ -79,9 +93,9 @@ public class AwakenDataComponents
 
     public static final StreamCodec<ByteBuf, Records.AwakenEpochComponent> AWAKEN_EPOCH_STREAM_CODEC =
             StreamCodec.composite(
-                    ByteBufCodecs.DOUBLE,
+                    BIG_DECIMAL_STREAM_CODEC,
                     Records.AwakenEpochComponent::requiredAwakenLevel,
-                    ByteBufCodecs.FLOAT,
+                    BIG_DECIMAL_STREAM_CODEC,
                     Records.AwakenEpochComponent::requiredMinDifficulty,
                     Records.AwakenEpochComponent::new
             );

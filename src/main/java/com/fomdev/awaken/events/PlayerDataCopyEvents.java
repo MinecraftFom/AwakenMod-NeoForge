@@ -10,6 +10,8 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
+import java.math.BigDecimal;
+
 @EventBusSubscriber(modid = Awaken.MODID)
 public class PlayerDataCopyEvents
 {
@@ -41,7 +43,7 @@ public class PlayerDataCopyEvents
             Player current
     )
     {
-        float originalLevel = NBTUtil.deserializeAwakenLevel(original);
+        BigDecimal originalLevel = NBTUtil.deserializeAwakenLevel(original);
         NBTUtil.serializeAwakenLevel(current, originalLevel);
     }
 

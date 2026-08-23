@@ -16,6 +16,8 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 
+import java.math.BigDecimal;
+
 @EventBusSubscriber(modid = Awaken.MODID)
 public class RankEvents
 {
@@ -33,10 +35,10 @@ public class RankEvents
         if (!(source instanceof LivingEntity mob0))
             return;
 
-        float rankSource = RankHelper.getRank(mob0);
-        float rankTarget = RankHelper.getRank(target);
+        BigDecimal rankSource = RankHelper.getRank(mob0);
+        BigDecimal rankTarget = RankHelper.getRank(target);
 
-        if (rankSource < rankTarget)
+        if (rankSource.compareTo(rankTarget) < 0)
         {
             event.setCanceled(true);
             if (source instanceof ServerPlayer serverPlayer)
@@ -62,10 +64,10 @@ public class RankEvents
         if (player.isCreative())
             return;
 
-        float rankSource = RankHelper.getRank(player);
-        float rankTarget = RankHelper.calculateRank(level, pos);
+        BigDecimal rankSource = RankHelper.getRank(player);
+        BigDecimal rankTarget = RankHelper.calculateRank(level, pos);
 
-        if (rankSource < rankTarget)
+        if (rankSource.compareTo(rankTarget) < 0)
         {
             event.setCanceled(true);
             if (player instanceof ServerPlayer serverPlayer)

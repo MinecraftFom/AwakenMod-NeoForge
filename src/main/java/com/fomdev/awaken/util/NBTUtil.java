@@ -18,6 +18,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import org.jetbrains.annotations.Nullable;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -37,10 +39,10 @@ public class NBTUtil
 
     public static void addAwakenLevel(
             Player player,
-            float amount
+            BigDecimal amount
     )
     {
-        serializeAwakenLevel(player, (int) (100 * (deserializeAwakenLevel(player) + amount)) / 100.0F);
+        serializeAwakenLevel(player, deserializeAwakenLevel(player).add(amount).setScale(2, RoundingMode.HALF_UP));
     }
 
     public static void addSoul(
@@ -127,13 +129,13 @@ public class NBTUtil
         return player.getData(AwakenAttachmentTypes.PLAYER_AWAKEN_KNOWLEDGE_ATTACHMENT);
     }
 
-    public static float deserializeAwakenLevel(
+    public static BigDecimal deserializeAwakenLevel(
             Entity entity
     )
     {
         Records.AwakenLevelComponent data = entity.getExistingDataOrNull(AwakenAttachmentTypes.PLAYER_AWAKEN_LEVEL_ATTACHMENT);
         if (data == null)
-            serializeAwakenLevel(entity, 0.0F);
+            serializeAwakenLevel(entity, new BigDecimal("0.0"));
 
         data = entity.getExistingDataOrNull(AwakenAttachmentTypes.PLAYER_AWAKEN_LEVEL_ATTACHMENT);
         assert data != null;
@@ -323,7 +325,7 @@ public class NBTUtil
 
     public static void serializeAwakenLevel(
             Entity entity,
-            float level
+            BigDecimal level
     )
     {
         entity.setData(AwakenAttachmentTypes.PLAYER_AWAKEN_LEVEL_ATTACHMENT, new Records.AwakenLevelComponent(level));

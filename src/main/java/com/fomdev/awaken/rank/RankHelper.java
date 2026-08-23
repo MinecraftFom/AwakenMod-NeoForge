@@ -13,11 +13,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class RankHelper
 {
-    public static float calculateRank(
+    public static BigDecimal calculateRank(
             Level level,
             BlockPos pos
     )
@@ -25,7 +27,7 @@ public class RankHelper
         ResourceLocation dimension = level.dimension().location();
         Float diff = DifficultyManager.dimensionFactor.get(dimension);
         if (diff == null)
-            return 0.0F;
+            return new BigDecimal("0.0");
 
         return calculateRank(
                 diff,
@@ -35,7 +37,7 @@ public class RankHelper
         );
     }
 
-    public static float calculateRank(
+    public static BigDecimal calculateRank(
             float diff,
             ResourceLocation dimension,
             Level level,
@@ -47,36 +49,36 @@ public class RankHelper
         Float diffFactor = (float) Math.pow(diff, 1.0 / 20.0);
 
         if (Util.ifNull(dimFactor, blockFactor, diffFactor))
-            return 0.0F;
+            return new BigDecimal("0.0");
 
-        return diffFactor * dimFactor * blockFactor;
+        return new BigDecimal(diffFactor * dimFactor * blockFactor);
     }
 
-    public static <T extends LivingEntity> float getRank(
+    public static <T extends LivingEntity> BigDecimal getRank(
             T entity
     )
     {
-        float base = NBTUtil.deserializeAwakenLevel(entity);
+        BigDecimal base = NBTUtil.deserializeAwakenLevel(entity);
         for (EquipmentSlot slot: EquipmentSlot.values())
-            base *= processItemStack(entity.getItemBySlot(slot));
+            base = base.multiply(new BigDecimal(processItemStack(entity.getItemBySlot(slot))));
 
-        return base;
+        return base.setScale(2, RoundingMode.HALF_UP);
     }
 
-    public static float randomizeRank(
+    public static BigDecimal randomizeRank(
             ServerLevel level,
             float factor,
             RandomSource random
     )
     {
-        AtomicReference<Float> base = new AtomicReference<>(0.0F);
-        level.players().forEach(p -> base.updateAndGet(v -> v + NBTUtil.deserializeAwakenLevel(p)));
-        float factor2 = base.get();
+        AtomicReference<BigDecimal> base = new AtomicReference<>(new BigDecimal("0.0"));
+        level.players().forEach(p -> base.updateAndGet(v -> v.add(NBTUtil.deserializeAwakenLevel(p))));
+        BigDecimal factor2 = base.get();
 
-        if (factor2 < 0)
-            return factor;
+        if (factor2.compareTo(new BigDecimal("0")) <= 0)
+            return new BigDecimal(factor);
 
-        return factor * (random.nextFloat() % factor2);
+        return new BigDecimal(factor).multiply(new BigDecimal(random.nextFloat()).remainder(factor2));
     }
 
     private static float processItemStack(

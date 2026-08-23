@@ -11,6 +11,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+
 public class HealthUtil
 {
     public record AwakenAdditionalHealth(
@@ -34,19 +37,19 @@ public class HealthUtil
         maxHealth.setBaseValue(legal);
     }
 
-    public static float calculateMobHealth(
+    public static BigDecimal calculateMobHealth(
             LivingEntity entity,
-            float original
+            BigDecimal original
     )
     {
         if (!(entity.level() instanceof ServerLevel level))
             return original;
 
-        float factor = DifficultyManager.getLevelDifficulty(level);
-        float df = (float) Math.pow(Math.max((int) factor, 1), 1.0 / 5.0);
-        float value = df * original;
-        float max = AwakenCommon.CONFIG.MAX_HEALTH.get().floatValue();
-        return Math.clamp(value, original, max);
+        BigDecimal factor = DifficultyManager.getLevelDifficulty(level);
+        BigDecimal df = factor.max(BigDecimal.ONE).sqrt(new MathContext(2)).sqrt(new MathContext(2));
+        BigDecimal value = original.multiply(df);
+        BigDecimal max = new BigDecimal(AwakenCommon.CONFIG.MAX_HEALTH.get());
+        return Util.clamp(value, original, max);
     }
 
     public static float deserializeAdditionalHealthPersistent(

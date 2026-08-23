@@ -13,6 +13,9 @@ import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 @EventBusSubscriber(modid = Awaken.MODID)
 public class DifficultyEvents
 {
@@ -58,12 +61,10 @@ public class DifficultyEvents
             if (randValue == 0)
                 randValue = 0.01F;
 
-            float currentDifficulty = DifficultyManager.getLevelDifficulty(level);
-            float dimedValue = randValue * DifficultyManager.getDimensionFactor(level);
-            float finalDiff = currentDifficulty + dimedValue;
-            // Fixed diff
-            float fd = (int) (finalDiff * 100) / 100.0F;
-            DifficultyManager.setLevelDifficulty(level, fd);
+            BigDecimal currentDifficulty = DifficultyManager.getLevelDifficulty(level);
+            BigDecimal dimedValue = new BigDecimal(randValue).multiply(new BigDecimal(DifficultyManager.getDimensionFactor(level)));
+            BigDecimal finalDiff = currentDifficulty.add(dimedValue).setScale(2, RoundingMode.HALF_UP);
+            DifficultyManager.setLevelDifficulty(level, finalDiff);
         }
     }
 

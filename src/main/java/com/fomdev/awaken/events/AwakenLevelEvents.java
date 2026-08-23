@@ -20,6 +20,8 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerWakeUpEvent;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Random;
 
 @EventBusSubscriber(modid = Awaken.MODID)
@@ -56,20 +58,7 @@ public class AwakenLevelEvents
         if (event.wakeImmediately())
             return;
 
-        NBTUtil.addAwakenLevel(player, random.nextFloat(10.0F));
-    }
-
-    @SubscribeEvent
-    public static void onDeathPlayerPunish(LivingDeathEvent event)
-    {
-        if (!(event.getEntity() instanceof Player player))
-            return;
-
-        float level = NBTUtil.deserializeAwakenLevel(player);
-        AwakenLevel awakenLevel = AwakenRegistries.AWAKEN_LEVEL.getLevel(level);
-        int lvl = AwakenRegistries.AWAKEN_LEVEL.getLevel(awakenLevel);
-        int factor = (int) level / (10 * lvl);
-        NBTUtil.addAwakenLevel(player, -random.nextInt(factor <= 0? 1: factor));
+        NBTUtil.addAwakenLevel(player, new BigDecimal(random.nextFloat(10.0F)));
     }
 
     @SubscribeEvent
@@ -83,6 +72,6 @@ public class AwakenLevelEvents
             return;
 
         double original = attr.getBaseValue();
-        attr.setBaseValue(original + random.nextInt(Math.max((int) Math.pow(DifficultyManager.getLevelDifficulty((ServerLevel) player.level()), 1.0 / 10.0), 1)));
+        attr.setBaseValue(original + random.nextInt(Math.max((int) Math.pow(DifficultyManager.getLevelDifficulty((ServerLevel) player.level()).intValueExact(), 1.0 / 10.0), 1)));
     }
 }

@@ -3,17 +3,18 @@ package com.fomdev.awaken.entries.raw;
 import com.fomdev.flame.register.Registry;
 
 import java.awt.*;
+import java.math.BigDecimal;
 
 public class AwakenLevel extends Registry
 {
     private final Color color;
-    private final Double min;
+    private final BigDecimal min;
     private final Float health;
 
     public AwakenLevel(
             String id,
             Color color,
-            Double min,
+            BigDecimal min,
             Float health
     )
     {
@@ -29,7 +30,7 @@ public class AwakenLevel extends Registry
         return this.color;
     }
 
-    public Double getMin()
+    public BigDecimal getMin()
     {
         return this.min;
     }

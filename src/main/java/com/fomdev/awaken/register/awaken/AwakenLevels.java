@@ -7,6 +7,7 @@ import com.fomdev.flame.annotation.AutoProxy;
 import com.fomdev.flame.register.RegistryTable;
 
 import java.awt.*;
+import java.math.BigDecimal;
 
 @AutoProxy
 public class AwakenLevels
@@ -44,7 +45,7 @@ public class AwakenLevels
         {
             float ch = per * i;
             Color color = Color.getHSBColor(ch, 1.0F, 1.0F);
-            register(new AwakenLevel(values[i], color, last, i * factor));
+            register(new AwakenLevel(values[i], color, new BigDecimal(last), i * factor));
 
             current = last + distance * Math.pow(factor * i, 2);
             last = current;

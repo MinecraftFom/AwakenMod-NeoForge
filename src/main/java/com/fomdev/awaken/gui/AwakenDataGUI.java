@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.math.BigDecimal;
 
 public class AwakenDataGUI implements LayeredDraw.Layer
 {
@@ -25,16 +26,16 @@ public class AwakenDataGUI implements LayeredDraw.Layer
         Player player = minecraft.player;
         if (player == null) return;
 
-        String diffText = Component.translatable("gui.difficulty.info").getString() + ": " + ClientDifficultyManager.getDifficulty();
+        String diffText = Component.translatable("gui.difficulty.info").getString() + ": " + ClientDifficultyManager.getDifficulty().toPlainString();
         graphics.drawString(minecraft.font, diffText, 10, 10, Color.RED.getRGB(), true);
 
-        float data = NBTUtil.deserializeAwakenLevel(player);
+        BigDecimal data = NBTUtil.deserializeAwakenLevel(player);
         AwakenLevel level = AwakenRegistries.AWAKEN_LEVEL.getLevel(data);
 
-        String levelText = Component.translatable("gui.level.info").getString() + ": " + (level == null? "None": LocaleUtil.localizeAwakenLevel(level).getString() + " (" + data + ")");
+        String levelText = Component.translatable("gui.level.info").getString() + ": " + (level == null? "None": LocaleUtil.localizeAwakenLevel(level).getString() + " (" + data.toPlainString() + ")");
         graphics.drawString(minecraft.font, levelText, 10, 20, level == null? Color.CYAN.getRGB(): level.getColor().getRGB(), true);
 
-        String rankText = Component.translatable("gui.rank.info").getString() + ": " + RankHelper.getRank(player);
+        String rankText = Component.translatable("gui.rank.info").getString() + ": " + RankHelper.getRank(player).toPlainString();
         graphics.drawString(minecraft.font, rankText, 10, 30, Color.MAGENTA.getRGB(), true);
     }
 }

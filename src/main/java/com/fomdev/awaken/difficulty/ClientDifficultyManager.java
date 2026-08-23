@@ -10,20 +10,22 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
 
+import java.math.BigDecimal;
+
 @EventBusSubscriber(modid = Awaken.MODID)
 @OnlyIn(Dist.CLIENT)
 public class ClientDifficultyManager
 {
-    private static float difficulty = 0.0F;
+    private static BigDecimal difficulty = new BigDecimal("0.0");
 
     public static void setDifficulty(
-            float value
+            BigDecimal value
     )
     {
         difficulty = value;
     }
 
-    public static float getDifficulty()
+    public static BigDecimal getDifficulty()
     {
         return difficulty;
     }
@@ -42,6 +44,6 @@ public class ClientDifficultyManager
         if (Minecraft.getInstance().player != player)
             return;
 
-        setDifficulty(0.0F);
+        setDifficulty(new BigDecimal("0.0"));
     }
 }

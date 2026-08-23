@@ -209,7 +209,7 @@ public class Constants
     public static final int enchantmentMax = 255;
 
     public static final double epochChance = 100.0;
-    public static final double maxHealth = 10000.0;
+    public static final String maxHealth = "10000.0";
 
     public static final int maxAcceptableEnchant = Integer.MAX_VALUE;
     public static final int maxEnchant = 50;

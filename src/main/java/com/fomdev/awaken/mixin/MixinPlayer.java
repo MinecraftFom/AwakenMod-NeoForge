@@ -26,6 +26,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
+import java.math.BigDecimal;
 
 @Mixin(Player.class)
 public abstract class MixinPlayer
@@ -61,7 +62,7 @@ public abstract class MixinPlayer
     {
         Player self = (Player) (Object) this;
         MutableComponent original = Component.empty();
-        float level = NBTUtil.deserializeAwakenLevel(self);
+        BigDecimal level = NBTUtil.deserializeAwakenLevel(self);
         AwakenLevel awakenLevel = AwakenRegistries.AWAKEN_LEVEL.getLevel(level);
 
         if (awakenLevel == null)
@@ -102,9 +103,9 @@ public abstract class MixinPlayer
             if ((epoch = stack.get(AwakenDataComponents.AWAKEN_EPOCH_STORAGE)) == null)
                 continue;
 
-            float awakenLevel = NBTUtil.deserializeAwakenLevel(player);
-            float difficulty = DifficultyManager.getLevelDifficulty(serverPlayer.serverLevel());
-            if (epoch.requiredAwakenLevel() > awakenLevel || epoch.requiredMinDifficulty() > difficulty)
+            BigDecimal awakenLevel = NBTUtil.deserializeAwakenLevel(player);
+            BigDecimal difficulty = DifficultyManager.getLevelDifficulty(serverPlayer.serverLevel());
+            if (awakenLevel.compareTo(epoch.requiredAwakenLevel()) < 0 || difficulty.compareTo(epoch.requiredMinDifficulty()) < 0)
             {
                 drop(stack, true);
                 setItemSlot(slot, Items.AIR.getDefaultInstance());

@@ -15,7 +15,7 @@ public class AwakenCommon
     public final ModConfigSpec.ConfigValue<Double> MAX_DURABILITY_FACTOR;
 
     public final ModConfigSpec.ConfigValue<Double> EPOCH_RARITY;
-    public final ModConfigSpec.ConfigValue<Double> MAX_HEALTH;
+    public final ModConfigSpec.ConfigValue<String> MAX_HEALTH;
     public final ModConfigSpec.ConfigValue<Integer> CARRIER_GENERATION;
 
     public final ModConfigSpec.ConfigValue<List<? extends String>> ENTITIES;

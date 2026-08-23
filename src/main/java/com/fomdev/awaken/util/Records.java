@@ -52,8 +52,8 @@ public class Records
 
     public record AwakenMedicineComponent
             (
-                    String medicineType,
-                    float value
+                    String immuniseType,
+                    int value
             )
     {}
 

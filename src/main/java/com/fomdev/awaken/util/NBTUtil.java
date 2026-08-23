@@ -20,10 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class NBTUtil
 {
@@ -127,6 +124,13 @@ public class NBTUtil
             serializeKnowledge(player, new Records.AwakenKnowledgeComponent(0.0F, 0.0F, 0.0F, 0.0F));
 
         return player.getData(AwakenAttachmentTypes.PLAYER_AWAKEN_KNOWLEDGE_ATTACHMENT);
+    }
+
+    public static Records.AwakenMedicineComponent deserializeMedicine(
+            ItemStack stack
+    )
+    {
+        return stack.get(AwakenDataComponents.AWAKEN_MEDICINE_STORAGE);
     }
 
     public static BigDecimal deserializeAwakenLevel(
@@ -405,6 +409,14 @@ public class NBTUtil
         player.setData(AwakenAttachmentTypes.PLAYER_AWAKEN_KNOWLEDGE_ATTACHMENT, knowledge);
     }
 
+    public static void serializeMedicine(
+            ItemStack stack,
+            Records.AwakenMedicineComponent medicine
+    )
+    {
+        stack.set(AwakenDataComponents.AWAKEN_MEDICINE_STORAGE, medicine);
+    }
+
     public static void serializePlayer(
             ItemStack stack,
             ServerPlayer player
@@ -427,6 +439,34 @@ public class NBTUtil
     )
     {
         stack.set(AwakenDataComponents.AWAKEN_SOUL_STORAGE, soul);
+    }
+
+    public static void serializeSpores(
+            Entity entity,
+            List<AwakenSpore.SporeInstance> spores
+    )
+    {
+        Map<AwakenSpore, Integer> merged = new HashMap<>();
+        List<CompoundTag> tags = new ArrayList<>();
+
+        for (AwakenSpore.SporeInstance inst : spores)
+        {
+            int lvl = merged.getOrDefault(inst.getSpore(), 0);
+            merged.put(inst.getSpore(), lvl + inst.getLevel());
+        }
+
+        for (Map.Entry<AwakenSpore, Integer> entry: merged.entrySet())
+        {
+            String id = entry.getKey().getLocation().toString();
+            int level = entry.getValue();
+
+            CompoundTag tag = new CompoundTag();
+            tag.putString("id", id);
+            tag.putInt("level", level);
+            tags.add(tag);
+        }
+
+        entity.setData(AwakenAttachmentTypes.SPORE_ATTACHMENT, List.copyOf(tags));
     }
 
     public static void setDurability(

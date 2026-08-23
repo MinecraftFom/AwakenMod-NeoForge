@@ -13,18 +13,15 @@ import org.jetbrains.annotations.NotNull;
 public abstract class AwakenSpore extends Registry
 {
     private final Holder<Attribute> attribute;
-    private final EquipmentSlot[] suitable;
 
     public AwakenSpore(
             String id,
-            Holder<Attribute> attribute,
-            EquipmentSlot[] suitable
+            Holder<Attribute> attribute
     )
     {
         super(id);
 
         this.attribute = attribute;
-        this.suitable = suitable;
     }
 
     public abstract double getAmount(
@@ -34,11 +31,6 @@ public abstract class AwakenSpore extends Registry
     public final Holder<Attribute> getAttribute()
     {
         return this.attribute;
-    }
-
-    public final EquipmentSlot[] getSlots()
-    {
-        return this.suitable;
     }
 
     public static class SporeInstance implements INBTSerializable<CompoundTag>

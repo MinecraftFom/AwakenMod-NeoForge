@@ -106,12 +106,12 @@ public class AwakenDataComponents
                             inst
                                     .group(
                                             Codec.STRING
-                                                    .fieldOf("medicine")
-                                                    .forGetter(Records.AwakenMedicineComponent::medicineType)
+                                                    .fieldOf("immunise")
+                                                    .forGetter(Records.AwakenMedicineComponent::immuniseType)
                                     )
                                     .and(
-                                            Codec.FLOAT
-                                                    .fieldOf("amount")
+                                            Codec.INT
+                                                    .fieldOf("level")
                                                     .forGetter(Records.AwakenMedicineComponent::value)
                                     )
                                     .apply(
@@ -123,8 +123,8 @@ public class AwakenDataComponents
     public static final StreamCodec<ByteBuf, Records.AwakenMedicineComponent> AWAKEN_MEDICINE_STREAM_CODEC =
             StreamCodec.composite(
                     ByteBufCodecs.STRING_UTF8,
-                    Records.AwakenMedicineComponent::medicineType,
-                    ByteBufCodecs.FLOAT,
+                    Records.AwakenMedicineComponent::immuniseType,
+                    ByteBufCodecs.INT,
                     Records.AwakenMedicineComponent::value,
                     Records.AwakenMedicineComponent::new
             );

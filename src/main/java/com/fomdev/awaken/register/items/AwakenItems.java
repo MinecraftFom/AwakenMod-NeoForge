@@ -22,12 +22,6 @@ public class AwakenItems
                     AwakenAspectStone::new
             );
 
-    public static final DeferredItem<?> ATTRIBUTE_STONE =
-            REGISTER.registerItem(
-                    "attribute_stone",
-                    Item::new
-            );
-
     public static final DeferredItem<?> AWAKEN_ESSENCE =
             REGISTER.registerItem(
                     "awaken_essence",
@@ -52,10 +46,28 @@ public class AwakenItems
                     AwakenSuffixBooks::new
             );
 
+    public static final DeferredItem<?> BOTANY_CUT =
+            REGISTER.registerItem(
+                    "botany_cut",
+                    prop -> new Item(prop.stacksTo(1))
+            );
+
+    public static final DeferredItem<?> PLANT_MEDICINE =
+            REGISTER.registerItem(
+                    "plant_medicine",
+                    AwakenPlantMedicine::new
+            );
+
     public static final DeferredItem<?> SOUL_BOTTLE =
             REGISTER.registerItem(
                     "soul_bottle",
                     AwakenSoulBottle::new
+            );
+
+    public static final DeferredItem<?> SOUL_ESSENCE =
+            REGISTER.registerItem(
+                    "soul_essence",
+                    Item::new
             );
 
     public static final DeferredItem<?> SOUL_FRAGMENT =

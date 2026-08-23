@@ -9,14 +9,14 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.component.DataComponentHolder;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.decoration.ItemFrame;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -80,6 +80,36 @@ public abstract class MixinItemStack implements DataComponentHolder
             component.withStyle(ColorUtil.colorStyle(ColorUtil.render(quality.getColors(), quality.getPattern()).backEnd()));
 
         cir.setReturnValue(component);
+    }
+
+    @Inject(method = "getComponents", at = @At("RETURN"), cancellable = true)
+    private void getComponents(
+            CallbackInfoReturnable<DataComponentMap> cir
+    )
+    {
+        DataComponentMap original = cir.getReturnValue();
+        ItemStack self = (ItemStack) (Object) this;
+        if (!original.has(AwakenDataComponents.AWAKEN_DESCRIBER_STORAGE.get()))
+            return;
+
+        Records.AwakenDescriberComponent desc = original.get(AwakenDataComponents.AWAKEN_DESCRIBER_STORAGE.get());
+        AwakenPrefix prefix;
+
+        assert desc != null;
+        if (desc.prefix() == null || (prefix = NBTUtil.deserializePrefix(desc.prefix())) == null)
+            return;
+
+        ItemEnchantments ie = original.getOrDefault(EnchantmentHelper.getComponentType(self), ItemEnchantments.EMPTY);
+        ItemEnchantments.Mutable mie = new ItemEnchantments.Mutable(ie);
+        prefix.getBaseEnchantments()
+                .stream()
+                .map(Records.EnchantmentHolder::toInstance)
+                .filter(Objects::nonNull)
+                .forEach(e -> mie.set(e.enchantment, e.level));
+
+        PatchedDataComponentMap map = new PatchedDataComponentMap(original);
+        map.set(EnchantmentHelper.getComponentType(self), mie.toImmutable());
+        cir.setReturnValue(map);
     }
 
     @Inject(method = "getEnchantments", at = @At("RETURN"), cancellable = true)

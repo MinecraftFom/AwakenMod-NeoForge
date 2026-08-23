@@ -217,8 +217,15 @@ public class NBTUtil
         if (desc.prefix() == null)
             return null;
 
-        String id = desc.prefix().getString("id");
-        int lvl = desc.prefix().getInt("level");
+        return deserializePrefix(desc.prefix());
+    }
+
+    public static AwakenPrefix.PrefixInstance deserializePrefix(
+            CompoundTag tag
+    )
+    {
+        String id = tag.getString("id");
+        int lvl = tag.getInt("level");
         ResourceLocation path = ResourceLocation.parse(id);
         AwakenPrefix prefix = AwakenRegistries.AWAKEN_PREFIX.getRegistry(path);
         if (prefix == null)
@@ -226,6 +233,7 @@ public class NBTUtil
 
         return new AwakenPrefix.PrefixInstance(prefix, lvl);
     }
+
 
     public static Records.AwakenSoulComponent deserializeSoul(
             ItemStack stack

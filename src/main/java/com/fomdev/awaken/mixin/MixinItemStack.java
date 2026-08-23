@@ -1,7 +1,6 @@
 package com.fomdev.awaken.mixin;
 
 import com.fomdev.awaken.difficulty.ClientDifficultyManager;
-import com.fomdev.awaken.enchant.EnchantManager;
 import com.fomdev.awaken.entries.raw.*;
 import com.fomdev.awaken.register.data.AwakenDataComponents;
 import com.fomdev.awaken.register.items.AwakenItems;
@@ -9,25 +8,29 @@ import com.fomdev.awaken.util.*;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import javax.annotation.Nullable;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Mixin(ItemStack.class)
 public abstract class MixinItemStack implements DataComponentHolder
@@ -37,6 +40,12 @@ public abstract class MixinItemStack implements DataComponentHolder
 
     @Shadow
     public abstract boolean is(Item p_150931_);
+
+    @Shadow
+    @Final
+    @Deprecated
+    @Nullable
+    private Item item;
 
     @Inject(method = "getMaxDamage", at = @At("RETURN"), cancellable = true)
     private void customDurability(CallbackInfoReturnable<Integer> cir)
@@ -101,17 +110,23 @@ public abstract class MixinItemStack implements DataComponentHolder
         if (desc.prefix() == null || (prefix = NBTUtil.deserializePrefix(desc.prefix())) == null)
             return;
 
-        ItemEnchantments ie = original.getOrDefault(EnchantmentHelper.getComponentType(self), ItemEnchantments.EMPTY);
+        ItemEnchantments ie = original.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
         ItemEnchantments.Mutable mie = new ItemEnchantments.Mutable(ie);
         prefix.getBaseEnchantments()
                 .stream()
                 .map(Records.EnchantmentHolder::toInstance)
                 .filter(Objects::nonNull)
-                .filter(e -> EnchantManager.isPrimaryItemFor(self, e.enchantment))
+                .filter(e -> {
+                    if (item == Items.BOOK)
+                        return true;
+
+                    Optional<HolderSet<Item>> primaryItems = e.enchantment.value().definition().primaryItems();
+                    return (primaryItems.isEmpty() || primaryItems.get().contains(item.builtInRegistryHolder()));
+                })
                 .forEach(e -> mie.set(e.enchantment, e.level));
 
         PatchedDataComponentMap map = new PatchedDataComponentMap(original);
-        map.set(EnchantmentHelper.getComponentType(self), mie.toImmutable());
+        map.set(DataComponents.ENCHANTMENTS, mie.toImmutable());
         cir.setReturnValue(map);
     }
 

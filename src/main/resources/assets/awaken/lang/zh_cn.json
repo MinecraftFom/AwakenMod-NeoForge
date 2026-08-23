@@ -56,26 +56,5 @@
   "tooltip.unawaken.diff.info": "需要的难度: (%s / %s)",
   "tooltip.unawaken.info": "该物品当前未被觉醒",
   "tooltip.unawaken.level.info": "需要的觉醒等级: (%s / %s)",
-  "tooltip.unawaken.required.info": "此物品需要对应的阶段来觉醒",
-
-  "prefix.imperfection.name": "瑕疵",
-  "prefix.normal.name": "普通",
-  "prefix.insanity.name": "疯狂",
-  "prefix.zenless.name": "绝区",
-  "prefix.violent.name": "暴力",
-  "prefix.colorless.name": "黯淡",
-  "prefix.protective.name": "保护",
-  "prefix.aquatic.name": "海洋",
-  "prefix.miner.name": "矿工",
-  "prefix.phoenix.name": "凤凰",
-  "prefix.medical.name": "医药",
-  "prefix.heroic.name": "英雄",
-  "prefix.rabbit.name": "兔子",
-  "prefix.fast.name": "轻快",
-  "prefix.hawk.name": "雄鹰",
-  "prefix.hearty.name": "丰盛",
-  "prefix.parachute.name": "滑翔",
-  "prefix.firstaid.name": "急救",
-  "prefix.fish.name": "鱼雷",
-  "prefix.infinity.name": "无   限"
+  "tooltip.unawaken.required.info": "此物品需要对应的阶段来觉醒"
 }

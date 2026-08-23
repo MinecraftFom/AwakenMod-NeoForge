@@ -73,7 +73,7 @@ public class AwakenPrefixes
         register(5000, 30.0F, 50.0F, List.of(PROTECTION.of(5), FIRE_PROTECTION.of(5), FEATHER_FALLING.of(5), BLAST_PROTECTION.of(5), PROJECTILE_PROTECTION.of(5)), "reinforced", "force", "tank", "weighted", "mature");
         register(5000, 35.0F, 10.0F, List.of(KNOCKBACK.of(5), SHARPNESS.of(5), BANE_OF_ARTHROPODS.of(5), SMITE.of(5), SWEEPING_EDGE.of(5)), "killer", "knight", "solider", "fighter", "battler");
         register(5000, 40.0F, 5.0F, List.of(THORNS.of(3), DEPTH_STRIDER.of(3), FROST_WALKER.of(3), SOUL_SPEED.of(3), SWIFT_SNEAK.of(3), AQUA_AFFINITY.of(3)), "ninja", "sneaker", "creeper", "assassin", "vampier");
-        register(5000, 40.0F, 5.0F, List.of(MULTISHOT.of(3), QUICK_CHARGE.of(2), PIERCING.of(2), POWER.of(4), PUNCH.of(4), FLAME.of(2), INFINITY.of(1)), "accurate", "far", "distant", "shoot", "anchor");
+        register(5000, 40.0F, 5.0F, List.of(MULTISHOT.of(3), QUICK_CHARGE.of(2), PIERCING.of(2), POWER.of(4), PUNCH.of(4), FLAME.of(2), INFINITY.of(1)), "accurate", "far", "distant", "shoot", "archer");
         register(2500, 45.0F, 1.0F, List.of(LUCK_OF_THE_SEA.of(10), LURE.of(10), LOYALTY.of(3), IMPALING.of(5), RIPTIDE.of(5), CHANNELING.of(2)), "ocean", "aqua", "water", "liquid", "depth");
         register(10000, 50.0F, 0.05F, List.of(DENSITY.of(4), WIND_BURST.of(4), BREACH.of(4)), "dense", "god", "might", "weight", "sky");
         register(5000, 50.0F, 0.05F, List.of(FORTUNE.of(3), EFFICIENCY.of(3)), "miner", "underground", "speed", "efficiency", "worker");

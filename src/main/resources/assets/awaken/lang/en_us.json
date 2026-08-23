@@ -72,26 +72,5 @@
   "tooltip.unawaken.info": "Currently, this item is unawaken",
   "tooltip.unawaken.required.info": "This item required the correct state to be awaken",
   "tooltip.unawaken.diff.info": "Difficulty requirement: (%s / %s)",
-  "tooltip.unawaken.level.info": "Awaken level requirement: (%s / %s)",
-
-  "prefix.imperfection.name": "Imperfection",
-  "prefix.normal.name": "Normal",
-  "prefix.insanity.name": "Insanity",
-  "prefix.zenless.name": "Zenless",
-  "prefix.violent.name": "Violent",
-  "prefix.colorless.name": "Colorless",
-  "prefix.protective.name": "Protective",
-  "prefix.aquatic.name": "Aquatic",
-  "prefix.miner.name": "Miner",
-  "prefix.phoenix.name": "Phoenix",
-  "prefix.medical.name": "Medical",
-  "prefix.heroic.name": "Heroic",
-  "prefix.rabbit.name": "Rabbit",
-  "prefix.fast.name": "Fast",
-  "prefix.hawk.name": "Hawk",
-  "prefix.hearty.name": "Hearty",
-  "prefix.parachute.name": "Parachute",
-  "prefix.firstaid.name": "First-aid",
-  "prefix.fish.name": "Fish",
-  "prefix.infinity.name": "INFINITY"
+  "tooltip.unawaken.level.info": "Awaken level requirement: (%s / %s)"
 }

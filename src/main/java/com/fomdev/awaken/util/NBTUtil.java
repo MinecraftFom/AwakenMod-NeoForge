@@ -342,7 +342,7 @@ public class NBTUtil
             BigDecimal level
     )
     {
-        entity.setData(AwakenAttachmentTypes.PLAYER_AWAKEN_LEVEL_ATTACHMENT, new Records.AwakenLevelComponent(level));
+        entity.setData(AwakenAttachmentTypes.PLAYER_AWAKEN_LEVEL_ATTACHMENT, new Records.AwakenLevelComponent(level.abs()));
     }
 
     public static void serializeAspects(

@@ -70,9 +70,27 @@ public class Constants
             "husk|overworld",
             "drown|overworld",
             "skeleton|overworld&the_nether",
+            "bogged|overworld",
+            "stray|overworld",
+            "wither_skeleton|the_nether",
+            "blaze|the_nether",
+            "ghast|the_nether",
             "spider|overworld",
+            "cave_spider|overworld",
             "creeper|overworld",
-            "enderman|overworld&the_nether&the_end"
+            "zombie_piglin|overworld&the_nether",
+            "zombie_villager|overworld",
+            "piglin|the_nether",
+            "piglin_brute|the_nether",
+            "enderman|overworld&the_nether&the_end",
+            "shulker|the_end",
+            "pillager|overworld",
+            "vindicator|overworld",
+            "evoker|overworld",
+            "witch|overworld",
+            "warden|overworld", // oh my god
+            "wither|overworld",
+            "ender_dragon|overworld"
     };
 
     public static final String[] defaultEquipment$Hand = new String[]{
@@ -103,6 +121,7 @@ public class Constants
             "netherite_sword|5|100.0",
             "mace|1|10000.0",
             "bow|50|500.0",
+            "crossbow|50|500.0",
             "cobweb|50|500.0",
             "ender_pearl|50|500.0"
     };
@@ -155,11 +174,16 @@ public class Constants
 
     public static final String[] defaultRideEntities = new String[]{
             "phantom",
-            "silverfish"
+            "silverfish",
+            "ravager"
     };
 
     public static final String[] defaultEffects = new String[]{
-            "health_boost|10000|10"
+            "health_boost|10000|10",
+            "absorption|10000|5",
+            "jump_boost|10000|3",
+            "speed|10000|4",
+            "invisibility|10000|1"
     };
 
     public static final String[] enchantmentAspects = new String[]{
@@ -225,4 +249,6 @@ public class Constants
     public static final int defaultGeneratingLevel = 20;
 
     public static final int maxMobs = 10000;
+
+    public static final int maxRaidLevel = 255;
 }

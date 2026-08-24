@@ -51,7 +51,7 @@ public class RankHelper
         if (Util.ifNull(dimFactor, blockFactor, diffFactor))
             return new BigDecimal("0.0");
 
-        return new BigDecimal(diffFactor * dimFactor * blockFactor);
+        return new BigDecimal(diffFactor * dimFactor * blockFactor).abs();
     }
 
     public static <T extends LivingEntity> BigDecimal getRank(
@@ -62,7 +62,7 @@ public class RankHelper
         for (EquipmentSlot slot: EquipmentSlot.values())
             base = base.multiply(new BigDecimal(processItemStack(entity.getItemBySlot(slot))));
 
-        return base.setScale(2, RoundingMode.HALF_UP);
+        return base.setScale(2, RoundingMode.HALF_UP).abs();
     }
 
     public static BigDecimal randomizeRank(
@@ -79,7 +79,7 @@ public class RankHelper
             return new BigDecimal(factor);
 
         BigDecimal factor3 = new BigDecimal(random.nextFloat());
-        return new BigDecimal(factor).multiply(factor3.remainder(factor2));
+        return new BigDecimal(factor).multiply(factor3.remainder(factor2)).abs();
     }
 
     private static float processItemStack(

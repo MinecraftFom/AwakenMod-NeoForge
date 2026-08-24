@@ -44,6 +44,7 @@ public class AwakenCommon
     public final ModConfigSpec.ConfigValue<Integer> MAX_ENCHANT_ABILITY;
     public final ModConfigSpec.ConfigValue<Integer> MAX_ENCHANT_LEVEL;
     public final ModConfigSpec.ConfigValue<Integer> MAX_MOB_COUNT;
+    public final ModConfigSpec.ConfigValue<Integer> MAX_RAID_LEVEL;
     public final ModConfigSpec.ConfigValue<Integer> XP_PER_LEVEL;
 
     public AwakenCommon(
@@ -264,6 +265,13 @@ public class AwakenCommon
                 .define(
                         "max_mob_count",
                         Constants.maxMobs,
+                        Objects::nonNull
+                );
+        MAX_RAID_LEVEL = builder
+                .comment("Max raid level accepted in a raid")
+                .define(
+                        "max_raid_level",
+                        Constants.maxRaidLevel,
                         Objects::nonNull
                 );
         XP_PER_LEVEL = builder

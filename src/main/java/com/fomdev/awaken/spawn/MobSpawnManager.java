@@ -186,7 +186,7 @@ public class MobSpawnManager
             return;
 
         original.setData(AwakenAttachmentTypes.IS_AWAKEN, true);
-        NBTUtil.serializeAwakenLevel(original, RankHelper.randomizeRank(server, factor, random));
+        NBTUtil.serializeAwakenLevel(original, RankHelper.randomizeRank(server, factor, random).abs());
 
         original.setCustomName(
                 Component.empty().append(title).withStyle(ColorUtil.colorStyle(color))

@@ -42,16 +42,15 @@ public abstract class MixinMob
             if (stack.is(Items.AIR))
                 continue;
 
-            if (stack.has(DataComponents.DAMAGE))
+            if (stack.isDamageableItem())
             {
                 int max = stack.getMaxDamage();
-                int max2 = Math.max(max, 1);
                 float diff = DifficultyManager.getLevelDifficulty(level).floatValue();
-                int factor = (int) (max / (diff <= 0? 1: diff));
-                int factor2 = Math.max(factor, 1);
+                int factor = (int) (Math.abs(diff) / max);
+                int factor2 = factor <= 0? 1: factor;
                 int d = new Random().nextInt(factor2);
-                int d2 = Math.clamp(d, 0, max2);
-                stack.setDamageValue(Math.abs(d2));
+                int d2 = max - d;
+                stack.setDamageValue(d2);
             }
 
             self.spawnAtLocation(stack);

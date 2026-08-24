@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -79,7 +80,7 @@ public class RankHelper
             return new BigDecimal(factor);
 
         BigDecimal factor3 = new BigDecimal(random.nextFloat());
-        return new BigDecimal(factor).multiply(factor3.remainder(factor2)).abs();
+        return new BigDecimal(factor).multiply(factor3.remainder(factor2).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2))).abs();
     }
 
     private static float processItemStack(

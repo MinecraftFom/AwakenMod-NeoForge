@@ -30,7 +30,7 @@ public interface MixinIItemExtension
     private void getCustomMaxDamage(ItemStack self, CallbackInfoReturnable<Integer> cir)
     {
         int origin = cir.getReturnValue();
-        if (origin == 0)
+        if (origin <= 0)
             return;
 
         AwakenPrefix prefix = NBTUtil.deserializePrefix(self);
@@ -43,7 +43,10 @@ public interface MixinIItemExtension
         if (suffix != null)
             origin += suffix.addition();
 
-        cir.setReturnValue((int) (origin * (quality == null? 1: quality.getFactor())));
+        double qualityFactor = quality == null? 1: quality.getFactor();
+        double result = origin * qualityFactor;
+        int result2 = Math.abs((int) result);
+        cir.setReturnValue(result2);
     }
 
     @Inject(method = "getAllEnchantments", at = @At("RETURN"), cancellable = true)

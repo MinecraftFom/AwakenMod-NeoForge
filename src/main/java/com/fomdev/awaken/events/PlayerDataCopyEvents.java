@@ -1,5 +1,6 @@
 package com.fomdev.awaken.events;
 
+import com.fomdev.awaken.entries.raw.AwakenSpore;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.register.data.AwakenAttachmentTypes;
 import com.fomdev.awaken.util.HealthUtil;
@@ -11,6 +12,7 @@ import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @EventBusSubscriber(modid = Awaken.MODID)
 public class PlayerDataCopyEvents
@@ -25,6 +27,7 @@ public class PlayerDataCopyEvents
 
         cloneAwakenEvent(original, current);
         cloneHealthEvent(original, current);
+        cloneSporeEvent(original, current);
     }
 
     @SubscribeEvent
@@ -55,5 +58,14 @@ public class PlayerDataCopyEvents
         float originalAmount = HealthUtil.deserializeAdditionalHealthPersistent(original);
         HealthUtil.serializeAdditionalHealthPersistent(current, originalAmount);
         current.setHealth(original.getMaxHealth());
+    }
+
+    private static void cloneSporeEvent(
+            Player original,
+            Player current
+    )
+    {
+        List<AwakenSpore.SporeInstance> spores = NBTUtil.deserializeSpores(original);
+        NBTUtil.serializeSpores(current, spores);
     }
 }

@@ -3,7 +3,6 @@ package com.fomdev.awaken.ai;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.player.Player;
 
 public class CarryPlayerGoal extends Goal
 {
@@ -25,14 +24,19 @@ public class CarryPlayerGoal extends Goal
     }
 
     @Override
-    public boolean canContinueToUse() {
-        return mob.getRandom().nextInt(100) < 5 && mob.getTarget() instanceof Player && cooldown <= 0;
+    public boolean canContinueToUse()
+    {
+        return mob.getRandom().nextInt(100) < 5 && mob.getTarget() != null && cooldown <= 0;
     }
 
     @Override
     public void start()
     {
+        if (cooldown > 0) // Double check
+            return;
+
         LivingEntity target = mob.getTarget();
+        assert target != null; // Forever true
         target.startRiding(mob);
         cooldown = 200;
 
@@ -42,7 +46,8 @@ public class CarryPlayerGoal extends Goal
     @Override
     public void tick()
     {
-        cooldown--;
+        if (cooldown > 0) // Avoid meaningless operations
+            cooldown--;
 
         super.tick();
     }

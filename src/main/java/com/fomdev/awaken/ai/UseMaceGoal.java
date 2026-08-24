@@ -32,7 +32,7 @@ public class UseMaceGoal extends Goal
     @Override
     public boolean canUse()
     {
-        return self.getItemBySlot(EquipmentSlot.MAINHAND).is(Items.MACE) && self.getTarget() instanceof Player && self.getTarget().distanceTo(self) < 5;
+        return self.getItemBySlot(EquipmentSlot.MAINHAND).is(Items.MACE) && self.getTarget() != null && self.getTarget().distanceTo(self) < 5;
     }
 
     @Override
@@ -44,15 +44,13 @@ public class UseMaceGoal extends Goal
             return;
 
         LivingEntity target = self.getTarget();
-        if (!(target instanceof Player player))
-            return;
-
+        assert target != null;
         self.fallDistance = 10;
         MaceItem mace = (MaceItem) self.getItemBySlot(EquipmentSlot.MAINHAND).getItem();
-        mace.hurtEnemy(stack, player, self);
+        mace.hurtEnemy(stack, target, self);
         DamageSource source = level.damageSources().mobAttack(self);
-        player.hurt(source, mace.getAttackDamageBonus(player, 1.0F, source));
-        mace.postHurtEnemy(stack, player, self);
+        target.hurt(source, mace.getAttackDamageBonus(target, 1.0F, source));
+        mace.postHurtEnemy(stack, target, self);
 
         super.start();
     }

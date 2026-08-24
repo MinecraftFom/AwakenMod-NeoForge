@@ -18,7 +18,7 @@ public class HealGoal extends Goal
     @Override
     public boolean canUse()
     {
-        return mob.getHealth() <= mob.getMaxHealth() / 3;
+        return mob.getHealth() <= mob.getMaxHealth() / 10; // Reported from use @modic_M, one third of the total health is too op
     }
 
     @Override

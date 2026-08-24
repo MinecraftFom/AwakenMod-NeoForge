@@ -41,14 +41,14 @@ public class DifficultyEvents
             if (playerCount == 0)
                 return;
 
-            Float[] levels = level.getServer().getPlayerList().getPlayers().stream().map(NBTUtil::deserializeAwakenLevel).toArray(Float[]::new);
-            float total = 0.0F;
-            for (Float fl: levels) total += fl;
-            float average = total / playerCount;
+            BigDecimal[] levels = level.getServer().getPlayerList().getPlayers().stream().map(NBTUtil::deserializeAwakenLevel).toArray(BigDecimal[]::new);
+            BigDecimal total = new BigDecimal("0.0");
+            for (BigDecimal fl: levels) total = total.add(fl);
+            BigDecimal average = total.divide(new BigDecimal(playerCount), RoundingMode.HALF_UP);
             float offset = day * diffFactor;
 
-            if (average == 0)
-                average = 0.01F;
+            if (average.compareTo(new BigDecimal(0)) == 0)
+                average = new BigDecimal("0.01");
 
             if (offset == 0)
                 offset = 0.01F;
@@ -57,12 +57,12 @@ public class DifficultyEvents
             if (diffOffset == 0)
                 diffOffset = 0.01F;
 
-            float randValue = DifficultyManager.random.nextFloat(diffOffset * average) * day;
-            if (randValue == 0)
-                randValue = 0.01F;
+            BigDecimal randValue = new BigDecimal(DifficultyManager.random.nextFloat()).remainder(average.multiply(new BigDecimal(diffOffset))).multiply(new BigDecimal(day));
+            if (randValue.compareTo(new BigDecimal(0)) == 0)
+                randValue = new BigDecimal("0.01");
 
             BigDecimal currentDifficulty = DifficultyManager.getLevelDifficulty(level);
-            BigDecimal dimedValue = new BigDecimal(randValue).multiply(new BigDecimal(DifficultyManager.getDimensionFactor(level)));
+            BigDecimal dimedValue = randValue.multiply(new BigDecimal(DifficultyManager.getDimensionFactor(level)));
             BigDecimal finalDiff = currentDifficulty.add(dimedValue).setScale(2, RoundingMode.HALF_UP);
             DifficultyManager.setLevelDifficulty(level, finalDiff);
         }

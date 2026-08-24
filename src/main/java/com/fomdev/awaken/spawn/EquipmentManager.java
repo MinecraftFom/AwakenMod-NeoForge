@@ -117,7 +117,7 @@ public class EquipmentManager
     )
     {
         BigDecimal n = diff.sqrt(new MathContext(2)).sqrt(new MathContext(2)).multiply(new BigDecimal(random.nextInt(Math.max((int) factor, 1)) / factor));
-        return n.multiply(new BigDecimal(EFFECTS.size())).min(new BigDecimal(EFFECTS.size())).intValueExact();
+        return n.multiply(new BigDecimal(EFFECTS.size())).min(new BigDecimal(EFFECTS.size())).intValue();
     }
 
     public static int shuffleEffectLevel(
@@ -128,7 +128,7 @@ public class EquipmentManager
     )
     {
         BigDecimal n = diff.sqrt(new MathContext(2)).sqrt(new MathContext(2)).multiply(new BigDecimal(random.nextInt(Math.max((int) factor, 1)) / factor));
-        return n.multiply(new BigDecimal(effect.getB().getB() - 1)).min(new BigDecimal(effect.getB().getB())).intValueExact(); // MC Effect levels starts at 0
+        return n.multiply(new BigDecimal(effect.getB().getB() - 1)).min(new BigDecimal(effect.getB().getB())).intValue(); // MC Effect levels starts at 0
     }
 
     public static List<MobEffectInstance> shuffleEffects(
@@ -227,12 +227,12 @@ public class EquipmentManager
         BigDecimal result1 = factor2.multiply(new BigDecimal(factor)).setScale(2, RoundingMode.HALF_UP);
         BigDecimal maxLevel = AwakenRegistries.AWAKEN_LEVEL.getMaxLevel();
         if (maxLevel.compareTo(new BigDecimal("0")) <= 0)
-            return new Records.AwakenEpochComponent(new BigDecimal("0.0"), result1);
+            return new Records.AwakenEpochComponent(new BigDecimal("0.0"), result1.abs());
 
         BigDecimal factor3 = new BigDecimal(random.nextInt()).remainder(maxLevel);
         BigDecimal factor4 = factor3.multiply(new BigDecimal(Math.sqrt(factor)));
         BigDecimal result2 = factor4.setScale(2, RoundingMode.HALF_UP);
-        return new Records.AwakenEpochComponent(result2, result1);
+        return new Records.AwakenEpochComponent(result2.abs(), result1.abs());
     }
 
     public static void shuffleForItemStack(
@@ -313,7 +313,7 @@ public class EquipmentManager
             RandomSource random
     )
     {
-        int n = random.nextInt(diff.max(new BigDecimal("1")).intValueExact()) + (int) factor;
+        int n = random.nextInt(diff.max(new BigDecimal("1")).intValue()) + (int) factor;
         return Math.clamp(n, 1, 7);
     }
 

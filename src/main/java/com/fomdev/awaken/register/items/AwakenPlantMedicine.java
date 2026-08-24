@@ -54,23 +54,19 @@ public class AwakenPlantMedicine extends Item
         List<AwakenSpore.SporeInstance> result = new ArrayList<>();
         ResourceLocation target = ResourceLocation.parse(medicine.immuniseType());
         ItemStack res = stack;
-        for (int i = 0; i < instances.size(); i++)
+        for (AwakenSpore.SporeInstance inst : instances)
         {
-            AwakenSpore.SporeInstance inst = instances.get(i);
             if (inst.getSpore().getLocation().equals(target))
             {
                 int nlvl = inst.getLevel() - medicine.value();
                 if (nlvl > 0)
-                {
-                    inst = new AwakenSpore.SporeInstance(inst.getSpore(), nlvl);
-                    result.set(i, inst);
-                }
+                    result.add(new AwakenSpore.SporeInstance(inst.getSpore(), nlvl));
 
-                res = stack.consumeAndReturn(1, livingEntity);
+                res = stack.consumeAndReturn(stack.getCount() - 1, livingEntity);
                 break;
             }
 
-            result.set(i, inst);
+            result.add(inst);
         }
 
         NBTUtil.serializeSpores(livingEntity, result);

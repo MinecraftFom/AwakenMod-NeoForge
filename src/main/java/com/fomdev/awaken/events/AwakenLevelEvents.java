@@ -72,6 +72,6 @@ public class AwakenLevelEvents
             return;
 
         double original = attr.getBaseValue();
-        attr.setBaseValue(original + random.nextInt(Math.max((int) Math.pow(DifficultyManager.getLevelDifficulty((ServerLevel) player.level()).intValueExact(), 1.0 / 10.0), 1)));
+        attr.setBaseValue(original + random.nextInt(Math.max((int) Math.pow(DifficultyManager.getLevelDifficulty((ServerLevel) player.level()).intValue(), 1.0 / 10.0), 1)));
     }
 }

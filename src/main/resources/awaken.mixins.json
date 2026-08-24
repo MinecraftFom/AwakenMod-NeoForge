@@ -15,6 +15,7 @@
     "MixinEnchantmentMenu",
     "MixinIItemExtension",
     "MixinIItemStackExtension",
+    "MixinInventoryScreen",
     "MixinItemEnchantments",
     "MixinItemStack",
     "MixinLivingEntity",

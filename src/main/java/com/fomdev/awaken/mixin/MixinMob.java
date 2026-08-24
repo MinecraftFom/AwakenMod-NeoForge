@@ -51,7 +51,7 @@ public abstract class MixinMob
                 int factor2 = Math.max(factor, 1);
                 int d = new Random().nextInt(factor2);
                 int d2 = Math.clamp(d, 0, max2);
-                stack.setDamageValue(d2);
+                stack.setDamageValue(Math.abs(d2));
             }
 
             self.spawnAtLocation(stack);

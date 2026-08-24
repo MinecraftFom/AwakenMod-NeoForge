@@ -334,7 +334,26 @@ public class NBTUtil
             spores.add(new AwakenSpore.SporeInstance(spore, level));
         }
 
-        return spores;
+        return mergeSpores(spores);
+    }
+
+    public static List<AwakenSpore.SporeInstance> mergeSpores(
+            List<AwakenSpore.SporeInstance> spores
+    )
+    {
+        Map<AwakenSpore, Integer> merged = new HashMap<>();
+        List<AwakenSpore.SporeInstance> insts = new ArrayList<>();
+
+        for (AwakenSpore.SporeInstance inst : spores)
+        {
+            int lvl = merged.getOrDefault(inst.getSpore(), 0);
+            merged.put(inst.getSpore(), lvl + inst.getLevel());
+        }
+
+        for (Map.Entry<AwakenSpore, Integer> entry: merged.entrySet())
+            insts.add(new AwakenSpore.SporeInstance(entry.getKey(), entry.getValue()));
+
+        return List.copyOf(insts);
     }
 
     public static void serializeAwakenLevel(
@@ -358,7 +377,7 @@ public class NBTUtil
         {
             CompoundTag tag = new CompoundTag();
             tag.putString("id", aspect.aspect().getLocation().toString());
-            tag.putInt("level", aspect.amount());
+            tag.putInt("level", Math.abs(aspect.amount()));
             tags.add(tag);
         }
 
@@ -379,19 +398,19 @@ public class NBTUtil
         if (infix != null)
         {
             infixTag.putString("id", infix.getLocation().toString());
-            infixTag.putInt("level", infix.getLevel());
+            infixTag.putInt("level", Math.abs(infix.getLevel()));
         }
 
         if (prefix != null)
         {
             prefixTag.putString("id", prefix.getLocation().toString());
-            prefixTag.putInt("level", prefix.getLevel());
+            prefixTag.putInt("level", Math.abs(prefix.getLevel()));
         }
 
         if (suffix != null)
         {
             suffixTag.putString("id", suffix.getLocation().toString());
-            suffixTag.putInt("level", suffix.getLevel());
+            suffixTag.putInt("level", Math.abs(suffix.getLevel()));
         }
 
         Records.AwakenDescriberComponent component = new Records.AwakenDescriberComponent(
@@ -456,23 +475,17 @@ public class NBTUtil
             List<AwakenSpore.SporeInstance> spores
     )
     {
-        Map<AwakenSpore, Integer> merged = new HashMap<>();
+        List<AwakenSpore.SporeInstance> merged = mergeSpores(spores);
         List<CompoundTag> tags = new ArrayList<>();
 
-        for (AwakenSpore.SporeInstance inst : spores)
+        for (AwakenSpore.SporeInstance entry: merged)
         {
-            int lvl = merged.getOrDefault(inst.getSpore(), 0);
-            merged.put(inst.getSpore(), lvl + inst.getLevel());
-        }
-
-        for (Map.Entry<AwakenSpore, Integer> entry: merged.entrySet())
-        {
-            String id = entry.getKey().getLocation().toString();
-            int level = entry.getValue();
+            String id = entry.getSpore().getLocation().toString();
+            int level = entry.getLevel();
 
             CompoundTag tag = new CompoundTag();
             tag.putString("id", id);
-            tag.putInt("level", level);
+            tag.putInt("level", Math.abs(level));
             tags.add(tag);
         }
 

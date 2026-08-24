@@ -103,9 +103,16 @@ public abstract class MixinRaid
         if (!(level instanceof ServerLevel serverLevel))
             return;
 
+        int value = switch (raiderType)
+        {
+            case VINDICATOR -> 5;
+            case EVOKER, PILLAGER, RAVAGER -> 2;
+            case WITCH -> 1;
+        };
+
         BigDecimal diff = DifficultyManager.getLevelDifficulty(serverLevel);
-        BigDecimal factor = diff.sqrt(new MathContext(2)).sqrt(new MathContext(2));
-        cir.setReturnValue(wave * factor.intValue());
+        BigDecimal factor = diff.sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2));
+        cir.setReturnValue(value * wave * factor.intValue());
         cir.cancel();
     }
 }

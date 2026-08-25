@@ -23,6 +23,6 @@ public class MixinMobCount
             CallbackInfoReturnable<Boolean> cir
     )
     {
-        cir.setReturnValue(this.counts.getOrDefault(category, 0) < AwakenCommon.CONFIG.GENERATABLE_MAX.get());
+        cir.setReturnValue(this.counts.getOrDefault(category, 0) < AwakenCommon.CONFIG.MAX_MOB_COUNT.get());
     }
 }

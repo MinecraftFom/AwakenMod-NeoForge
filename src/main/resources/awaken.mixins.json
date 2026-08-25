@@ -22,6 +22,7 @@
     "MixinMaceItem",
     "MixinMob",
     "MixinMutable",
+    "MixinSpawnState",
     "MixinPlayer",
     "MixinMobCount",
     "MixinRaid",

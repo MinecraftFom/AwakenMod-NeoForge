@@ -1,6 +1,8 @@
 package com.fomdev.awaken.knowledge;
 
+import com.fomdev.awaken.entries.raw.AwakenQuality;
 import com.fomdev.awaken.init.config.AwakenCommon;
+import com.fomdev.awaken.spawn.shuffle.ShuffledRegistries;
 import com.fomdev.awaken.util.NBTUtil;
 import com.fomdev.awaken.util.Records;
 import net.minecraft.core.component.DataComponents;
@@ -40,6 +42,16 @@ public class KnowledgeHelper
         return (int) Math.clamp(result1, 1, original * AwakenCommon.CONFIG.MAX_DURABILITY_FACTOR.get()); // At least 1 durability
     }
 
+    public static AwakenQuality shuffleQuality(
+            Records.AwakenKnowledgeComponent knowledge,
+            RandomSource random
+    )
+    {
+        float total = knowledge.experience() * knowledge.insight() * knowledge.proficiency() * knowledge.skill();
+        float factor = total <= 0? 1: total;
+        return ShuffledRegistries.WEIGHTED_AWAKEN_QUALITY.calculate((float) Math.pow(factor, 3), random);
+    }
+
     public static ItemStack getResult(
             Player player,
             ItemStack stack
@@ -71,6 +83,20 @@ public class KnowledgeHelper
                 stack,
                 changedDurability
         );
+
+        if (player.getRandom().nextFloat() % 100 < 0.1 * knowledge.proficiency() * knowledge.skill())
+        {
+            AwakenQuality quality = shuffleQuality(knowledge, player.getRandom());
+            NBTUtil.serializeQuality(stack, quality);
+        }
+
+        float factor = (float) Math.pow((float) changedDurability / (float) durability, 1.0 / 3.0);
+        int factor2 = (int) factor;
+        int factor3 = factor2 <= 0? 1: factor2;
+        float result = player.getRandom().nextInt(factor3);
+        float skill = knowledge.skill() + result;
+
+        NBTUtil.serializeKnowledge(player, new Records.AwakenKnowledgeComponent(knowledge.experience(), knowledge.insight(), knowledge.proficiency(), skill));
 
         return stack;
     }

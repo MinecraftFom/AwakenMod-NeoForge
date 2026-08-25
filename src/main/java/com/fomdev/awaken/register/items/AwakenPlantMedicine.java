@@ -70,6 +70,14 @@ public class AwakenPlantMedicine extends Item
         }
 
         NBTUtil.serializeSpores(livingEntity, result);
+        if (livingEntity instanceof Player player)
+        {
+            Records.AwakenKnowledgeComponent knowledge = NBTUtil.deserializeKnowledge(player);
+            float proOriginal = knowledge.proficiency();
+            proOriginal += player.getRandom().nextInt(8) + 1;
+            NBTUtil.serializeKnowledge(player, new Records.AwakenKnowledgeComponent(knowledge.experience(), knowledge.insight(), proOriginal, knowledge.skill()));
+        }
+
         return res;
     }
 

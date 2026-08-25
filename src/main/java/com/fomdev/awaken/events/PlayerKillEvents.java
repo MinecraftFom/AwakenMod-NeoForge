@@ -5,6 +5,7 @@ import com.fomdev.awaken.entries.raw.AwakenSpore;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.register.items.AwakenItems;
 import com.fomdev.awaken.util.NBTUtil;
+import com.fomdev.awaken.util.Records;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -72,6 +73,35 @@ public class PlayerKillEvents
             int level = random.nextInt(8) * (MobSpawnEvents.isAwaken(vic) ? random.nextInt(5) + 1 : 1);
             int lvl = Math.max(level, 1);
             NBTUtil.addSpore(player, new AwakenSpore.SporeInstance(spore, Math.abs(lvl)));
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerKill$3(
+            LivingDeathEvent event
+    )
+    {
+        Entity sin = event.getSource().getEntity();
+        Entity vic = event.getEntity();
+        if (!(sin instanceof ServerPlayer player))
+            return;
+
+        RandomSource random = player.getRandom();
+        if (MobSpawnEvents.isAwaken(vic))
+        {
+            BigDecimal awakenLevel = NBTUtil.deserializeAwakenLevel(vic);
+            BigDecimal factor = awakenLevel.sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2));
+            int factor2 = factor.intValue();
+            int factor3 = factor2 <= 0? 1: factor2;
+            int factor4 = factor3 / 4;
+            int factor5 = factor4 == 0 ? 1: factor4;
+            int result0 = random.nextInt(factor3);
+            int result1 = random.nextInt(factor5);
+            Records.AwakenKnowledgeComponent knowledge = NBTUtil.deserializeKnowledge(player);
+            float exp = knowledge.experience() + result0;
+            float insight = knowledge.insight() + result1;
+
+            NBTUtil.serializeKnowledge(player, new Records.AwakenKnowledgeComponent(exp, insight, knowledge.proficiency(), knowledge.skill()));
         }
     }
 

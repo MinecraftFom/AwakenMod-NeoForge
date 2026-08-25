@@ -84,7 +84,7 @@ public class KnowledgeHelper
                 changedDurability
         );
 
-        if (player.getRandom().nextFloat() % 100 < 0.1 * knowledge.proficiency() * knowledge.skill())
+        if (player.getRandom().nextFloat() % 100 < 0.1 * knowledge.proficiency() * knowledge.skill() && stack.isDamageableItem())
         {
             AwakenQuality quality = shuffleQuality(knowledge, player.getRandom());
             NBTUtil.serializeQuality(stack, quality);

@@ -46,7 +46,16 @@ public class HealthUtil
             return original;
 
         BigDecimal factor = DifficultyManager.getLevelDifficulty(level);
-        BigDecimal df = factor.sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).max(BigDecimal.ONE);
+        BigDecimal df = factor
+                .sqrt(new MathContext(2))
+                .sqrt(new MathContext(2))
+                .sqrt(new MathContext(2))
+                .sqrt(new MathContext(2))
+                .sqrt(new MathContext(2))
+                .sqrt(new MathContext(2))
+                .sqrt(new MathContext(2))
+                .sqrt(new MathContext(2))
+                .max(BigDecimal.ONE);
         BigDecimal value = original.multiply(df);
         BigDecimal max = new BigDecimal(AwakenCommon.CONFIG.MAX_HEALTH.get());
         return Util.clamp(value, original, max);

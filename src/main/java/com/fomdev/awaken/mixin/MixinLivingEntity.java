@@ -116,7 +116,7 @@ public abstract class MixinLivingEntity
         LivingEntity self = (LivingEntity) (Object) this;
 
         if (!(self instanceof Player player))
-            cir.setReturnValue(HealthUtil.calculateMobHealth(self, new BigDecimal(cir.getReturnValue()).abs()).abs().floatValue());
+            cir.setReturnValue(HealthUtil.calculateMobHealth(self, new BigDecimal(cir.getReturnValue())).floatValue());
         else if (!player.level().isClientSide())
             cir.setReturnValue(cir.getReturnValue() + HealthUtil.deserializeAdditionalHealthPersistent(player));
     }

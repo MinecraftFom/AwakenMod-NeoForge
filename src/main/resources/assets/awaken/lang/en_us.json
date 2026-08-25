@@ -11,6 +11,9 @@
   "bar.set_prefix.info": "Successfully set %s to the target item",
   "bar.set_suffix.info": "Successfully set %s to the target item",
 
+  "curios.identifier.amulet": "Amulet",
+  "curios.identifier.soul": "Soul",
+
   "gui.knowledge.experience.info": "Experience",
   "gui.knowledge.insight.info": "Insight",
   "gui.knowledge.proficiency.info": "Proficiency",
@@ -20,7 +23,14 @@
   "gui.level.info": "Awaken Level",
   "gui.rank.info": "Rank",
 
+  "item.awaken.aspect_stone": "Aspect Stone",
+  "item.awaken.botany_cut": "Botany Cut",
+  "item.awaken.infix_book": "Infix Book",
+  "item.awaken.plant_medicine": "Plant Medicine",
+  "item.awaken.pollinate_amulet": "Pollinate Amulet",
+  "item.awaken.prefix_book": "Prefix Book",
   "item.awaken.soul_bottle": "Soul Bottle",
+  "item.awaken.suffix_book": "Suffix Book",
   "item.awaken.unawaken_amulet": "Unawaken Amulet",
   "item.awaken.unawaken_item": "Unawaken Item",
 

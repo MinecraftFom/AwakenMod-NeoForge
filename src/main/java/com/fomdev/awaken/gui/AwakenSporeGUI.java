@@ -36,7 +36,7 @@ public class AwakenSporeGUI implements LayeredDraw.Layer
             int posy = 10;
 
             AwakenSpore.SporeInstance spore = spores.get(i);
-            Component component = Component.empty().append(LocaleUtil.localizeSpore(spore.getSpore())).append(": ").append("" + spore.getLevel());
+            Component component = Component.empty().append(LocaleUtil.localizeSpore(spore.getSpore())).append(": " + spore.getLevel());
             graphics.drawString(Minecraft.getInstance().font, component.getString(), posx, posy, 0xFFFFFF);
         }
     }

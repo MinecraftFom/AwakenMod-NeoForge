@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "awaken:pollinate_amulet",
     "awaken:unawaken_amulet"
   ]
 }

@@ -7,6 +7,7 @@ import com.fomdev.awaken.util.Util;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentUser;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -15,6 +16,8 @@ import net.neoforged.neoforge.event.entity.living.ArmorHurtEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 import java.util.List;
 
@@ -26,31 +29,41 @@ public class PollinateEffectEvents
             LivingDamageEvent.Post event
     )
     {
-        if (!(event.getSource().getEntity() instanceof LivingEntity damager))
+        if (!(event.getSource().getEntity() instanceof Player damager))
             return;
 
-        if (event.getSource().getWeaponItem() == null || event.getSource().getWeaponItem().is(Items.AIR))
-            return;
+        CuriosApi.getCuriosInventory(damager).ifPresent(
+                handler ->
+                {
+                    ICurioStacksHandler sh = handler.getCurios().get("amulet");
+                    if (sh == null)
+                        return;
 
-        for (AwakenPollinate.PollinateInstance pollinate: NBTUtil.deserializePollinates(event.getSource().getWeaponItem()))
-        {
-            AwakenPollinate p = pollinate.getPollinate();
-            int level = pollinate.getLevel();
+                    for (int i = 0; i < sh.getStacks().getSlots(); i++)
+                    {
+                        ItemStack stack = sh.getStacks().getStackInSlot(i);
+                        for (AwakenPollinate.PollinateInstance pollinate: NBTUtil.deserializePollinates(stack))
+                        {
+                            AwakenPollinate p = pollinate.getPollinate();
+                            int level = pollinate.getLevel();
 
-            if (p == null)
-                continue;
+                            if (p == null)
+                                continue;
 
-            if (p.getType() != AwakenPollinate.TriggerType.DAMAGE)
-                continue;
+                            if (p.getType() != AwakenPollinate.TriggerType.DAMAGE)
+                                continue;
 
-            MobEffectInstance instance = p.getEffect(level);
+                            MobEffectInstance instance = p.getEffect(level);
 
-            switch (p.getTarget())
-            {
-                case SELF -> damager.addEffect(instance);
-                case TARGET -> event.getEntity().addEffect(instance);
-            }
-        }
+                            switch (p.getTarget())
+                            {
+                                case SELF -> damager.addEffect(instance);
+                                case TARGET -> event.getEntity().addEffect(instance);
+                            }
+                        }
+                    }
+                }
+        );
     }
 
     @SubscribeEvent
@@ -58,33 +71,41 @@ public class PollinateEffectEvents
             ArmorHurtEvent event
     )
     {
-        List<ItemStack> stacks = event.getArmorMap().values().stream().map(a -> a.armorItemStack).filter(s -> !s.is(Items.AIR)).toList();
-
-        if (!(event.getDamageSource().getEntity() instanceof LivingEntity damager))
+        if (!(event.getDamageSource().getEntity() instanceof Player damager))
             return;
 
-        for (ItemStack stack: stacks)
-        {
-            for (AwakenPollinate.PollinateInstance pollinate: NBTUtil.deserializePollinates(stack))
-            {
-                AwakenPollinate p = pollinate.getPollinate();
-                int level = pollinate.getLevel();
-
-                if (p == null)
-                    continue;
-
-                if (p.getType() != AwakenPollinate.TriggerType.HURT)
-                    continue;
-
-                MobEffectInstance instance = p.getEffect(level);
-
-                switch (p.getTarget())
+        CuriosApi.getCuriosInventory(damager).ifPresent(
+                handler ->
                 {
-                    case DAMAGER -> damager.addEffect(instance);
-                    case SELF -> event.getEntity().addEffect(instance);
+                    ICurioStacksHandler sh = handler.getCurios().get("amulet");
+                    if (sh == null)
+                        return;
+
+                    for (int i = 0; i < sh.getStacks().getSlots(); i++)
+                    {
+                        ItemStack stack = sh.getStacks().getStackInSlot(i);
+                        for (AwakenPollinate.PollinateInstance pollinate: NBTUtil.deserializePollinates(stack))
+                        {
+                            AwakenPollinate p = pollinate.getPollinate();
+                            int level = pollinate.getLevel();
+
+                            if (p == null)
+                                continue;
+
+                            if (p.getType() != AwakenPollinate.TriggerType.HURT)
+                                continue;
+
+                            MobEffectInstance instance = p.getEffect(level);
+
+                            switch (p.getTarget())
+                            {
+                                case DAMAGER -> damager.addEffect(instance);
+                                case SELF -> event.getEntity().addEffect(instance);
+                            }
+                        }
+                    }
                 }
-            }
-        }
+        );
     }
 
     @SubscribeEvent
@@ -95,28 +116,41 @@ public class PollinateEffectEvents
         if (!event.getBlocked())
             return;
 
-        if (!(event.getDamageSource().getEntity() instanceof LivingEntity damager))
+        if (!(event.getDamageSource().getEntity() instanceof Player damager))
             return;
 
-        for (AwakenPollinate.PollinateInstance pollinate: NBTUtil.deserializePollinates(event.getEntity().getUseItem()))
-        {
-            AwakenPollinate p = pollinate.getPollinate();
-            int level = pollinate.getLevel();
+        CuriosApi.getCuriosInventory(damager).ifPresent(
+                handler ->
+                {
+                    ICurioStacksHandler sh = handler.getCurios().get("amulet");
+                    if (sh == null)
+                        return;
 
-            if (p == null)
-                continue;
+                    for (int i = 0; i < sh.getStacks().getSlots(); i++)
+                    {
+                        ItemStack stack = sh.getStacks().getStackInSlot(i);
+                        for (AwakenPollinate.PollinateInstance pollinate: NBTUtil.deserializePollinates(stack))
+                        {
+                            AwakenPollinate p = pollinate.getPollinate();
+                            int level = pollinate.getLevel();
 
-            if (p.getType() != AwakenPollinate.TriggerType.HURT)
-                continue;
+                            if (p == null)
+                                continue;
 
-            MobEffectInstance instance = p.getEffect(level);
+                            if (p.getType() != AwakenPollinate.TriggerType.HURT)
+                                continue;
 
-            switch (p.getTarget())
-            {
-                case DAMAGER -> damager.addEffect(instance);
-                case SELF -> event.getEntity().addEffect(instance);
-            }
-        }
+                            MobEffectInstance instance = p.getEffect(level);
+
+                            switch (p.getTarget())
+                            {
+                                case DAMAGER -> damager.addEffect(instance);
+                                case SELF -> event.getEntity().addEffect(instance);
+                            }
+                        }
+                    }
+                }
+        );
     }
 
     @SubscribeEvent
@@ -124,31 +158,39 @@ public class PollinateEffectEvents
             EntityTickEvent.Post event
     )
     {
-        if (!(event.getEntity() instanceof EquipmentUser user))
+        if (!(event.getEntity() instanceof Player living))
             return;
 
-        if (!(event.getEntity() instanceof LivingEntity living))
-            return;
+        CuriosApi.getCuriosInventory(living).ifPresent(
+                handler ->
+                {
+                    ICurioStacksHandler sh = handler.getCurios().get("amulet");
+                    if (sh == null)
+                        return;
 
-        for (ItemStack stack: Util.getStacks(user))
-        {
-            for (AwakenPollinate.PollinateInstance pollinate: NBTUtil.deserializePollinates(stack))
-            {
-                AwakenPollinate p = pollinate.getPollinate();
-                int level = pollinate.getLevel();
+                    for (int i = 0; i < sh.getStacks().getSlots(); i++)
+                    {
+                        ItemStack stack = sh.getStacks().getStackInSlot(i);
+                        for (AwakenPollinate.PollinateInstance pollinate: NBTUtil.deserializePollinates(stack))
+                        {
+                            AwakenPollinate p = pollinate.getPollinate();
+                            int level = pollinate.getLevel();
 
-                if (p == null)
-                    continue;
+                            if (p == null)
+                                continue;
 
-                if (p.getType() != AwakenPollinate.TriggerType.CONTINUE)
-                    continue;
+                            if (p.getType() != AwakenPollinate.TriggerType.HURT)
+                                continue;
 
-                if (p.getTarget() != AwakenPollinate.TriggerTarget.SELF)
-                    continue;
+                            MobEffectInstance instance = p.getEffect(level);
 
-                MobEffectInstance instance = p.getEffect(level);
-                living.addEffect(instance);
-            }
-        }
+                            switch (p.getTarget())
+                            {
+                                case DAMAGER, SELF -> living.addEffect(instance);
+                            }
+                        }
+                    }
+                }
+        );
     }
 }

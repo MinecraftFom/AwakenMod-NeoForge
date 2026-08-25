@@ -58,6 +58,12 @@ public class AwakenItems
                     AwakenPlantMedicine::new
             );
 
+    public static final DeferredItem<?> POLLINATE_AMULET =
+            REGISTER.registerItem(
+                    "pollinate_amulet",
+                    AwakenPollinateAmulet::new
+            );
+
     public static final DeferredItem<?> SOUL_BOTTLE =
             REGISTER.registerItem(
                     "soul_bottle",

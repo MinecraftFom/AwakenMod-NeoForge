@@ -27,6 +27,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.List;
 
@@ -67,7 +68,7 @@ public abstract class MixinLivingEntity
             BigDecimal factor = DifficultyManager.getLevelDifficulty(level).divide(new BigDecimal("20"), RoundingMode.HALF_UP);
             BigDecimal factor2 = factor.max(new BigDecimal("1.0"));
             BigDecimal factor3 = new BigDecimal(this.getExperienceReward(level, entity));
-            BigDecimal factor4 = factor2.multiply(factor3);
+            BigDecimal factor4 = factor2.multiply(factor3).sqrt(new MathContext(2)).sqrt(new MathContext(2));
             int reward = EventHooks.getExperienceDrop(self, this.lastHurtByPlayer, factor4.intValue());
             ExperienceOrb.award(level, self.position(), reward);
         }

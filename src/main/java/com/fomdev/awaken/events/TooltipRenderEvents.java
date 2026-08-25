@@ -1,18 +1,27 @@
 package com.fomdev.awaken.events;
 
+import com.fomdev.awaken.enchant.EnchantManager;
 import com.fomdev.awaken.entries.raw.*;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.register.items.AwakenItems;
 import com.fomdev.awaken.util.NBTUtil;
 import com.fomdev.awaken.util.TooltipUtil;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @EventBusSubscriber(modid = Awaken.MODID)
 public class TooltipRenderEvents
@@ -27,6 +36,26 @@ public class TooltipRenderEvents
         TooltipFlag flag = event.getFlags();
         List<Component> list = event.getToolTip();
 
+        if (stack.is(Items.ENCHANTED_BOOK))
+        {
+            List<AwakenAspect.AspectInstance> aspects = new ArrayList<>();
+            ItemEnchantments enchantments = stack.get(DataComponents.STORED_ENCHANTMENTS);
+
+            if (enchantments != null && !enchantments.isEmpty())
+            {
+                for (Object2IntMap.Entry<Holder<Enchantment>> enchantment : enchantments.entrySet())
+                {
+                    List<AwakenAspect.AspectInstance> aspect = EnchantManager.get(Objects.requireNonNull(enchantment.getKey().getKey()).location(), enchantment.getIntValue());
+                    aspects.addAll(aspect);
+                    aspects = new ArrayList<>(NBTUtil.mergeAspects(aspects));
+                }
+
+                list.add(1, Component.empty());
+                list.addAll(1, TooltipUtil.castAspectTooltip(flag, aspects));
+                return;
+            }
+        }
+
         if (stack.is(AwakenItems.SOUL_BOTTLE))
             list.addAll(1, TooltipUtil.castSoulTooltip(NBTUtil.deserializeSoul(stack)));
 
@@ -35,16 +64,20 @@ public class TooltipRenderEvents
         AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializePrefix(stack);
         AwakenSuffix.SuffixInstance suffix = NBTUtil.deserializeSuffix(stack);
         AwakenQuality quality = NBTUtil.deserializeQuality(stack);
-        List<AwakenPollinate.PollinateInstance> pollinates = NBTUtil.deserializePollinates(stack);
+        List<AwakenAspect.AspectInstance> aspects = NBTUtil.deserializeAspects(stack);
 
-        for (AwakenPollinate.PollinateInstance instance: pollinates)
-            list.addAll(1 ,TooltipUtil.castPollinateTooltip(flag, instance));
+        if (aspects != null && !aspects.isEmpty() && !stack.is(AwakenItems.ASPECT_STONE))
+        {
+            list.addAll(1, TooltipUtil.castAspectTooltip(flag, aspects));
+            list.add(1, Component.empty());
+        }
 
         if (infix != null && prefix != null && suffix != null)
         {
             list.addAll(1, TooltipUtil.castSuffixTooltip(flag, suffix));
             list.addAll(1, TooltipUtil.castInfixTooltip(flag, infix, (float) ((quality != null? quality.getFactor(): 1) * (suffix.should(infix.getAttribute().attr())? suffix.factor(): 1))));
             list.addAll(1, TooltipUtil.castPrefixTooltip(flag, prefix));
+            list.add(1, Component.empty());
         }
 
         if (quality != null)

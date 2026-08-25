@@ -105,6 +105,38 @@ public class PlayerKillEvents
         }
     }
 
+    @SubscribeEvent
+    public static void onPlayerKill$4(
+            LivingDeathEvent event
+    )
+    {
+        Entity sin = event.getSource().getEntity();
+        Entity vic = event.getEntity();
+        if (sin == null)
+            return;
+
+        RandomSource random = sin.getRandom();
+        Records.AwakenKnowledgeComponent knowledge = NBTUtil.deserializeKnowledge(vic);
+        Records.AwakenKnowledgeComponent original = NBTUtil.deserializeKnowledge(sin);
+
+        float experience = (float) Math.sqrt(knowledge.experience());
+        float insight = (float) Math.sqrt(knowledge.insight());
+        float proficiency = (float) Math.sqrt(knowledge.proficiency());
+        float skill = (float) Math.sqrt(knowledge.skill());
+
+        float experience2 = experience < 0? 0: random.nextFloat() % experience;
+        float insight2 = insight < 0? 0: random.nextFloat() % insight;
+        float proficiency2 = proficiency < 0? 0: random.nextFloat() % proficiency;
+        float skill2 = skill < 0? 0: random.nextFloat() % skill;
+
+        float experience3 = experience2 + original.experience();
+        float insight3 = insight2 + original.insight();
+        float proficiency3 = proficiency2 + original.proficiency();
+        float skill3 = skill2 + original.skill();
+
+        NBTUtil.serializeKnowledge(sin, new Records.AwakenKnowledgeComponent(experience3, insight3, proficiency3, skill3));
+    }
+
     private static void processSoulAdd(
             Level level,
             Player player,

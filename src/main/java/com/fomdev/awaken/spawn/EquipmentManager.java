@@ -167,7 +167,12 @@ public class EquipmentManager
             RandomSource random
     )
     {
-        BigDecimal n = diff.sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).multiply(new BigDecimal(random.nextInt(max * Math.max((int) factor, 1)) / factor));
+        BigDecimal n = diff
+                .sqrt(new MathContext(2))
+                .sqrt(new MathContext(2))
+                .sqrt(new MathContext(2))
+                .sqrt(new MathContext(2))
+                .multiply(new BigDecimal(max / factor * random.nextInt(Math.max((int) factor, 1))));
         return n.min(new BigDecimal(max)).intValue();
     }
 
@@ -178,8 +183,19 @@ public class EquipmentManager
             RandomSource random
     )
     {
-        BigDecimal n = diff.sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).multiply(new BigDecimal(random.nextInt(Math.max((int) factor, 1)) / factor));
-        return n.multiply(new BigDecimal(max)).divide(new BigDecimal(2), RoundingMode.HALF_UP).min(new BigDecimal(max)).intValue(); // RESTRICTED: LOWER LEVEL FOR BALANCE
+        BigDecimal n = diff
+                .sqrt(new MathContext(2))
+                .sqrt(new MathContext(2))
+                .sqrt(new MathContext(2))
+                .sqrt(new MathContext(2))
+                .sqrt(new MathContext(2))
+                .sqrt(new MathContext(2))
+                .sqrt(new MathContext(2))
+                .sqrt(new MathContext(2))
+                .multiply(new BigDecimal(max / factor * random.nextInt(Math.max((int) factor, 1))));
+        return n.divide(new BigDecimal(5), RoundingMode.HALF_UP)
+                .min(new BigDecimal(max))
+                .intValue(); // RESTRICTED: LOWER LEVEL FOR BALANCE
     }
 
     public static List<EnchantmentInstance> shuffleEnchantments(
@@ -210,6 +226,9 @@ public class EquipmentManager
 
             selected.add(enchantment.value());
             int lvl = shuffleEnchantmentLevel(enchantment.value().getMaxLevel(), diff, factor, random);
+            if (lvl <= 0)
+                continue;
+
             result.add(new EnchantmentInstance(enchantment, lvl));
         }
 
@@ -266,7 +285,7 @@ public class EquipmentManager
         }
 
         List<AwakenMoods> moods = AwakenRegistries.AWAKEN_MOOD.getRegistries();
-        if (!moods.isEmpty())
+        if (!moods.isEmpty() && random.nextInt(100) < 50) // 50% chance of being annoying!
         {
             AwakenMoods mood = moods.get(random.nextInt(moods.size()));
             NBTUtil.serializeMood(stack, mood);

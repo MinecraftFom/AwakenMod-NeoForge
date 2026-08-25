@@ -1,6 +1,7 @@
 package com.fomdev.awaken.spawn;
 
 import com.fomdev.awaken.init.config.AwakenCommon;
+import com.fomdev.awaken.knowledge.KnowledgeHelper;
 import com.fomdev.awaken.literature.Literature;
 import com.fomdev.awaken.rank.RankHelper;
 import com.fomdev.awaken.register.data.AwakenAttachmentTypes;
@@ -137,7 +138,7 @@ public class MobSpawnManager
         Color color = shuffleColor(
                 random
         );
-        Component title = Component.empty().append("[").append(Component.translatable(tier.getDescriptionID()).append("] ").append(shuffleTitle(
+        Component title = Component.empty().append(Component.translatable(tier.getDescriptionID()).append(" ").append(shuffleTitle(
                 random
         )));
 
@@ -185,8 +186,11 @@ public class MobSpawnManager
         if (!(original instanceof EquipmentUser user))
             return;
 
-        original.setData(AwakenAttachmentTypes.IS_AWAKEN, true);
+        if (factor >= 5)
+            original.setData(AwakenAttachmentTypes.IS_AWAKEN, true);
+
         NBTUtil.serializeAwakenLevel(original, RankHelper.randomizeRank(server, factor, random).abs());
+        NBTUtil.serializeKnowledge(original, KnowledgeHelper.randomizeKnowledge(server, random));
 
         original.setCustomName(
                 Component.empty().append(title).withStyle(ColorUtil.colorStyle(color))

@@ -5,6 +5,8 @@ import com.fomdev.awaken.init.config.AwakenCommon;
 import com.fomdev.awaken.register.data.AwakenAttachmentTypes;
 import com.fomdev.awaken.register.data.AwakenDataComponents;
 import com.google.common.collect.ImmutableList;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.core.component.DataComponents;
@@ -95,8 +97,7 @@ public class NBTUtil
             instances.add(new AwakenAspect.AspectInstance(aspect, level));
         }
 
-
-        return instances;
+        return mergeAspects(instances);
     }
 
     public static ItemEnchantments deserializeEnchantments(
@@ -127,13 +128,13 @@ public class NBTUtil
     }
 
     public static Records.AwakenKnowledgeComponent deserializeKnowledge(
-            Player player
+            Entity entity
     )
     {
-        if (!player.hasData(AwakenAttachmentTypes.PLAYER_AWAKEN_KNOWLEDGE_ATTACHMENT))
-            serializeKnowledge(player, new Records.AwakenKnowledgeComponent(0.0F, 0.0F, 0.0F, 0.0F));
+        if (!entity.hasData(AwakenAttachmentTypes.PLAYER_AWAKEN_KNOWLEDGE_ATTACHMENT))
+            serializeKnowledge(entity, new Records.AwakenKnowledgeComponent(0.0F, 0.0F, 0.0F, 0.0F));
 
-        return player.getData(AwakenAttachmentTypes.PLAYER_AWAKEN_KNOWLEDGE_ATTACHMENT);
+        return entity.getData(AwakenAttachmentTypes.PLAYER_AWAKEN_KNOWLEDGE_ATTACHMENT);
     }
 
     public static Records.AwakenMedicineComponent deserializeMedicine(
@@ -347,6 +348,22 @@ public class NBTUtil
         return mergeSpores(spores);
     }
 
+    public static List<AwakenAspect.AspectInstance> mergeAspects(
+            List<AwakenAspect.AspectInstance> aspects
+    )
+    {
+        Object2IntOpenHashMap<AwakenAspect> merged = new Object2IntOpenHashMap<>();
+        List<AwakenAspect.AspectInstance> insts = new ArrayList<>();
+
+        for (AwakenAspect.AspectInstance inst: aspects)
+            merged.addTo(inst.aspect(), inst.amount());
+
+        for (Object2IntMap.Entry<AwakenAspect> entry: merged.object2IntEntrySet())
+            insts.add(new AwakenAspect.AspectInstance(entry.getKey(), entry.getIntValue()));
+
+        return List.copyOf(insts);
+    }
+
     public static List<AwakenSpore.SporeInstance> mergeSpores(
             List<AwakenSpore.SporeInstance> spores
     )
@@ -382,8 +399,9 @@ public class NBTUtil
         if (stack.is(Items.AIR))
             return;
 
+        List<AwakenAspect.AspectInstance> merged = mergeAspects(instances);
         List<CompoundTag> tags = new ArrayList<>();
-        for (AwakenAspect.AspectInstance aspect: instances)
+        for (AwakenAspect.AspectInstance aspect: merged)
         {
             CompoundTag tag = new CompoundTag();
             tag.putString("id", aspect.aspect().getLocation().toString());
@@ -441,11 +459,11 @@ public class NBTUtil
     }
 
     public static void serializeKnowledge(
-            Player player,
+            Entity entity,
             Records.AwakenKnowledgeComponent knowledge
     )
     {
-        player.setData(AwakenAttachmentTypes.PLAYER_AWAKEN_KNOWLEDGE_ATTACHMENT, knowledge);
+        entity.setData(AwakenAttachmentTypes.PLAYER_AWAKEN_KNOWLEDGE_ATTACHMENT, knowledge);
     }
 
     public static void serializeMedicine(

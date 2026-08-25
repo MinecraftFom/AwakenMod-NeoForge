@@ -80,7 +80,15 @@ public class RankHelper
             return new BigDecimal(factor);
 
         BigDecimal factor3 = new BigDecimal(random.nextFloat());
-        return new BigDecimal(factor).multiply(factor3.remainder(factor2).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2))).abs();
+        return new BigDecimal(factor).multiply(
+                factor3
+                        .remainder(factor2)
+                        .sqrt(new MathContext(2))
+                        .sqrt(new MathContext(2))
+                        .sqrt(new MathContext(2))
+                        .sqrt(new MathContext(2))
+                )
+                .abs();
     }
 
     private static float processItemStack(

@@ -66,7 +66,7 @@ public abstract class MixinMob
             self.spawnAtLocation(stack);
 
             ItemStack stack1 = new ItemStack(Items.ENCHANTED_BOOK);
-            List<EnchantmentInstance> enchants = EquipmentManager.shuffleEnchantments(stack1, level, DifficultyManager.getLevelDifficulty(level), 5.0F, self.getRandom());
+            List<EnchantmentInstance> enchants = EquipmentManager.shuffleEnchantments(stack1, level, DifficultyManager.getLevelDifficulty(level), 15.0F, self.getRandom());
             if (!enchants.isEmpty())
             {
                 enchants.forEach(e -> stack1.enchant(e.enchantment, e.level));

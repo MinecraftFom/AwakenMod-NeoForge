@@ -218,7 +218,7 @@ public class TooltipUtil
     )
     {
         List<Component> components = new ArrayList<>();
-        components.add(Component.translatable("tooltip.mood.info"));
+        components.add(Component.translatable("tooltip." + mood.id() + ".info"));
         components.add(Component.empty());
         components.add(Component.empty());
         return components;

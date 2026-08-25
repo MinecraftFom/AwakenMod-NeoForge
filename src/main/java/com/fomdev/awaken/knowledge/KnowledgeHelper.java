@@ -6,9 +6,12 @@ import com.fomdev.awaken.spawn.shuffle.ShuffledRegistries;
 import com.fomdev.awaken.util.NBTUtil;
 import com.fomdev.awaken.util.Records;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public class KnowledgeHelper
 {
@@ -99,5 +102,54 @@ public class KnowledgeHelper
         NBTUtil.serializeKnowledge(player, new Records.AwakenKnowledgeComponent(knowledge.experience(), knowledge.insight(), knowledge.proficiency(), skill));
 
         return stack;
+    }
+
+    public static Records.AwakenKnowledgeComponent randomizeKnowledge(
+            ServerLevel server,
+            RandomSource random
+    )
+    {
+        boolean shouldForExperience = random.nextBoolean();
+        boolean shouldForInsight = random.nextBoolean();
+        boolean shouldForProficiency = random.nextBoolean();
+        boolean shouldForSkill = random.nextBoolean();
+
+        float experience = 0.0F;
+        float insight = 0.0F;
+        float proficiency = 0.0F;
+        float skill = 0.0F;
+        AtomicReference<Float> experienceFactor = new AtomicReference<>(0.0F);
+        AtomicReference<Float> insightFactor = new AtomicReference<>(0.0F);
+        AtomicReference<Float> proficiencyFactor = new AtomicReference<>(0.0F);
+        AtomicReference<Float> skillFactor = new AtomicReference<>(0.0F);
+
+        server.players().forEach(p -> {
+            Records.AwakenKnowledgeComponent knowledge = NBTUtil.deserializeKnowledge(p);
+            experienceFactor.updateAndGet(v -> v + knowledge.experience());
+            insightFactor.updateAndGet(v -> v + knowledge.insight());
+            proficiencyFactor.updateAndGet(v -> v + knowledge.proficiency());
+            skillFactor.updateAndGet(v -> v + knowledge.skill());
+        });
+
+        float efa = (float) Math.sqrt(experienceFactor.get());
+        float ifa = (float) Math.sqrt(insightFactor.get());
+        float pfa = (float) Math.sqrt(proficiencyFactor.get());
+        float sfa = (float) Math.sqrt(skillFactor.get());
+
+        efa = efa < 1? 1: efa;
+        ifa = ifa < 1? 1: ifa;
+        pfa = pfa < 1? 1: pfa;
+        sfa = sfa < 1? 1: sfa;
+
+        if (shouldForExperience)
+            experience = random.nextFloat() % efa;
+        if (shouldForInsight)
+            insight = random.nextFloat() % ifa;
+        if (shouldForProficiency)
+            proficiency = random.nextFloat() % pfa;
+        if (shouldForSkill)
+            skill = random.nextFloat() % sfa;
+
+        return  new Records.AwakenKnowledgeComponent(experience, insight, proficiency, skill);
     }
 }

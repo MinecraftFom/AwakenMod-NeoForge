@@ -32,6 +32,14 @@ public class LocaleUtil
         return Component.translatable("infix." + infix.id() + ".name").append(" ").append(Component.translatable("tooltip.enchantment.level." + infix.getLevel())); // Copied from enchantments
     }
 
+    public static Component localizeMood(
+            AwakenMoods mood,
+            int variant
+    )
+    {
+        return Component.translatable("speech." + mood.id() + ".name." + variant);
+    }
+
     public static String localizeOperation(
             AttributeModifier.Operation operation
     )

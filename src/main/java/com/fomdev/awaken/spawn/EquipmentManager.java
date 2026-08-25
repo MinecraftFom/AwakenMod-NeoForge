@@ -265,6 +265,13 @@ public class EquipmentManager
             stack.set(DataComponents.TRIM, new ArmorTrim(material, pattern));
         }
 
+        List<AwakenMoods> moods = AwakenRegistries.AWAKEN_MOOD.getRegistries();
+        if (!moods.isEmpty())
+        {
+            AwakenMoods mood = moods.get(random.nextInt(moods.size()));
+            NBTUtil.serializeMood(stack, mood);
+        }
+
         AwakenQuality quality = ShuffledRegistries.WEIGHTED_AWAKEN_QUALITY.calculate(d.floatValue(), random);
 
         AwakenInfix infix = ShuffledRegistries.WEIGHTED_AWAKEN_INFIX.calculate(slot, d.floatValue(), random);

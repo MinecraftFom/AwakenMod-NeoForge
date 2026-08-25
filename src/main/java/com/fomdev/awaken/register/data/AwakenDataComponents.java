@@ -11,6 +11,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -199,6 +200,15 @@ public class AwakenDataComponents
                             builder
                                     .persistent(AWAKEN_MEDICINE_CODEC)
                                     .networkSynchronized(AWAKEN_MEDICINE_STREAM_CODEC)
+            );
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<ResourceLocation>> AWAKEN_MOOD_STORAGE =
+            COMPONENT_REGISTER.registerComponentType(
+                    "awaken_mood",
+                    builder ->
+                            builder
+                                    .persistent(ResourceLocation.CODEC)
+                                    .networkSynchronized(ResourceLocation.STREAM_CODEC)
             );
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> AWAKEN_OWNER =

@@ -13,6 +13,7 @@ public class AwakenRegistries
     public static final String SIG_AWAKEN_ASPECT = "awaken_aspect";
     public static final String SIG_AWAKEN_INFIX = "awaken_infix";
     public static final String SIG_AWAKEN_LEVEL = "awaken_level";
+    public static final String SIG_AWAKEN_MOOD = "awaken_mood";
     public static final String SIG_AWAKEN_POLLINATE = "awaken_pollinate";
     public static final String SIG_AWAKEN_PREFIX = "awaken_prefix";
     public static final String SIG_AWAKEN_QUALITY = "awaken_quality";
@@ -26,6 +27,8 @@ public class AwakenRegistries
             createKey(SIG_AWAKEN_INFIX);
     public static final ResourceKey<Registry<AwakenLevel>> RES_AWAKEN_LEVEL =
             createKey(SIG_AWAKEN_LEVEL);
+    public static final ResourceKey<Registry<AwakenMoods>> RES_AWAKEN_MOOD =
+            createKey(SIG_AWAKEN_MOOD);
     public static final ResourceKey<Registry<AwakenPollinate>> RES_AWAKEN_POLLINATE =
             createKey(SIG_AWAKEN_POLLINATE);
     public static final ResourceKey<Registry<AwakenPrefix>> RES_AWAKEN_PREFIX =
@@ -45,6 +48,8 @@ public class AwakenRegistries
             new FreezingRegistry<>(RES_AWAKEN_INFIX);
     public static final AwakenLevelRegistry AWAKEN_LEVEL =
             new AwakenLevelRegistry(RES_AWAKEN_LEVEL);
+    public static final FreezingRegistry<AwakenMoods> AWAKEN_MOOD =
+            new FreezingRegistry<>(RES_AWAKEN_MOOD);
     public static final FreezingRegistry<AwakenPollinate> AWAKEN_POLLINATE =
             new FreezingRegistry<>(RES_AWAKEN_POLLINATE);
     public static final FreezingRegistry<AwakenPrefix> AWAKEN_PREFIX =
@@ -65,6 +70,7 @@ public class AwakenRegistries
         AWAKEN_ASPECT.attach(bus);
         AWAKEN_INFIX.attach(bus);
         AWAKEN_LEVEL.attach(bus);
+        AWAKEN_MOOD.attach(bus);
         AWAKEN_POLLINATE.attach(bus);
         AWAKEN_PREFIX.attach(bus);
         AWAKEN_QUALITY.attach(bus);

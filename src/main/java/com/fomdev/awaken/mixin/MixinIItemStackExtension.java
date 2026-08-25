@@ -38,6 +38,8 @@ public interface MixinIItemStackExtension
 
         ItemAttributeModifiers modifiers = cir.getReturnValue();
 
+        AwakenMoods mood = NBTUtil.deserializeMood(stack);
+
         AwakenPrefix prefix = NBTUtil.deserializePrefix(stack);
         AwakenSuffix suffix = NBTUtil.deserializeSuffix(stack);
         AwakenInfix infix = NBTUtil.deserializeInfix(stack);
@@ -65,6 +67,38 @@ public interface MixinIItemStackExtension
                         ),
                         EquipmentSlotGroup.bySlot(slot)
                 );
+        }
+
+        if (mood != null)
+        {
+            Holder<Attribute> reinforce = mood.getReinforce();
+            Holder<Attribute> weaken = mood.getWeaken();
+
+            modifiers = modifiers.withModifierAdded(
+                    reinforce,
+                    new AttributeModifier(
+                            ResourceLocation.fromNamespaceAndPath(
+                                    mood.id(),
+                                    reinforce.unwrapKey().orElseThrow().location().getPath() + "_reinforce"
+                            ),
+                            mood.getReinforceAmount(),
+                            AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+                    ),
+                    EquipmentSlotGroup.bySlot(EquipmentManager.forSlot(stack))
+            );
+
+            modifiers = modifiers.withModifierAdded(
+                    weaken,
+                    new AttributeModifier(
+                            ResourceLocation.fromNamespaceAndPath(
+                                    mood.id(),
+                                    weaken.unwrapKey().orElseThrow().location().getPath() + "_weaken"
+                            ),
+                            -mood.getWeakenAmount(),
+                            AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+                    ),
+                    EquipmentSlotGroup.bySlot(EquipmentManager.forSlot(stack))
+            );
         }
 
         cir.setReturnValue(modifiers);

@@ -212,6 +212,18 @@ public class TooltipUtil
         return components;
     }
 
+    public static List<Component> castMoodTooltip(
+            TooltipFlag flag,
+            AwakenMoods mood
+    )
+    {
+        List<Component> components = new ArrayList<>();
+        components.add(Component.translatable("tooltip.mood.info"));
+        components.add(Component.empty());
+        components.add(Component.empty());
+        return components;
+    }
+
     public static List<Component> castPollinateTooltip(
             TooltipFlag flag,
             AwakenPollinate.PollinateInstance pollinate

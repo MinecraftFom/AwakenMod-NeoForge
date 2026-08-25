@@ -66,8 +66,7 @@ public class SpeechInstance
         }
 
         SpeechComponent speech = queue.peek();
-        int xStart = maxX / 2 - 20;
-        int yStart = maxY / 2 - 10;
+
 
         if (speech == null)
             return;
@@ -75,6 +74,8 @@ public class SpeechInstance
         if (newTick)
             speech.tick();
 
+        int xStart = maxX / 2 - Minecraft.getInstance().font.width(speech.speech) / 2;
+        int yStart = maxY / 2 + maxY / 4;
         speech.render(gui, xStart, yStart);
 
         if (speech.obsolete())

@@ -30,6 +30,7 @@ public class TooltipRenderEvents
         if (stack.is(AwakenItems.SOUL_BOTTLE))
             list.addAll(1, TooltipUtil.castSoulTooltip(NBTUtil.deserializeSoul(stack)));
 
+        AwakenMoods mood = NBTUtil.deserializeMood(stack);
         AwakenInfix.InfixInstance infix = NBTUtil.deserializeInfix(stack);
         AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializePrefix(stack);
         AwakenSuffix.SuffixInstance suffix = NBTUtil.deserializeSuffix(stack);
@@ -48,5 +49,8 @@ public class TooltipRenderEvents
 
         if (quality != null)
             list.addAll(1, TooltipUtil.castQualityTooltip(flag, quality));
+
+        if (mood != null)
+            list.addAll(1, TooltipUtil.castMoodTooltip(flag, mood));
     }
 }

@@ -143,6 +143,16 @@ public class NBTUtil
         return stack.get(AwakenDataComponents.AWAKEN_MEDICINE_STORAGE);
     }
 
+    public static AwakenMoods deserializeMood(
+            ItemStack stack
+    )
+    {
+        if (!stack.has(AwakenDataComponents.AWAKEN_MOOD_STORAGE))
+            return null;
+
+        return AwakenRegistries.AWAKEN_MOOD.getRegistry(stack.get(AwakenDataComponents.AWAKEN_MOOD_STORAGE));
+    }
+
     public static BigDecimal deserializeAwakenLevel(
             Entity entity
     )
@@ -444,6 +454,14 @@ public class NBTUtil
     )
     {
         stack.set(AwakenDataComponents.AWAKEN_MEDICINE_STORAGE, medicine);
+    }
+
+    public static void serializeMood(
+            ItemStack stack,
+            AwakenMoods mood
+    )
+    {
+        stack.set(AwakenDataComponents.AWAKEN_MOOD_STORAGE, mood.getLocation());
     }
 
     public static void serializePlayer(

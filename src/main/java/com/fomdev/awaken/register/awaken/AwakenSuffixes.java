@@ -22,35 +22,35 @@ public class AwakenSuffixes
 
     public static void init()
     {
-        register$fast(Attributes.ARMOR, "normal", "imperfect");
-        register$fast(Attributes.ARMOR_TOUGHNESS, "strength", "toughness");
-        register$fast(Attributes.ATTACK_DAMAGE, "violent", "crime");
-        register$fast(Attributes.ATTACK_KNOCKBACK, "defend", "aura");
-        register$fast(Attributes.ATTACK_SPEED, "proficiency", "efficiency");
-        register$fast(Attributes.BLOCK_BREAK_SPEED, "miner", "mineral");
-        register$fast(Attributes.BLOCK_INTERACTION_RANGE, "future", "observant");
-        register$fast$opposite(Attributes.BURNING_TIME, "breeze", "freeze");
-        register$fast(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, "liquidize", "destroy");
-        register$fast(Attributes.ENTITY_INTERACTION_RANGE, "eliminate", "telepathy");
-        register$fast(Attributes.FALL_DAMAGE_MULTIPLIER, "lite", "light");
-        register$fast(Attributes.FLYING_SPEED, "flyable", "windful");
-        register$fast(Attributes.FOLLOW_RANGE, "leadership", "companionship");
-        register$fast$opposite(Attributes.GRAVITY, "gravitate", "weightless");
-        register$fast(Attributes.JUMP_STRENGTH, "height", "spring");
-        register$fast(Attributes.KNOCKBACK_RESISTANCE, "weighted", "strong");
-        register$fast(Attributes.LUCK, "fortune", "blessed");
-        register$fast(Attributes.MAX_HEALTH, "healthy", "heartful");
-        register$fast(Attributes.MINING_EFFICIENCY, "worker", "undergrounder");
-        register$fast(Attributes.MOVEMENT_EFFICIENCY, "jogger", "runner");
-        register$fast(Attributes.MOVEMENT_SPEED, "racer", "speeded");
-        register$fast(Attributes.OXYGEN_BONUS, "alien", "underwater");
-        register$fast(Attributes.SAFE_FALL_DISTANCE, "feather", "bird");
-        register$fast(Attributes.SNEAKING_SPEED, "ninja", "assassin");
-        register$fast(Attributes.STEP_HEIGHT, "long-legged", "unstoppable");
-        register$fast(Attributes.SWEEPING_DAMAGE_RATIO, "aoe", "multi-elimination");
-        register$fast(Attributes.WATER_MOVEMENT_EFFICIENCY, "fish", "water-goer");
-        register$fast(NeoForgeMod.SWIM_SPEED, "swimmer", "axolotl");
-        register$fast(AwakenAttributes.ENCHANTMENT, "enchanter", "magician");
+        register$fast(Attributes.ARMOR, 1.5F, "normal", "imperfect");
+        register$fast(Attributes.ARMOR_TOUGHNESS, 0.75F, "strength", "toughness");
+        register$fast(Attributes.ATTACK_DAMAGE, 0.5F, "violent", "crime");
+        register$fast(Attributes.ATTACK_KNOCKBACK, 0.1F, "defend", "aura");
+        register$fast(Attributes.ATTACK_SPEED, 0.5F, "proficiency", "efficiency");
+        register$fast(Attributes.BLOCK_BREAK_SPEED, 1.5F, "miner", "mineral");
+        register$fast(Attributes.BLOCK_INTERACTION_RANGE, 2.0F, "future", "observant");
+        register$fast$opposite(Attributes.BURNING_TIME, 0.25F, "breeze", "freeze");
+        register$fast(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, 0.1F, "liquidize", "destroy");
+        register$fast(Attributes.ENTITY_INTERACTION_RANGE, 2.0F, "eliminate", "telepathy");
+        register$fast$opposite(Attributes.FALL_DAMAGE_MULTIPLIER, 0.75F, "lite", "light");
+        register$fast(Attributes.FLYING_SPEED, 1.5F, "flyable", "windful");
+        register$fast(Attributes.FOLLOW_RANGE, 3.0F, "leadership", "companionship");
+        register$fast$opposite(Attributes.GRAVITY, 0.01F, "gravitate", "weightless");
+        register$fast(Attributes.JUMP_STRENGTH, 0.1F, "height", "spring");
+        register$fast(Attributes.KNOCKBACK_RESISTANCE, 1.0F, "weighted", "strong");
+        register$fast(Attributes.LUCK, 2.5F, "fortune", "blessed");
+        register$fast(Attributes.MAX_HEALTH, 1.8F, "healthy", "heartful");
+        register$fast(Attributes.MINING_EFFICIENCY, 1.5F, "worker", "undergrounder");
+        register$fast(Attributes.MOVEMENT_EFFICIENCY, 0.75F, "jogger", "runner");
+        register$fast(Attributes.MOVEMENT_SPEED, 0.75F, "racer", "speeded");
+        register$fast(Attributes.OXYGEN_BONUS, 1.25F, "alien", "underwater");
+        register$fast(Attributes.SAFE_FALL_DISTANCE, 0.9F, "feather", "bird");
+        register$fast(Attributes.SNEAKING_SPEED, 2.5F, "ninja", "assassin");
+        register$fast(Attributes.STEP_HEIGHT, 1.2F, "long-legged", "unstoppable");
+        register$fast(Attributes.SWEEPING_DAMAGE_RATIO, 3.5F, "aoe", "multi-elimination");
+        register$fast(Attributes.WATER_MOVEMENT_EFFICIENCY, 1.4F, "fish", "water-goer");
+        register$fast(NeoForgeMod.SWIM_SPEED, 1.75F, "swimmer", "axolotl");
+        register$fast(AwakenAttributes.ENCHANTMENT, 5.0F, "enchanter", "magician");
     }
 
     @AutoProxy.Proxied(AutoProxy.ProxyProtocol.MOD_INIT)
@@ -62,36 +62,40 @@ public class AwakenSuffixes
 
     private static void register$fast(
             List<String> id,
-            Holder<Attribute> target
+            Holder<Attribute> target,
+            float factor
     )
     {
         for (String str: id)
-            register(str, 5, 0.5F, target,500.0F, 0.0F);
+            register(str, (int) (5 * factor), factor, target,500.0F * factor, 0.0F);
     }
 
     private static void register$fast$opposite(
             List<String> id,
-            Holder<Attribute> target
+            Holder<Attribute> target,
+            float factor
     )
     {
         for (String str: id)
-            register(str, 5, 1 / 0.5F, target,500.0F, 0.0F);
+            register(str, (int) (5 * factor), 1 / factor, target,500.0F * factor, 0.0F);
     }
 
     private static void register$fast(
             Holder<Attribute> target,
+            float factor,
             String... id
     )
     {
-        register$fast(List.of(id), target);
+        register$fast(List.of(id), target, factor);
     }
 
     private static void register$fast$opposite(
             Holder<Attribute> target,
+            float factor,
             String... id
     )
     {
-        register$fast$opposite(List.of(id), target);
+        register$fast$opposite(List.of(id), target, factor);
     }
 
     private static AwakenSuffix register(

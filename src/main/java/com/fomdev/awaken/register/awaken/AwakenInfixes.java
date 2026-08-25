@@ -27,35 +27,35 @@ public class AwakenInfixes
 
     public static void init()
     {
-        register$fast(Attributes.ARMOR, Constants.BODY_SLOTS, "normal", "imperfect");
-        register$fast(Attributes.ARMOR_TOUGHNESS, Constants.BODY_SLOTS, "strength", "toughness");
-        register$fast(Attributes.ATTACK_DAMAGE, Constants.HAND_SLOTS, "violent", "crime");
-        register$fast(Attributes.ATTACK_KNOCKBACK, Constants.HAND_SLOTS, "defend", "aura");
-        register$fast(Attributes.ATTACK_SPEED, Constants.HAND_SLOTS, "proficiency", "efficiency");
-        register$fast(Attributes.BLOCK_BREAK_SPEED, Constants.HAND_SLOTS,"miner", "mineral");
-        register$fast(Attributes.BLOCK_INTERACTION_RANGE, Constants.HAND_SLOTS, "future", "observant");
-        register$fast$opposite(Attributes.BURNING_TIME, Constants.BODY_SLOTS,"breeze", "freeze");
-        register$fast(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, Constants.BODY_SLOTS, "liquidize", "destroy");
-        register$fast(Attributes.ENTITY_INTERACTION_RANGE, Constants.HAND_SLOTS, "eliminate", "telepathy");
-        register$fast(Attributes.FALL_DAMAGE_MULTIPLIER, Constants.HAND_SLOTS, "lite", "light");
-        register$fast(Attributes.FLYING_SPEED, Constants.BODY_SLOTS, "flyable", "windful");
-        register$fast(Attributes.FOLLOW_RANGE, Constants.ALL_SLOTS, "leadership", "companionship");
-        register$fast$opposite(Attributes.GRAVITY, Constants.BODY_SLOTS, "gravitate", "weightless");
-        register$fast(Attributes.JUMP_STRENGTH, Constants.BODY_SLOTS, "height", "spring");
-        register$fast(Attributes.KNOCKBACK_RESISTANCE, Constants.BODY_SLOTS, "weighted", "strong");
-        register$fast(Attributes.LUCK, Constants.ALL_SLOTS, "fortune", "blessed");
-        register$fast(Attributes.MAX_HEALTH, Constants.BODY_SLOTS, "healthy", "heartful");
-        register$fast(Attributes.MINING_EFFICIENCY, Constants.BODY_SLOTS, "worker", "undergrounder");
-        register$fast(Attributes.MOVEMENT_EFFICIENCY, Constants.BODY_SLOTS, "jogger", "runner");
-        register$fast(Attributes.MOVEMENT_SPEED, Constants.BODY_SLOTS, "racer", "speeded");
-        register$fast(Attributes.OXYGEN_BONUS, Constants.BODY_SLOTS, "alien", "underwater");
-        register$fast(Attributes.SAFE_FALL_DISTANCE, Constants.BODY_SLOTS, "feather", "bird");
-        register$fast(Attributes.SNEAKING_SPEED, Constants.BODY_SLOTS, "ninja", "assassin");
-        register$fast(Attributes.STEP_HEIGHT, Constants.BODY_SLOTS, "long-legged", "unstoppable");
-        register$fast(Attributes.SWEEPING_DAMAGE_RATIO, Constants.HAND_SLOTS, "aoe", "multi-elimination");
-        register$fast(Attributes.WATER_MOVEMENT_EFFICIENCY, Constants.BODY_SLOTS, "fish", "water-goer");
-        register$fast(NeoForgeMod.SWIM_SPEED, Constants.BODY_SLOTS, "swimmer", "axolotl");
-        register$fast(AwakenAttributes.ENCHANTMENT, Constants.ALL_SLOTS, "enchanter", "magician");
+        register$fast(Attributes.ARMOR, Constants.BODY_SLOTS, 1.5F, "normal", "imperfect");
+        register$fast(Attributes.ARMOR_TOUGHNESS, Constants.BODY_SLOTS, 1.1F, "strength", "toughness");
+        register$fast(Attributes.ATTACK_DAMAGE, Constants.HAND_SLOTS, 1.5F, "violent", "crime");
+        register$fast(Attributes.ATTACK_KNOCKBACK, Constants.HAND_SLOTS, 1.25F, "defend", "aura");
+        register$fast(Attributes.ATTACK_SPEED, Constants.HAND_SLOTS, 1.75F, "proficiency", "efficiency");
+        register$fast(Attributes.BLOCK_BREAK_SPEED, Constants.HAND_SLOTS, 1.25F, "miner", "mineral");
+        register$fast(Attributes.BLOCK_INTERACTION_RANGE, Constants.HAND_SLOTS, 2.0F, "future", "observant");
+        register$fast$opposite(Attributes.BURNING_TIME, Constants.BODY_SLOTS, 1.0F, "breeze", "freeze");
+        register$fast(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, Constants.BODY_SLOTS, 1.75F, "liquidize", "destroy");
+        register$fast(Attributes.ENTITY_INTERACTION_RANGE, Constants.HAND_SLOTS, 2.0F, "eliminate", "telepathy");
+        register$fast$opposite(Attributes.FALL_DAMAGE_MULTIPLIER, Constants.HAND_SLOTS, 1.5F, "lite", "light");
+        register$fast(Attributes.FLYING_SPEED, Constants.BODY_SLOTS, 1.5F, "flyable", "windful");
+        register$fast(Attributes.FOLLOW_RANGE, Constants.ALL_SLOTS, 1.75F, "leadership", "companionship");
+        register$fast$opposite(Attributes.GRAVITY, Constants.BODY_SLOTS, 1F, "gravitate", "weightless");
+        register$fast(Attributes.JUMP_STRENGTH, Constants.BODY_SLOTS, 1.5F, "height", "spring");
+        register$fast(Attributes.KNOCKBACK_RESISTANCE, Constants.BODY_SLOTS, 2.75F, "weighted", "strong");
+        register$fast(Attributes.LUCK, Constants.ALL_SLOTS, 1.5F, "fortune", "blessed");
+        register$fast(Attributes.MAX_HEALTH, Constants.BODY_SLOTS, 3.5F, "healthy", "heartful");
+        register$fast(Attributes.MINING_EFFICIENCY, Constants.BODY_SLOTS, 2.75F, "worker", "undergrounder");
+        register$fast(Attributes.MOVEMENT_EFFICIENCY, Constants.BODY_SLOTS, 1.2F, "jogger", "runner");
+        register$fast(Attributes.MOVEMENT_SPEED, Constants.BODY_SLOTS, 1.2F, "racer", "speeded");
+        register$fast(Attributes.OXYGEN_BONUS, Constants.BODY_SLOTS, 2.75F, "alien", "underwater");
+        register$fast(Attributes.SAFE_FALL_DISTANCE, Constants.BODY_SLOTS, 1.75F, "feather", "bird");
+        register$fast(Attributes.SNEAKING_SPEED, Constants.BODY_SLOTS, 1.5F, "ninja", "assassin");
+        register$fast(Attributes.STEP_HEIGHT, Constants.BODY_SLOTS, 1.05F, "long-legged", "unstoppable");
+        register$fast(Attributes.SWEEPING_DAMAGE_RATIO, Constants.HAND_SLOTS, 3.5F, "aoe", "multi-elimination");
+        register$fast(Attributes.WATER_MOVEMENT_EFFICIENCY, Constants.BODY_SLOTS, 1.5F, "fish", "water-goer");
+        register$fast(NeoForgeMod.SWIM_SPEED, Constants.BODY_SLOTS, 1.5F, "swimmer", "axolotl");
+        register$fast(AwakenAttributes.ENCHANTMENT, Constants.ALL_SLOTS, 5.0F, "enchanter", "magician");
     }
 
     @AutoProxy.Proxied(AutoProxy.ProxyProtocol.MOD_INIT)
@@ -68,39 +68,43 @@ public class AwakenInfixes
     private static void register$fast(
             List<String> id,
             Holder<Attribute> target,
-            EquipmentSlot[] slots
+            EquipmentSlot[] slots,
+            float factor
     )
     {
         for (String str: id)
-            register(str, 0.5F, target, slots, 500.0F, 0.0F);
+            register(str, factor, target, slots, 500.0F * factor, 0.0F);
     }
 
     private static void register$fast$opposite(
             List<String> id,
             Holder<Attribute> target,
-            EquipmentSlot[] slots
+            EquipmentSlot[] slots,
+            float factor
     )
     {
         for (String str: id)
-            register(str, -0.5F, target, slots, 500.0F, 0.0F);
+            register(str, -factor, target, slots, 500.0F * factor, 0.0F);
     }
 
     private static void register$fast(
             Holder<Attribute> target,
             EquipmentSlot[] slots,
+            float factor,
             String... id
     )
     {
-        register$fast(List.of(id), target, slots);
+        register$fast(List.of(id), target, slots, factor);
     }
 
     private static void register$fast$opposite(
             Holder<Attribute> target,
             EquipmentSlot[] slots,
+            float factor,
             String... id
     )
     {
-        register$fast$opposite(List.of(id), target, slots);
+        register$fast$opposite(List.of(id), target, slots, factor);
     }
 
     private static void register(

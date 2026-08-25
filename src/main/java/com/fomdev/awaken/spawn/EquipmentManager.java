@@ -167,8 +167,8 @@ public class EquipmentManager
             RandomSource random
     )
     {
-        BigDecimal n = diff.sqrt(new MathContext(2)).sqrt(new MathContext(2)).multiply(new BigDecimal(random.nextInt(Math.max((int) factor, 1)) / factor));
-        return n.multiply(new BigDecimal(max)).min(new BigDecimal(max)).intValue();
+        BigDecimal n = diff.sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).multiply(new BigDecimal(random.nextInt(max * Math.max((int) factor, 1)) / factor));
+        return n.min(new BigDecimal(max)).intValue();
     }
 
     public static int shuffleEnchantmentLevel(
@@ -178,7 +178,7 @@ public class EquipmentManager
             RandomSource random
     )
     {
-        BigDecimal n = diff.sqrt(new MathContext(2)).sqrt(new MathContext(2)).multiply(new BigDecimal(random.nextInt(Math.max((int) factor, 1)) / factor));
+        BigDecimal n = diff.sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).multiply(new BigDecimal(random.nextInt(Math.max((int) factor, 1)) / factor));
         return n.multiply(new BigDecimal(max)).divide(new BigDecimal(2), RoundingMode.HALF_UP).min(new BigDecimal(max)).intValue(); // RESTRICTED: LOWER LEVEL FOR BALANCE
     }
 

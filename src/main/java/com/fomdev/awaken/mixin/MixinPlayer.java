@@ -68,7 +68,7 @@ public abstract class MixinPlayer
         if (awakenLevel == null)
             original.append(cir.getReturnValue());
         else
-            original.append("[").append(LocaleUtil.localizeAwakenLevel(awakenLevel)).append("] ").append(cir.getReturnValue()).withStyle(ColorUtil.colorStyle(awakenLevel.getColor()));
+            original.append(LocaleUtil.localizeAwakenLevel(awakenLevel)).append(" ").append(cir.getReturnValue()).withStyle(ColorUtil.colorStyle(awakenLevel.getColor()));
 
         cir.setReturnValue(original);
     }

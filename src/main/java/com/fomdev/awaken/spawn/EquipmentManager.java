@@ -187,9 +187,6 @@ public class EquipmentManager
                 .sqrt(new MathContext(2))
                 .sqrt(new MathContext(2))
                 .sqrt(new MathContext(2))
-                .sqrt(new MathContext(2))
-                .sqrt(new MathContext(2))
-                .sqrt(new MathContext(2))
                 .multiply(new BigDecimal(max / factor * random.nextInt(Math.max((int) factor, 1))));
         return n.divide(new BigDecimal(5), RoundingMode.HALF_UP)
                 .min(new BigDecimal(max))

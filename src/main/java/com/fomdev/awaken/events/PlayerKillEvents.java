@@ -124,17 +124,24 @@ public class PlayerKillEvents
         float proficiency = (float) Math.sqrt(knowledge.proficiency());
         float skill = (float) Math.sqrt(knowledge.skill());
 
-        float experience2 = experience < 0? 0: random.nextFloat() % experience;
-        float insight2 = insight < 0? 0: random.nextFloat() % insight;
-        float proficiency2 = proficiency < 0? 0: random.nextFloat() % proficiency;
-        float skill2 = skill < 0? 0: random.nextFloat() % skill;
+        experience = experience < 1? 1: experience;
+        insight = insight < 1? 1: insight;
+        proficiency = proficiency < 1? 1: proficiency;
+        skill = skill < 1? 1: skill;
+        experience %= random.nextFloat();
+        insight %= random.nextFloat();
+        proficiency %= random.nextFloat();
+        skill %= random.nextFloat();
+        experience += original.experience();
+        insight += original.insight();
+        proficiency += original.proficiency();
+        skill += original.skill();
+        experience = Float.isNaN(experience)? 0.0F: experience;
+        insight = Float.isNaN(insight)? 0.0F: insight;
+        proficiency = Float.isNaN(proficiency)? 0.0F: proficiency;
+        skill = Float.isNaN(skill)? 0.0F: skill;
 
-        float experience3 = experience2 + original.experience();
-        float insight3 = insight2 + original.insight();
-        float proficiency3 = proficiency2 + original.proficiency();
-        float skill3 = skill2 + original.skill();
-
-        NBTUtil.serializeKnowledge(sin, new Records.AwakenKnowledgeComponent(experience3, insight3, proficiency3, skill3));
+        NBTUtil.serializeKnowledge(sin, new Records.AwakenKnowledgeComponent(experience, insight, proficiency, skill));
     }
 
     private static void processSoulAdd(

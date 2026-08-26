@@ -150,6 +150,10 @@ public class KnowledgeHelper
         if (shouldForSkill)
             skill = random.nextFloat() % sfa;
 
+        experience = Float.isNaN(experience) ? 0.0F: experience;
+        insight = Float.isNaN(insight)? 0.0F: insight;
+        proficiency = Float.isNaN(proficiency)? 0.0F: proficiency;
+        skill = Float.isNaN(skill)? 0.0F: skill;
         return  new Records.AwakenKnowledgeComponent(experience, insight, proficiency, skill);
     }
 }

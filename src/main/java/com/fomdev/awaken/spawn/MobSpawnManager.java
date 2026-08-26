@@ -86,7 +86,6 @@ public class MobSpawnManager
     public static void awakenSpawnLogic(
             LivingEntity original,
             float diff,
-            int strength,
             int auraSize,
             Color color,
             Component title,
@@ -95,7 +94,7 @@ public class MobSpawnManager
     )
     {
         /* TODO: ADD PARTICLE */
-        Util.placeholder(diff, strength, auraSize, color, title, level, random);
+        Util.placeholder(diff, auraSize, color, title, level, random);
     }
 
     public static Color shuffleColor(
@@ -133,7 +132,6 @@ public class MobSpawnManager
         if (tier == null)
             return;
 
-        int strength = random.nextInt(Math.max(diff.sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).sqrt(new MathContext(2)).intValue() * 100, 1));
         int auraSize = random.nextInt(20);
         Color color = shuffleColor(
                 random
@@ -149,7 +147,6 @@ public class MobSpawnManager
                 entity,
                 diff,
                 tier.factor(),
-                strength,
                 color,
                 title,
                 level,
@@ -159,7 +156,6 @@ public class MobSpawnManager
         tier.additionalSpawn().onSpawn(
                 entity,
                 diff.floatValue(),
-                strength,
                 auraSize,
                 color,
                 title,
@@ -172,7 +168,6 @@ public class MobSpawnManager
             LivingEntity original,
             BigDecimal diff,
             float factor,
-            int strength,
             Color color,
             Component title,
             Level level,
@@ -195,9 +190,6 @@ public class MobSpawnManager
         original.setCustomName(
                 Component.empty().append(title).withStyle(ColorUtil.colorStyle(color))
         );
-
-        AttributeInstance instance = Objects.requireNonNull(original.getAttribute(Attributes.ATTACK_DAMAGE));
-        instance.setBaseValue(strength);
 
         EquipmentSlot[] slots = EquipmentManager.shuffleSlots(
                 diff,
@@ -246,7 +238,6 @@ public class MobSpawnManager
         void onSpawn(
                 LivingEntity original,
                 float diff,
-                int strength,
                 int auraSize,
                 Color color,
                 Component title,

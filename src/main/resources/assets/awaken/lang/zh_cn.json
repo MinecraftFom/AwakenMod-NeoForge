@@ -34,6 +34,7 @@
   "tier.awaken.master.name": "大师",
   "tier.awaken.enlighten.name": "启敬",
   "tier.awaken.awaken.name": "觉醒",
+  "tile.rideble_entity.name": "坐骑",
   "tooltip.aspect.info": "附魔要素",
   "tooltip.durability.additional.info": "%s 点额外耐久度",
   "tooltip.effect.whenhold.info": "当手持时，给予 %s %s",

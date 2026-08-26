@@ -34,13 +34,13 @@ public class AwakenInfixes
         register$fast(Attributes.ATTACK_SPEED, Constants.HAND_SLOTS, 1.75F, "proficiency", "efficiency");
         register$fast(Attributes.BLOCK_BREAK_SPEED, Constants.HAND_SLOTS, 1.25F, "miner", "mineral");
         register$fast(Attributes.BLOCK_INTERACTION_RANGE, Constants.HAND_SLOTS, 2.0F, "future", "observant");
-        register$fast$opposite(Attributes.BURNING_TIME, Constants.BODY_SLOTS, 1.0F, "breeze", "freeze");
+        register$fast(Attributes.BURNING_TIME, Constants.BODY_SLOTS, 1.0F, "breeze", "freeze");
         register$fast(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, Constants.BODY_SLOTS, 1.75F, "liquidize", "destroy");
         register$fast(Attributes.ENTITY_INTERACTION_RANGE, Constants.HAND_SLOTS, 2.0F, "eliminate", "telepathy");
-        register$fast$opposite(Attributes.FALL_DAMAGE_MULTIPLIER, Constants.HAND_SLOTS, 1.5F, "lite", "light");
+        register$fast(Attributes.FALL_DAMAGE_MULTIPLIER, Constants.HAND_SLOTS, 1.5F, "lite", "light");
         register$fast(Attributes.FLYING_SPEED, Constants.BODY_SLOTS, 1.5F, "flyable", "windful");
         register$fast(Attributes.FOLLOW_RANGE, Constants.ALL_SLOTS, 1.75F, "leadership", "companionship");
-        register$fast$opposite(Attributes.GRAVITY, Constants.BODY_SLOTS, 1F, "gravitate", "weightless");
+        register$fast(Attributes.GRAVITY, Constants.BODY_SLOTS, 1F, "gravitate", "weightless");
         register$fast(Attributes.JUMP_STRENGTH, Constants.BODY_SLOTS, 1.5F, "height", "spring");
         register$fast(Attributes.KNOCKBACK_RESISTANCE, Constants.BODY_SLOTS, 2.75F, "weighted", "strong");
         register$fast(Attributes.LUCK, Constants.ALL_SLOTS, 1.5F, "fortune", "blessed");

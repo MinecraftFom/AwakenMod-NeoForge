@@ -32,8 +32,8 @@ public class AwakenSporeGUI implements LayeredDraw.Layer
         List<AwakenSpore.SporeInstance> spores = NBTUtil.deserializeSpores(player);
         for (int i = 0; i < spores.size(); i++)
         {
-            int posx = 10 + DIST * i;
-            int posy = 10;
+            int posx = 10;
+            int posy = 10 + DIST * i;
 
             AwakenSpore.SporeInstance spore = spores.get(i);
             Component component = Component.empty().append(LocaleUtil.localizeSpore(spore.getSpore())).append(": " + spore.getLevel());

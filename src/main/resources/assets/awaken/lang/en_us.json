@@ -42,6 +42,8 @@
   "tier.awaken.enlighten.name": "Enlighten",
   "tier.awaken.awaken.name": "Awaken",
 
+  "tile.rideble_entity.name": "Vehicle",
+
   "tooltip.aspect.info": "Aspect",
 
   "tooltip.durability.additional.info": "%s of additional durability",

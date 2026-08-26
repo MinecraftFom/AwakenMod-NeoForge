@@ -32,5 +32,7 @@
   "aspect.void.name": "Void",
   "aspect.water.name": "Water",
   "aspect.world.name": "World",
-  "aspect.zen.name": "Zen"
+  "aspect.zen.name": "Zen",
+
+  "aspect.diversity.name": "Diversity"
 }

@@ -49,7 +49,7 @@ public enum MobTiers implements MobTier
             boolean should
     )
     {
-        this.logic = (p0, p1, p2, p3, p4, p5, p6, p7) -> {};
+        this.logic = (p0, p1,  p2, p3, p4, p5, p6) -> {};
 
         this.factor = factor;
         this.weight = weight;

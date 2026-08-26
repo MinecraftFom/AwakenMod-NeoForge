@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.CrossbowAttackMob;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
@@ -45,6 +46,9 @@ public class MobSpawnEvents
         monster.goalSelector.addGoal(2, new UnuseShieldGoal(monster));
         if (!(monster instanceof RangedAttackMob))
             monster.goalSelector.addGoal(1, new UseBowGoal(monster, 1.0F, 20, 15.0F));
+
+        if (!(monster instanceof CrossbowAttackMob))
+            monster.goalSelector.addGoal(1, new UseCrossbowGoal(monster, 1.0, 1.0F));
 
         if (!isAwaken(monster))
             return;

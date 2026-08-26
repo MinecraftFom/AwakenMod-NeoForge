@@ -16,5 +16,12 @@ public class CompatManager
             EntityAddition.activeIfTFInstalled();
             Awaken.LOGGER.info("Hello. Nice to meet you! Dealt telepathy to mod Twilight-Forest!");
         }
+
+        if (ModList.get().isLoaded("aoa3")) // I hadn't played Aoa3. This was requested from co-developer @modic_M.
+        {
+            ItemAddition.activeIfAoa3Install();
+            EntityAddition.activeIfAoa3Installed();
+            Awaken.LOGGER.info("Hello. Nice to meet you! Dealt telepathy to mod AoA3!");
+        }
     }
 }

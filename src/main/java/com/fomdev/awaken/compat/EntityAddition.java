@@ -2,6 +2,8 @@ package com.fomdev.awaken.compat;
 
 import com.fomdev.awaken.spawn.MobSpawnManager;
 import net.minecraft.resources.ResourceLocation;
+import net.tslat.aoa3.common.registration.entity.AoAMonsters;
+import net.tslat.aoa3.common.registration.worldgen.AoADimensions;
 import twilightforest.init.TFDimension;
 import twilightforest.init.TFEntities;
 
@@ -10,6 +12,81 @@ import java.util.function.Consumer;
 
 public class EntityAddition
 {
+    public static void activeIfAoa3Installed()
+    {
+        Consumer<ResourceLocation> registerer = loc -> {
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(AoADimensions.ABYSS.location(), l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(AoADimensions.BARATHOS.location(), l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(AoADimensions.CANDYLAND.location(), l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(AoADimensions.CELEVE.location(), l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(AoADimensions.CREEPONIA.location(), l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(AoADimensions.CRYSTEVIA.location(), l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(AoADimensions.DEEPLANDS.location(), l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(AoADimensions.DUSTOPIA.location(), l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(AoADimensions.GARDENCIA.location(), l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(AoADimensions.GRECKON.location(), l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(AoADimensions.HAVEN.location(), l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(AoADimensions.IROMINE.location(), l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(AoADimensions.LBOREAN.location(), l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(AoADimensions.LELYETIA.location(), l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(AoADimensions.LUNALUS.location(), l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(AoADimensions.MYSTERIUM.location(), l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(AoADimensions.NOWHERE.location(), l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(AoADimensions.PRECASIA.location(), l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(AoADimensions.RUNANDOR.location(), l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(AoADimensions.SHYRELANDS.location(), l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(AoADimensions.VOX_PONDS.location(), l -> new ArrayList<>()).add(loc);
+
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(AoADimensions.OVERWORLD.location(), l -> new ArrayList<>()).add(loc);
+        };
+
+        registerer.accept(AoAMonsters.GHOST.getId());
+        registerer.accept(AoAMonsters.ICE_GIANT.getId());
+        registerer.accept(AoAMonsters.LEAFY_GIANT.getId());
+        registerer.accept(AoAMonsters.NETHENGEIC_BEAST.getId());
+        registerer.accept(AoAMonsters.SAND_GIANT.getId());
+        registerer.accept(AoAMonsters.STONE_GIANT.getId());
+        registerer.accept(AoAMonsters.TREE_SPIRIT.getId());
+        registerer.accept(AoAMonsters.WOOD_GIANT.getId());
+        registerer.accept(AoAMonsters.ANCIENT_GOLEM.getId());
+        registerer.accept(AoAMonsters.ATTERCOPUS.getId());
+        registerer.accept(AoAMonsters.BOMB_CARRIER.getId());
+        registerer.accept(AoAMonsters.BUSH_BABY.getId());
+        registerer.accept(AoAMonsters.CHARGER.getId());
+        registerer.accept(AoAMonsters.CHOMPER.getId());
+        registerer.accept(AoAMonsters.CYCLOPS.getId());
+        registerer.accept(AoAMonsters.DUNKLEOSTEUS.getId());
+        registerer.accept(AoAMonsters.ECHODAR.getId());
+        registerer.accept(AoAMonsters.ELITE_KING_BAMBAMBAM.getId());
+        registerer.accept(AoAMonsters.ELITE_NETHENGEIC_WITHER.getId());
+        registerer.accept(AoAMonsters.ELITE_SKELETRON.getId());
+        registerer.accept(AoAMonsters.ELITE_SMASH.getId());
+        registerer.accept(AoAMonsters.ELITE_TYROSAUR.getId());
+        registerer.accept(AoAMonsters.EMBRAKE.getId());
+        registerer.accept(AoAMonsters.FLAMEWALKER.getId());
+        registerer.accept(AoAMonsters.GOBLIN.getId());
+        registerer.accept(AoAMonsters.INFERNAL.getId());
+        registerer.accept(AoAMonsters.KING_BAMBAMBAM.getId());
+        registerer.accept(AoAMonsters.KING_CHARGER.getId());
+        registerer.accept(AoAMonsters.LITTLE_BAM.getId());
+        registerer.accept(AoAMonsters.MEGANEUROPSIS.getId());
+        registerer.accept(AoAMonsters.NETHENGEIC_WITHER.getId());
+        registerer.accept(AoAMonsters.NOSPIKE.getId());
+        registerer.accept(AoAMonsters.SASQUATCH.getId());
+        registerer.accept(AoAMonsters.SCOLOPENDIS.getId());
+        registerer.accept(AoAMonsters.SKELETAL_ABOMINATION.getId());
+        registerer.accept(AoAMonsters.SKELETRON.getId());
+        registerer.accept(AoAMonsters.SMASH.getId());
+        registerer.accept(AoAMonsters.SMILODON.getId());
+        registerer.accept(AoAMonsters.SPINOLEDON.getId());
+        registerer.accept(AoAMonsters.THARAFLY.getId());
+        registerer.accept(AoAMonsters.TYROSAUR.getId());
+        registerer.accept(AoAMonsters.VELORAPTOR.getId());
+        registerer.accept(AoAMonsters.VOID_WALKER.getId());
+        registerer.accept(AoAMonsters.WOUNDED_TYROSAUR.getId());
+        registerer.accept(AoAMonsters.YETI.getId());
+    }
+
     public static void activeIfTFInstalled()
     {
         Consumer<ResourceLocation> registerer = loc -> MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(TFDimension.DIMENSION, l -> new ArrayList<>()).add(loc);

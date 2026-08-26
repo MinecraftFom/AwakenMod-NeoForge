@@ -142,7 +142,7 @@ public class UseBowGoal extends Goal
 
     }
 
-    public void performRangedAttack(LivingEntity target, float distanceFactor, Mob monster)
+    public static void performRangedAttack(LivingEntity target, float distanceFactor, Mob monster)
     {
         ItemStack weapon = monster.getItemInHand(ProjectileUtil.getWeaponHoldingHand(monster, (item) -> item instanceof BowItem));
         ItemStack itemstack1 = monster.getProjectile(weapon);

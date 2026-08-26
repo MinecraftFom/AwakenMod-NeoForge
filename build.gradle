@@ -94,6 +94,7 @@ dependencies {
      implementation files("libs/atlas_lib-0.0.3.jar")
      implementation "top.theillusivec4.curios:curios-neoforge:9.3.0+1.21.1"
     implementation "curse.maven:the-twilight-forest-227639:7797302"
+    implementation "curse.maven:advent-of-ascension-nevermine-311054:7424722"
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {

@@ -20,6 +20,10 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nullable;
 import java.math.BigDecimal;
@@ -29,23 +33,21 @@ import java.util.Optional;
 @Mixin(CraftingMenu.class)
 public class MixinCraftingTableMenu
 {
-    /**
-     * @author Fom477
-     * @reason Change the crafting results
-     */
-    @Overwrite
-    protected static void slotChangedCraftingGrid(
+    @Inject(method = "slotChangedCraftingGrid", at = @At("HEAD"), cancellable = true)
+    private static void slotChangedCraftingGrid(
             AbstractContainerMenu menu,
             Level level,
             Player player,
             CraftingContainer craftSlots,
             ResultContainer resultSlots,
-            @Nullable RecipeHolder<CraftingRecipe> recipe
+            RecipeHolder<CraftingRecipe> recipe,
+            CallbackInfo ci
     )
     {
         if (level.isClientSide)
             return;
 
+        ci.cancel();
         CraftingInput craftinginput = craftSlots.asCraftInput();
         ServerPlayer serverplayer = (ServerPlayer)player;
         ItemStack stack = ItemStack.EMPTY;
@@ -62,17 +64,7 @@ public class MixinCraftingTableMenu
             }
         }
 
-        stack = KnowledgeHelper.getResult(player, stack);
-        BigDecimal awakenLevel = NBTUtil.deserializeAwakenLevel(player);
-        BigDecimal difficulty = DifficultyManager.getLevelDifficulty((ServerLevel) level);
-        NBTUtil.serializeEpoch(
-                stack,
-                new Records.AwakenEpochComponent(
-                        awakenLevel,
-                        difficulty
-                )
-        );
-
+        KnowledgeHelper.getResult(player, stack);
         resultSlots.setItem(0, stack);
         menu.setRemoteSlot(0, stack);
         serverplayer.connection.send(new ClientboundContainerSetSlotPacket(menu.containerId, menu.incrementStateId(), 0, stack));

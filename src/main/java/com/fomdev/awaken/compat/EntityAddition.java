@@ -1,7 +1,9 @@
 package com.fomdev.awaken.compat;
 
 import com.fomdev.awaken.spawn.MobSpawnManager;
+import com.github.L_Ender.cataclysm.init.ModEntities;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.tslat.aoa3.common.registration.entity.AoAMonsters;
 import net.tslat.aoa3.common.registration.worldgen.AoADimensions;
 import twilightforest.init.TFDimension;
@@ -85,6 +87,52 @@ public class EntityAddition
         registerer.accept(AoAMonsters.VOID_WALKER.getId());
         registerer.accept(AoAMonsters.WOUNDED_TYROSAUR.getId());
         registerer.accept(AoAMonsters.YETI.getId());
+    }
+
+    public static void activeIfCataclysmInstalled()
+    {
+        Consumer<ResourceLocation> registerer = loc -> {
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(Level.OVERWORLD.location(), l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(Level.NETHER.location(), l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(Level.END.location(), l -> new ArrayList<>()).add(loc);
+        };
+
+        registerer.accept(ModEntities.ENDER_GOLEM.getId());
+        registerer.accept(ModEntities.ENDER_GUARDIAN.getId());
+        registerer.accept(ModEntities.NETHERITE_MINISTROSITY.getId());
+        registerer.accept(ModEntities.NETHERITE_MONSTROSITY.getId());
+        registerer.accept(ModEntities.IGNIS.getId());
+        registerer.accept(ModEntities.DEEPLING.getId());
+        registerer.accept(ModEntities.DEEPLING_BRUTE.getId());
+        registerer.accept(ModEntities.DEEPLING_ANGLER.getId());
+        registerer.accept(ModEntities.DEEPLING_PRIEST.getId());
+        registerer.accept(ModEntities.DEEPLING_WARLOCK.getId());
+        registerer.accept(ModEntities.THE_HARBINGER.getId());
+        registerer.accept(ModEntities.THE_PROWLER.getId());
+        registerer.accept(ModEntities.THE_WATCHER.getId());
+        registerer.accept(ModEntities.THE_LEVIATHAN.getId());
+        registerer.accept(ModEntities.WALL_WATCHER.getId());
+        registerer.accept(ModEntities.ACCRETION.getId());
+        registerer.accept(ModEntities.VOID_VORTEX.getId());
+        registerer.accept(ModEntities.ANCIENT_DESERT_STELE.getId());
+        registerer.accept(ModEntities.ANCIENT_REMNANT.getId());
+        registerer.accept(ModEntities.MODERN_REMNANT.getId());
+        registerer.accept(ModEntities.KOBOLEDIATOR.getId());
+        registerer.accept(ModEntities.KOBOLETON.getId());
+        registerer.accept(ModEntities.WADJET.getId());
+        registerer.accept(ModEntities.SANDSTORM_PROJECTILE.getId());
+        registerer.accept(ModEntities.MALEDICTUS.getId());
+        registerer.accept(ModEntities.DRAUGR.getId());
+        registerer.accept(ModEntities.ROYAL_DRAUGR.getId());
+        registerer.accept(ModEntities.ELITE_DRAUGR.getId());
+        registerer.accept(ModEntities.APTRGANGR.getId());
+        registerer.accept(ModEntities.HIPPOCAMTUS.getId());
+        registerer.accept(ModEntities.CINDARIA.getId());
+        registerer.accept(ModEntities.CLAWDIAN.getId());
+        registerer.accept(ModEntities.SCYLLA.getId());
+        registerer.accept(ModEntities.URCHINKIN.getId());
+        registerer.accept(ModEntities.DROWNED_HOST.getId());
+        registerer.accept(ModEntities.SYMBIOCTO.getId());
     }
 
     public static void activeIfTFInstalled()

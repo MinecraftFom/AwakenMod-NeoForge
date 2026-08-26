@@ -2,6 +2,7 @@ package com.fomdev.awaken.spawn;
 
 import com.fomdev.atlas.color.ColorHolder;
 import com.fomdev.atlas.register.data.AtlasDataComponents;
+import com.fomdev.awaken.compat.IronSpellCompat;
 import com.fomdev.awaken.enchant.EnchantManager;
 import com.fomdev.awaken.entries.raw.*;
 import com.fomdev.awaken.init.config.AwakenCommon;
@@ -57,8 +58,9 @@ public class EquipmentManager
     )
     {
         List<EnchantmentInstance> insts = shuffleEnchantments(stack, level, diff, factor, random);
-        stack.set(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
-        insts.forEach(i -> stack.enchant(i.enchantment, i.level));
+        ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
+        insts.forEach(i -> mutable.set(i.enchantment, i.level));
+        stack.set(DataComponents.ENCHANTMENTS, mutable.toImmutable());
     }
 
     public static Holder<MobEffect> findEffect(Level level, ResourceLocation effect)
@@ -261,6 +263,8 @@ public class EquipmentManager
     {
         stack.set(AwakenDataComponents.AWAKEN_SLOT_STORAGE, slot);
         stack.set(AtlasDataComponents.COLOR_COMPONENT, new ColorHolder(color));
+
+        IronSpellCompat.forStackIfPresent(stack, random);
 
         BigDecimal d = diff.multiply(new BigDecimal(factor));
         enchant(stack, level, diff, factor, random);

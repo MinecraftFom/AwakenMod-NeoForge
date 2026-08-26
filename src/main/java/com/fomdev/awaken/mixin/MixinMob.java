@@ -1,12 +1,12 @@
 package com.fomdev.awaken.mixin;
 
+import com.fomdev.awaken.compat.IronSpellCompat;
 import com.fomdev.awaken.difficulty.DifficultyManager;
 import com.fomdev.awaken.register.data.AwakenAttachmentTypes;
 import com.fomdev.awaken.register.items.AwakenItems;
 import com.fomdev.awaken.spawn.EquipmentManager;
 import com.fomdev.awaken.util.NBTUtil;
 import com.fomdev.awaken.util.Records;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -60,7 +60,8 @@ public abstract class MixinMob
             setItemSlot(slot, ItemStack.EMPTY);
         }
 
-        if (self.hasData(AwakenAttachmentTypes.IS_AWAKEN)) {
+        if (self.hasData(AwakenAttachmentTypes.IS_AWAKEN))
+        {
             ItemStack stack = new ItemStack(AwakenItems.SOUL_FRAGMENT.asItem());
             NBTUtil.serializeSoul(stack, new Records.AwakenSoulComponent(self.getRandom().nextInt(100) + 1, 100));
             self.spawnAtLocation(stack);
@@ -72,6 +73,8 @@ public abstract class MixinMob
                 enchants.forEach(e -> stack1.enchant(e.enchantment, e.level));
                 self.spawnAtLocation(stack1);
             }
+
+            self.spawnAtLocation(IronSpellCompat.shuffleScrollIfPresent(self.getRandom()));
         }
     }
 }

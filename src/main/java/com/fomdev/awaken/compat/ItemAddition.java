@@ -1,6 +1,7 @@
 package com.fomdev.awaken.compat;
 
 import com.fomdev.awaken.spawn.shuffle.ShuffledRegistries;
+import com.github.L_Ender.cataclysm.init.ModItems;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
@@ -12,7 +13,7 @@ import twilightforest.init.TFItems;
 
 public class ItemAddition
 {
-    public static void activeIfAoa3Install()
+    public static void activeIfAoa3Installed()
     {
         registerHead(AoAArmour.ACHELOS_HELMET.toStack(), 5.0F, 10000.0F);
         registerHead(AoAArmour.HELM_OF_THE_DEXTROUS.toStack(), 5.0F, 10000.0F);
@@ -160,6 +161,11 @@ public class ItemAddition
         registerMainhand(AoAWeapons.SUNSHINE_BOW.toStack(), 20.0F, 10000.0F);
         registerMainhand(AoAWeapons.VOID_BOW.toStack(), 20.0F, 10000.0F);
         registerMainhand(AoAWeapons.WITHER_BOW.toStack(), 20.0F, 10000.0F);
+    }
+
+    public static void activeIfCataclysmInstalled()
+    {
+
     }
 
     public static void activeIfTFInstalled()

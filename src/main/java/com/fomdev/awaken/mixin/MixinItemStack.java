@@ -100,7 +100,7 @@ public abstract class MixinItemStack implements DataComponentHolder
     {
         DataComponentMap original = cir.getReturnValue();
         ItemStack self = (ItemStack) (Object) this;
-        if (!original.has(AwakenDataComponents.AWAKEN_DESCRIBER_STORAGE.get()))
+        if (!AwakenDataComponents.AWAKEN_DESCRIBER_STORAGE.isBound() || !original.has(AwakenDataComponents.AWAKEN_DESCRIBER_STORAGE.get()))
             return;
 
         Records.AwakenDescriberComponent desc = original.get(AwakenDataComponents.AWAKEN_DESCRIBER_STORAGE.get());

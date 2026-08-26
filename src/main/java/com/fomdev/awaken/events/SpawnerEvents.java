@@ -37,7 +37,10 @@ public class SpawnerEvents
         if (event.getSpawnType() != MobSpawnType.SPAWNER)
             return;
 
-        if (!SpawnerUtil.increaseUse(event.getLevel().getLevel(), event.getSpawner().left().get().getBlockPos())) // 100% non-null
+        if (event.getSpawner() == null)
+            return;
+
+        if (!SpawnerUtil.increaseUse(event.getLevel().getLevel(), event.getSpawner().left().get().getBlockPos()))
             NeoForge.EVENT_BUS.post(new SpawnerExpireEvent(event.getLevel().getLevel(), event.getSpawner().left().get().getBlockPos()));
     }
 }

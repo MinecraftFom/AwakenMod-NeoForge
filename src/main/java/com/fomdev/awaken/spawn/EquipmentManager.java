@@ -259,10 +259,8 @@ public class EquipmentManager
             RandomSource random
     )
     {
-        float h = random.nextFloat() % 360.0F;
-
         stack.set(AwakenDataComponents.AWAKEN_SLOT_STORAGE, slot);
-        stack.set(AtlasDataComponents.COLOR_COMPONENT, new ColorHolder(h, 1.0F, 1.0F));
+        stack.set(AtlasDataComponents.COLOR_COMPONENT, new ColorHolder(color));
 
         BigDecimal d = diff.multiply(new BigDecimal(factor));
         enchant(stack, level, diff, factor, random);

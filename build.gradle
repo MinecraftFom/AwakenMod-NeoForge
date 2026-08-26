@@ -24,6 +24,12 @@ repositories {
         name = "Illusive Soulworks maven"
         url = "https://maven.theillusivec4.top/"
     }
+    maven {
+        url "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 base {
@@ -84,9 +90,10 @@ configurations {
 }
 
 dependencies {
-     implementation files("libs/flame_lib-1.0.8.jar")
-     implementation files("libs/atlas_lib-0.0.2.jar")
+     implementation files("libs/flame_lib-1.0.12.jar")
+     implementation files("libs/atlas_lib-0.0.3.jar")
      implementation "top.theillusivec4.curios:curios-neoforge:9.3.0+1.21.1"
+    implementation "curse.maven:the-twilight-forest-227639:7797302"
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {

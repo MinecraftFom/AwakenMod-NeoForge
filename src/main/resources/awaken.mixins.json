@@ -19,6 +19,7 @@
     "MixinItemEnchantments",
     "MixinItemStack",
     "MixinLivingEntity",
+    "MixinLootTable",
     "MixinMaceItem",
     "MixinMob",
     "MixinMutable",

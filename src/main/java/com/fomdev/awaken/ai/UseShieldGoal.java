@@ -12,6 +12,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ShieldItem;
+import net.neoforged.neoforge.common.Tags;
 
 public class UseShieldGoal extends Goal
 {
@@ -38,7 +39,7 @@ public class UseShieldGoal extends Goal
         return
                 mob != null
                         && mob.getTarget() != null
-                        && mob.getItemBySlot(EquipmentSlot.OFFHAND).is(Items.SHIELD)
+                        && mob.getItemBySlot(EquipmentSlot.OFFHAND).is(Tags.Items.TOOLS_SHIELD)
                         && mob.getTarget().distanceTo(mob) < 3
                         && (mob.getTarget().getMainHandItem().is(ItemTags.AXES) || mob.getTarget().getMainHandItem().is(ItemTags.SWORDS));
     }

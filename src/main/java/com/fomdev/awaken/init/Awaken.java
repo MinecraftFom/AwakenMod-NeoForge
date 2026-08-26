@@ -9,6 +9,7 @@ import com.fomdev.awaken.spawn.EquipmentManager;
 import com.fomdev.awaken.spawn.MobSpawnManager;
 import com.fomdev.awaken.spawn.shuffle.ShuffledRegistries;
 import com.fomdev.awaken.util.NBTUtil;
+import com.fomdev.flame.init.FlameLib;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
@@ -21,6 +22,8 @@ import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import org.slf4j.Logger;
 
+import java.lang.reflect.InvocationTargetException;
+
 @Mod(Awaken.MODID)
 public class Awaken
 {
@@ -30,8 +33,10 @@ public class Awaken
     public Awaken(
             IEventBus bus,
             ModContainer container
-    )
+    ) throws InvocationTargetException, IllegalAccessException
     {
+        FlameLib.forMod(MODID, bus);
+
         bus.register(this);
 
         AwakenRegistries.register(bus);

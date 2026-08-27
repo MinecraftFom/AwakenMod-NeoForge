@@ -1,7 +1,6 @@
 package com.fomdev.awaken.events;
 
 import com.fomdev.awaken.difficulty.DifficultyManager;
-import com.fomdev.awaken.entries.raw.AwakenLevel;
 import com.fomdev.awaken.entries.raw.AwakenRegistries;
 import com.fomdev.awaken.event.PlayerLevelUpgradeEvent;
 import com.fomdev.awaken.init.Awaken;
@@ -21,7 +20,6 @@ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerWakeUpEvent;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Random;
 
 @EventBusSubscriber(modid = Awaken.MODID)

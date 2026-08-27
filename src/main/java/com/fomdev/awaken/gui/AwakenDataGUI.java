@@ -1,7 +1,7 @@
 package com.fomdev.awaken.gui;
 
 import com.fomdev.awaken.difficulty.ClientDifficultyManager;
-import com.fomdev.awaken.entries.raw.AwakenLevel;
+import com.fomdev.awaken.entries.raw.level.AwakenLevel;
 import com.fomdev.awaken.entries.raw.AwakenRegistries;
 import com.fomdev.awaken.rank.RankHelper;
 import com.fomdev.awaken.util.LocaleUtil;

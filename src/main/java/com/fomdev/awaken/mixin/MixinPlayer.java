@@ -2,7 +2,7 @@ package com.fomdev.awaken.mixin;
 
 import com.fomdev.awaken.difficulty.DifficultyManager;
 import com.fomdev.awaken.enchant.EnchantManager;
-import com.fomdev.awaken.entries.raw.AwakenLevel;
+import com.fomdev.awaken.entries.raw.level.AwakenLevel;
 import com.fomdev.awaken.entries.raw.AwakenRegistries;
 import com.fomdev.awaken.register.data.AwakenDataComponents;
 import com.fomdev.awaken.util.ColorUtil;

@@ -54,7 +54,8 @@ public class AwakenInfix extends Registry
 
     public static class InfixInstance extends AwakenInfix implements Comparable<InfixInstance>
     {
-        private int level;
+        private final AwakenInfix infix;
+        private final int level;
 
         public InfixInstance(
                 AwakenInfix parent,
@@ -71,15 +72,16 @@ public class AwakenInfix extends Registry
                     )
             );
 
+            this.infix = parent;
             this.level = level;
             setLocation(parent.getLocation());
         }
 
-        public void setLevel(
+        public InfixInstance setLevel(
                 int newLevel
         )
         {
-            this.level = newLevel;
+            return new InfixInstance(infix, newLevel);
         }
 
         public int getLevel()
@@ -196,14 +198,14 @@ public class AwakenInfix extends Registry
                 int level
         )
         {
-            this.infix.setLevel(level);
+            this.infix = this.infix.setLevel(level);
         }
 
         public void upgrade(
                 int level
         )
         {
-            this.infix.setLevel(this.infix.getLevel() + level);
+            this.infix = this.infix.setLevel(this.infix.getLevel() + level);
         }
 
         public void upgrade(

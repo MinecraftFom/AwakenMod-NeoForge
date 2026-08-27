@@ -1,27 +1,32 @@
 package com.fomdev.awaken.entries.raw.affix;
 
+import com.fomdev.awaken.entries.raw.affix.suffix.NoneSuffix;
 import com.fomdev.flame.register.Registry;
-import net.minecraft.core.Holder;
-import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.IEventBus;
 
-public class AwakenSuffix extends Registry
+import java.util.List;
+
+public abstract class AwakenSuffix<T extends Event> extends Registry
 {
     private final int durability;
-    private final double factor;
-    private final Holder<Attribute> target;
+    private final List<EquipmentSlot> slot;
+    private final Component description;
 
     public AwakenSuffix(
             String id,
             int durability,
-            double factor,
-            Holder<Attribute> target
+            Component description,
+            List<EquipmentSlot> slot
     )
     {
         super(id);
 
+        this.description = description;
         this.durability = durability;
-        this.factor = factor;
-        this.target = target;
+        this.slot = slot;
     }
 
     public int addition()
@@ -29,40 +34,24 @@ public class AwakenSuffix extends Registry
         return this.durability;
     }
 
-    public double factor()
+    public List<EquipmentSlot> getSlot()
     {
-        return this.factor;
+        return this.slot;
     }
 
-    public Holder<Attribute> getTarget()
-    {
-        return this.target;
-    }
-
-    public boolean should(
-            Holder<Attribute> attribute
+    public void register(
+            IEventBus bus
     )
     {
-        return this.target == attribute;
+        bus.addListener(this::onEvent);
     }
 
-    public static class SuffixInstance extends AwakenSuffix
+    public abstract void onEvent(
+            T event
+    );
+
+    public boolean isEmpty()
     {
-        private final int level;
-
-        public SuffixInstance(
-                AwakenSuffix parent,
-                int level
-        )
-        {
-            super(parent.id(), parent.addition() * level, parent.factor() * Math.sqrt(level), parent.getTarget());
-            this.level = level;
-            setLocation(parent.getLocation());
-        }
-
-        public int getLevel()
-        {
-            return this.level;
-        }
+        return this.getLocation().equals(NoneSuffix.NONE.getLocation());
     }
 }

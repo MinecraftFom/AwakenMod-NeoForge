@@ -4,6 +4,7 @@ import com.fomdev.awaken.entries.raw.*;
 import com.fomdev.awaken.entries.raw.affix.AwakenInfix;
 import com.fomdev.awaken.entries.raw.affix.AwakenPrefix;
 import com.fomdev.awaken.entries.raw.affix.AwakenSuffix;
+import com.fomdev.awaken.entries.raw.level.AwakenLevel;
 import com.fomdev.awaken.entries.raw.spore.AwakenPollinate;
 import com.fomdev.awaken.entries.raw.spore.AwakenSpore;
 import net.minecraft.ChatFormatting;

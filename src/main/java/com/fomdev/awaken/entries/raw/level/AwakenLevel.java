@@ -1,4 +1,4 @@
-package com.fomdev.awaken.entries.raw;
+package com.fomdev.awaken.entries.raw.level;
 
 import com.fomdev.flame.register.Registry;
 

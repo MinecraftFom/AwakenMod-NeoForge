@@ -1,6 +1,6 @@
 package com.fomdev.awaken.event;
 
-import com.fomdev.awaken.entries.raw.AwakenLevel;
+import com.fomdev.awaken.entries.raw.level.AwakenLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.Event;
 

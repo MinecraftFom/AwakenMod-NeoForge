@@ -3,6 +3,7 @@ package com.fomdev.awaken.register.data;
 import com.fomdev.awaken.entries.raw.AwakenAspect;
 import com.fomdev.awaken.entries.raw.affix.AwakenInfix;
 import com.fomdev.awaken.entries.raw.affix.AwakenPrefix;
+import com.fomdev.awaken.entries.raw.affix.AwakenSuffix;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.util.Records;
 import com.fomdev.flame.annotation.AutoRegister;
@@ -54,7 +55,7 @@ public class AwakenDataComponents
                                                     .forGetter(Records.AwakenAffixComponent::prefix)
                                     )
                                     .and(
-                                            CompoundTag.CODEC
+                                            AwakenSuffix.SuffixContainer.CODEC
                                                     .fieldOf("suffix")
                                                     .forGetter(Records.AwakenAffixComponent::suffix)
                                     )
@@ -70,7 +71,7 @@ public class AwakenDataComponents
                     Records.AwakenAffixComponent::infix,
                     AwakenPrefix.PrefixInstance.STREAM_CODEC,
                     Records.AwakenAffixComponent::prefix,
-                    ByteBufCodecs.COMPOUND_TAG,
+                    AwakenSuffix.SuffixContainer.STREAM_CODEC,
                     Records.AwakenAffixComponent::suffix,
                     Records.AwakenAffixComponent::new
             );

@@ -2,6 +2,7 @@ package com.fomdev.awaken.util;
 
 import com.fomdev.awaken.entries.raw.affix.AwakenInfix;
 import com.fomdev.awaken.entries.raw.affix.AwakenPrefix;
+import com.fomdev.awaken.entries.raw.affix.AwakenSuffix;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.core.Holder;
@@ -32,7 +33,7 @@ public class Records
             (
                     AwakenInfix.InfixContainer infix,
                     AwakenPrefix.PrefixInstance prefix,
-                    CompoundTag suffix
+                    AwakenSuffix.SuffixContainer suffix
             )
     {}
 

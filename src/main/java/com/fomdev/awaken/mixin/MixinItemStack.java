@@ -76,19 +76,20 @@ public abstract class MixinItemStack implements DataComponentHolder
             return;
         }
 
-        AwakenQuality quality = NBTUtil.deserializeQuality(self);
-        AwakenInfix.InfixInstance infix = NBTUtil.deserializeInfix(self);
         AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializePrefix(self);
-        AwakenSuffix.SuffixInstance suffix = NBTUtil.deserializeSuffix(self);
         MutableComponent component = Component.empty();
 
-        if (infix != null && prefix != null && suffix != null)
-            component.append(LocaleUtil.localizePrefix(prefix)).append(" ").append(LocaleUtil.localizeInfix(infix)).append("-").append(cir.getReturnValue()).append(" (").append(LocaleUtil.localizeSuffix(suffix)).append(")");
+        if (prefix != null)
+        {
+            Component result = cir.getReturnValue();
+            component
+                    .append(LocaleUtil.localizePrefix(prefix))
+                    .append(" ")
+                    .append(result)
+                    .withStyle(result.getStyle());
+        }
         else
             component.append(cir.getReturnValue());
-
-        if (quality != null)
-            component.withStyle(ColorUtil.colorStyle(ColorUtil.render(quality.getColors(), quality.getPattern()).backEnd()));
 
         cir.setReturnValue(component);
     }

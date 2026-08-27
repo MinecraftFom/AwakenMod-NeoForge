@@ -15,6 +15,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.util.RandomSource;
@@ -262,8 +263,15 @@ public class EquipmentManager
     )
     {
         stack.set(AwakenDataComponents.AWAKEN_SLOT_STORAGE, slot);
-        stack.set(AtlasDataComponents.COLOR_COMPONENT, new ColorHolder(color));
 
+        Component component = stack.get(DataComponents.CUSTOM_NAME);
+        if (component == null)
+        {
+            Component component1 = stack.get(DataComponents.ITEM_NAME);
+            component = component1 != null? component1 : stack.getItem().getName(stack);
+        }
+
+        stack.set(DataComponents.ITEM_NAME, Component.empty().append(component).withColor(color.getRGB()));
         IronSpellCompat.forStackIfPresent(stack, random);
 
         BigDecimal d = diff.multiply(new BigDecimal(factor));

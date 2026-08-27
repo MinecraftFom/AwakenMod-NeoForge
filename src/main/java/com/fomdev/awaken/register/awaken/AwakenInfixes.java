@@ -1,6 +1,6 @@
 package com.fomdev.awaken.register.awaken;
 
-import com.fomdev.awaken.entries.raw.AwakenInfix;
+import com.fomdev.awaken.entries.raw.affix.AwakenInfix;
 import com.fomdev.awaken.entries.raw.AwakenRegistries;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.register.attribute.AwakenAttributes;

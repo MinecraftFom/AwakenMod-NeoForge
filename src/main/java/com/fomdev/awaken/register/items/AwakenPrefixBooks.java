@@ -1,8 +1,8 @@
 package com.fomdev.awaken.register.items;
 
-import com.fomdev.awaken.entries.raw.AwakenInfix;
-import com.fomdev.awaken.entries.raw.AwakenPrefix;
-import com.fomdev.awaken.entries.raw.AwakenSuffix;
+import com.fomdev.awaken.entries.raw.affix.AwakenInfix;
+import com.fomdev.awaken.entries.raw.affix.AwakenPrefix;
+import com.fomdev.awaken.entries.raw.affix.AwakenSuffix;
 import com.fomdev.awaken.particle.AwakenParticlePlayer;
 import com.fomdev.awaken.util.LocaleUtil;
 import com.fomdev.awaken.util.NBTUtil;

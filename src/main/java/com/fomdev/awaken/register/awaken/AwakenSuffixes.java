@@ -1,7 +1,7 @@
 package com.fomdev.awaken.register.awaken;
 
 import com.fomdev.awaken.entries.raw.AwakenRegistries;
-import com.fomdev.awaken.entries.raw.AwakenSuffix;
+import com.fomdev.awaken.entries.raw.affix.AwakenSuffix;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.register.attribute.AwakenAttributes;
 import com.fomdev.awaken.spawn.shuffle.ShuffledRegistries;

@@ -2,6 +2,9 @@ package com.fomdev.awaken.events;
 
 import com.fomdev.awaken.enchant.EnchantManager;
 import com.fomdev.awaken.entries.raw.*;
+import com.fomdev.awaken.entries.raw.affix.AwakenInfix;
+import com.fomdev.awaken.entries.raw.affix.AwakenPrefix;
+import com.fomdev.awaken.entries.raw.affix.AwakenSuffix;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.register.items.AwakenItems;
 import com.fomdev.awaken.util.NBTUtil;
@@ -47,7 +50,7 @@ public class TooltipRenderEvents
                 {
                     List<AwakenAspect.AspectInstance> aspect = EnchantManager.get(Objects.requireNonNull(enchantment.getKey().getKey()).location(), enchantment.getIntValue());
                     aspects.addAll(aspect);
-                    aspects = new ArrayList<>(NBTUtil.mergeAspects(aspects));
+                    aspects = new ArrayList<>(aspects);
                 }
 
                 list.add(1, Component.empty());
@@ -60,22 +63,22 @@ public class TooltipRenderEvents
             list.addAll(1, TooltipUtil.castSoulTooltip(NBTUtil.deserializeSoul(stack)));
 
         AwakenMoods mood = NBTUtil.deserializeMood(stack);
-        AwakenInfix.InfixInstance infix = NBTUtil.deserializeInfix(stack);
+        AwakenInfix.InfixContainer infix = NBTUtil.deserializeInfix(stack);
         AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializePrefix(stack);
         AwakenSuffix.SuffixInstance suffix = NBTUtil.deserializeSuffix(stack);
         AwakenQuality quality = NBTUtil.deserializeQuality(stack);
-        List<AwakenAspect.AspectInstance> aspects = NBTUtil.deserializeAspects(stack);
+        AwakenAspect.AspectContainer aspects = NBTUtil.deserializeAspects(stack);
 
-        if (aspects != null && !aspects.isEmpty() && !stack.is(AwakenItems.ASPECT_STONE))
+        if (aspects != null && !aspects.getAspects().isEmpty() && !stack.is(AwakenItems.ASPECT_STONE))
         {
-            list.addAll(1, TooltipUtil.castAspectTooltip(flag, aspects));
+            list.addAll(1, TooltipUtil.castAspectTooltip(flag, aspects.getAspects()));
             list.add(1, Component.empty());
         }
 
         if (infix != null && prefix != null && suffix != null)
         {
             list.addAll(1, TooltipUtil.castSuffixTooltip(flag, suffix));
-            list.addAll(1, TooltipUtil.castInfixTooltip(flag, infix, (float) ((quality != null? quality.getFactor(): 1) * (suffix.should(infix.getAttribute().attr())? suffix.factor(): 1))));
+            list.addAll(1, TooltipUtil.castInfixTooltip(flag, infix));
             list.addAll(1, TooltipUtil.castPrefixTooltip(flag, prefix));
             list.add(1, Component.empty());
         }

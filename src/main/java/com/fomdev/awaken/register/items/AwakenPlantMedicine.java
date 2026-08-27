@@ -1,6 +1,6 @@
 package com.fomdev.awaken.register.items;
 
-import com.fomdev.awaken.entries.raw.AwakenSpore;
+import com.fomdev.awaken.entries.raw.spore.AwakenSpore;
 import com.fomdev.awaken.util.NBTUtil;
 import com.fomdev.awaken.util.Records;
 import net.minecraft.resources.ResourceLocation;

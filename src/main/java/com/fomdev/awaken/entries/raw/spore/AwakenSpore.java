@@ -1,11 +1,11 @@
-package com.fomdev.awaken.entries.raw;
+package com.fomdev.awaken.entries.raw.spore;
 
+import com.fomdev.awaken.entries.raw.AwakenRegistries;
 import com.fomdev.flame.register.Registry;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.NotNull;

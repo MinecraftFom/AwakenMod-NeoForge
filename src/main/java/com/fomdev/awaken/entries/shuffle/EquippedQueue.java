@@ -78,4 +78,11 @@ public class EquippedQueue<T> extends FreezingRegistry<WeightedRegistry<T>>
 
         return current.entry;
     }
+
+    public int size(
+            EquipmentSlot slot
+    )
+    {
+        return !this.registry.containsKey(slot)? 0: this.registry.get(slot).size();
+    }
 }

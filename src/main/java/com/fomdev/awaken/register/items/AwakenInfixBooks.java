@@ -4,7 +4,6 @@ import com.fomdev.awaken.entries.raw.affix.AwakenInfix;
 import com.fomdev.awaken.entries.raw.affix.AwakenPrefix;
 import com.fomdev.awaken.entries.raw.affix.AwakenSuffix;
 import com.fomdev.awaken.particle.AwakenParticlePlayer;
-import com.fomdev.awaken.util.LocaleUtil;
 import com.fomdev.awaken.util.NBTUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
@@ -19,12 +18,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public class AwakenInfixBooks extends Item
 {
@@ -60,25 +56,16 @@ public class AwakenInfixBooks extends Item
         if (!(entity instanceof ServerPlayer player))
             return stack;
 
-        AwakenInfix.InfixInstance infix = NBTUtil.deserializeInfix(stack);
-
-        if (infix == null)
-            return stack;
-
+        AwakenInfix.InfixContainer infix = NBTUtil.deserializeInfix(stack);
+        AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializePrefix(stack);
+        AwakenSuffix.SuffixInstance suffix = NBTUtil.deserializeSuffix(stack);
         ItemStack target = entity.getMainHandItem();
-        AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializePrefix(target);
-        AwakenSuffix.SuffixInstance suffix = NBTUtil.deserializeSuffix(target);
-        if (prefix == null || suffix == null)
-        {
-            player.connection.send(new ClientboundSetActionBarTextPacket(Component.translatable("bar.invalid_item_stack.info").withStyle(ChatFormatting.RED)));
-            return stack;
-        }
 
         NBTUtil.serializeDescriber(target, infix, prefix, suffix);
         if (level instanceof ServerLevel serverLevel)
             serverLevel.players().forEach(p -> serverLevel.sendParticles(p, ParticleTypes.EXPLOSION, true, player.getX(), player.getY(), player.getZ(), 100, 1.0F, 1.0F, 1.0F, 0));
 
-        player.connection.send(new ClientboundSetActionBarTextPacket(Component.translatable("bar.set_infix.info", LocaleUtil.localizeInfix(infix)).withStyle(ChatFormatting.GREEN)));
+        player.connection.send(new ClientboundSetActionBarTextPacket(Component.translatable("bar.set_infix.info").withStyle(ChatFormatting.GREEN)));
         stack.copyAndClear();
         return ItemStack.EMPTY;
     }
@@ -117,20 +104,5 @@ public class AwakenInfixBooks extends Item
             return;
 
         player.playSound(SoundEvents.ENCHANTMENT_TABLE_USE);
-    }
-
-    @Override
-    public void appendHoverText(
-            @NotNull ItemStack stack,
-            @NotNull TooltipContext context,
-            @NotNull List<Component> lines,
-            @NotNull TooltipFlag flag
-    )
-    {
-        AwakenInfix.InfixInstance infix = NBTUtil.deserializeInfix(stack);
-        if (infix == null)
-            return;
-
-        lines.add(1, Component.translatable("tooltip.infix.info").append(": ").append(LocaleUtil.localizeInfix(infix)));
     }
 }

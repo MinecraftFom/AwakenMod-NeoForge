@@ -1,5 +1,10 @@
 package com.fomdev.awaken.entries.raw;
 
+import com.fomdev.awaken.entries.raw.affix.AwakenInfix;
+import com.fomdev.awaken.entries.raw.affix.AwakenPrefix;
+import com.fomdev.awaken.entries.raw.affix.AwakenSuffix;
+import com.fomdev.awaken.entries.raw.spore.AwakenPollinate;
+import com.fomdev.awaken.entries.raw.spore.AwakenSpore;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.level.AwakenLevelRegistry;
 import com.fomdev.flame.register.FreezingRegistry;

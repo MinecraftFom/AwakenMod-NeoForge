@@ -1,7 +1,7 @@
 package com.fomdev.awaken.rank;
 
 import com.fomdev.awaken.difficulty.DifficultyManager;
-import com.fomdev.awaken.entries.raw.AwakenPrefix;
+import com.fomdev.awaken.entries.raw.affix.AwakenPrefix;
 import com.fomdev.awaken.util.NBTUtil;
 import com.fomdev.awaken.util.Util;
 import net.minecraft.core.BlockPos;

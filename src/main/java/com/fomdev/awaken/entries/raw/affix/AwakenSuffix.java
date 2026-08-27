@@ -1,4 +1,4 @@
-package com.fomdev.awaken.entries.raw;
+package com.fomdev.awaken.entries.raw.affix;
 
 import com.fomdev.flame.register.Registry;
 import net.minecraft.core.Holder;

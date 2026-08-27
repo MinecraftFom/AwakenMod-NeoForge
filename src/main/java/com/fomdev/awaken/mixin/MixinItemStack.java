@@ -1,7 +1,7 @@
 package com.fomdev.awaken.mixin;
 
 import com.fomdev.awaken.difficulty.ClientDifficultyManager;
-import com.fomdev.awaken.entries.raw.*;
+import com.fomdev.awaken.entries.raw.affix.AwakenPrefix;
 import com.fomdev.awaken.register.data.AwakenDataComponents;
 import com.fomdev.awaken.register.items.AwakenItems;
 import com.fomdev.awaken.util.*;
@@ -101,14 +101,14 @@ public abstract class MixinItemStack implements DataComponentHolder
     {
         DataComponentMap original = cir.getReturnValue();
         ItemStack self = (ItemStack) (Object) this;
-        if (!AwakenDataComponents.AWAKEN_DESCRIBER_STORAGE.isBound() || !original.has(AwakenDataComponents.AWAKEN_DESCRIBER_STORAGE.get()))
+        if (!AwakenDataComponents.AWAKEN_AFFIX_STORAGE.isBound() || !original.has(AwakenDataComponents.AWAKEN_AFFIX_STORAGE.get()))
             return;
 
-        Records.AwakenDescriberComponent desc = original.get(AwakenDataComponents.AWAKEN_DESCRIBER_STORAGE.get());
+        Records.AwakenAffixComponent desc = original.get(AwakenDataComponents.AWAKEN_AFFIX_STORAGE.get());
         AwakenPrefix prefix;
 
         assert desc != null;
-        if (desc.prefix() == null || (prefix = NBTUtil.deserializePrefix(desc.prefix())) == null)
+        if (desc.prefix() == null || (prefix = desc.prefix()) == null)
             return;
 
         ItemEnchantments ie = original.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);

@@ -1,9 +1,16 @@
 package com.fomdev.awaken.util;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 
 public class Constants
 {
+    public static final ResourceLocation NULL =
+            ResourceLocation.fromNamespaceAndPath(
+                    "null",
+                    "null"
+            );
+
     public static final EquipmentSlot[] HAND_SLOTS = new EquipmentSlot[]{
             EquipmentSlot.MAINHAND,
             EquipmentSlot.OFFHAND
@@ -230,25 +237,17 @@ public class Constants
     };
 
     public static final int attributeFactor = 255;
-    public static final int enchantmentMax = 255;
-
-    public static final double epochChance = 100.0;
-    public static final String maxHealth = "10000.0";
-
-    public static final int maxAcceptableEnchant = Integer.MAX_VALUE;
-    public static final int maxEnchant = 50;
-    public static final int xpLevel = 200;
-
     public static final int carrierGenerateDiff = 10000;
-
-    public static final double maxDurabilityFactor = 1000.0;
-
+    public static final int defaultGeneratingLevel = 20;
     public static final double defaultRequiredSoul = 10.0;
     public static final double defaultSoulFactor = 1.5;
-
-    public static final int defaultGeneratingLevel = 20;
-
+    public static final int enchantmentMax = 255;
+    public static final double epochChance = 100.0;
+    public static final int maxAcceptableEnchant = Integer.MAX_VALUE;
+    public static final double maxDurabilityFactor = 1000.0;
+    public static final int maxEnchant = 50;
+    public static final String maxHealth = "10000.0";
     public static final int maxMobs = 10000;
-
     public static final int maxRaidLevel = 255;
+    public static final int xpLevel = 200;
 }

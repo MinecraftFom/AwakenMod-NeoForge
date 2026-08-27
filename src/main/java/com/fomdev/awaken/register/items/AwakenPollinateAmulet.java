@@ -1,6 +1,6 @@
 package com.fomdev.awaken.register.items;
 
-import com.fomdev.awaken.entries.raw.AwakenPollinate;
+import com.fomdev.awaken.entries.raw.spore.AwakenPollinate;
 import com.fomdev.awaken.util.NBTUtil;
 import com.fomdev.awaken.util.TooltipUtil;
 import net.minecraft.network.chat.Component;

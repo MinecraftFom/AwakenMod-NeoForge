@@ -61,24 +61,18 @@ public class AwakenPrefixBooks extends Item
             return stack;
 
         AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializePrefix(stack);
-
         if (prefix == null)
             return stack;
 
         ItemStack target = entity.getMainHandItem();
-        AwakenInfix.InfixInstance infix = NBTUtil.deserializeInfix(target);
+        AwakenInfix.InfixContainer infix = NBTUtil.deserializeInfix(target);
         AwakenSuffix.SuffixInstance suffix = NBTUtil.deserializeSuffix(target);
-        if (infix == null || suffix == null)
-        {
-            player.connection.send(new ClientboundSetActionBarTextPacket(Component.translatable("bar.invalid_item_stack.info").withStyle(ChatFormatting.RED)));
-            return stack;
-        }
 
         NBTUtil.serializeDescriber(target, infix, prefix, suffix);
         if (level instanceof ServerLevel serverLevel)
             serverLevel.players().forEach(p -> serverLevel.sendParticles(p, ParticleTypes.EXPLOSION, true, player.getX(), player.getY(), player.getZ(), 100, 1.0F, 1.0F, 1.0F, 0));
 
-        player.connection.send(new ClientboundSetActionBarTextPacket(Component.translatable("bar.set_prefix.info", LocaleUtil.localizePrefix(prefix)).withStyle(ChatFormatting.GREEN)));
+        player.connection.send(new ClientboundSetActionBarTextPacket(Component.translatable("bar.set_prefix.info").withStyle(ChatFormatting.GREEN)));
         stack.copyAndClear();
         return ItemStack.EMPTY;
     }
@@ -117,20 +111,5 @@ public class AwakenPrefixBooks extends Item
             return;
 
         player.playSound(SoundEvents.ENCHANTMENT_TABLE_USE);
-    }
-
-    @Override
-    public void appendHoverText(
-            @NotNull ItemStack stack,
-            @NotNull TooltipContext context,
-            @NotNull List<Component> lines,
-            @NotNull TooltipFlag flag
-    )
-    {
-        AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializePrefix(stack);
-        if (prefix == null)
-            return;
-
-        lines.add(1, Component.translatable("tooltip.prefix.info").append(": ").append(LocaleUtil.localizePrefix(prefix)));
     }
 }

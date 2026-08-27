@@ -47,7 +47,7 @@ public class MixinEnchantmentHelper
                         {
                             if (
                                 !EnchantManager.meetsRequirements(
-                                        NBTUtil.deserializeAspects(stack),
+                                        NBTUtil.deserializeAspects(stack).getAspects(),
                                         EnchantManager.get(Objects.requireNonNull(enchant.getKey()).location(), i)
                                 )
                             )

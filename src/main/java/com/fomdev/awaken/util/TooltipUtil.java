@@ -1,6 +1,11 @@
 package com.fomdev.awaken.util;
 
 import com.fomdev.awaken.entries.raw.*;
+import com.fomdev.awaken.entries.raw.affix.AwakenInfix;
+import com.fomdev.awaken.entries.raw.affix.AwakenPrefix;
+import com.fomdev.awaken.entries.raw.affix.AwakenSuffix;
+import com.fomdev.awaken.entries.raw.spore.AwakenPollinate;
+import com.fomdev.awaken.entries.raw.spore.AwakenSpore;
 import com.fomdev.flame.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -41,7 +46,7 @@ public class TooltipUtil
                         Component
                                 .empty()
                                 .append(
-                                        LocaleUtil.localizeAspect(instance.aspect())
+                                        LocaleUtil.localizeAspect(instance)
                                 )
                                 .append(
                                         ": "
@@ -132,84 +137,11 @@ public class TooltipUtil
 
     public static List<Component> castInfixTooltip(
             TooltipFlag flag,
-            AwakenInfix.InfixInstance infix,
-            float factor
+            AwakenInfix.InfixContainer infix
     )
     {
-        List<Component> components = new ArrayList<>();
-        components
-                .add(
-                        Component
-                                .empty()
-                                .append(
-                                        Component
-                                                .translatable(
-                                                        "tooltip.infix.info"
-                                                )
-                                )
-                                .append(
-                                        ": "
-                                )
-                                .append(
-                                        LocaleUtil.localizeInfix(infix)
-                                )
-                                .withStyle(ChatFormatting.GRAY)
-                );
-
-        if (flag.hasShiftDown())
-        {
-            components
-                    .add(
-                            Component
-                                    .empty()
-                                    .append(
-                                            Component
-                                                    .translatable(
-                                                            "tooltip.infix.attribute.info"
-                                                    )
-                                    )
-                                    .append(
-                                            ": "
-                                    )
-                                    .append(
-                                            Component
-                                                    .translatable(
-                                                            infix.getAttribute().attr().value().getDescriptionId()
-                                                    )
-                                    )
-                                    .withStyle(ChatFormatting.GRAY)
-                    );
-            components
-                    .add(
-                            Component
-                                    .empty()
-                                    .append(
-                                            LocaleUtil.localizeOperation(
-                                                    infix.getAttribute().operation()
-                                            )
-                                    )
-                                    .append(
-                                            factor <= 0
-                                                    ? "" + infix.getAttribute().amount()
-                                                    : infix.getAttribute().amount() * factor + " [" + infix.getAttribute().amount() + " * " + factor + "]"
-                                    )
-                                    .withStyle(ChatFormatting.GRAY)
-                    );
-            components
-                    .addAll(
-                            LocaleUtil.localizeSlots(infix.getAttribute().slot())
-                    );
-        } else
-            components
-                    .add(
-                            Component
-                                    .translatable(
-                                            "tooltip.hold_shift.info"
-                                    )
-                                    .withStyle(ChatFormatting.GRAY)
-                    );
-
-        return components;
+        // TODO: complete this
+        return List.of();
     }
 
     public static List<Component> castMoodTooltip(

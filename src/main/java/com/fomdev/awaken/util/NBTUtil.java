@@ -1,23 +1,23 @@
 package com.fomdev.awaken.util;
 
 import com.fomdev.awaken.entries.raw.*;
+import com.fomdev.awaken.entries.raw.affix.AwakenInfix;
+import com.fomdev.awaken.entries.raw.affix.AwakenPrefix;
+import com.fomdev.awaken.entries.raw.affix.AwakenSuffix;
+import com.fomdev.awaken.entries.raw.spore.AwakenPollinate;
+import com.fomdev.awaken.entries.raw.spore.AwakenSpore;
 import com.fomdev.awaken.init.config.AwakenCommon;
 import com.fomdev.awaken.register.data.AwakenAttachmentTypes;
 import com.fomdev.awaken.register.data.AwakenDataComponents;
-import com.google.common.collect.ImmutableList;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
 import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
@@ -31,9 +31,9 @@ public class NBTUtil
             AwakenAspect.AspectInstance instance
     )
     {
-        List<AwakenAspect.AspectInstance> insts = deserializeAspects(stack);
-        insts.add(instance);
-        serializeAspects(stack, insts);
+        AwakenAspect.AspectContainer container = deserializeAspects(stack);
+        container.merge(instance);
+        serializeAspects(stack, container);
     }
 
     public static void addAwakenLevel(
@@ -64,60 +64,16 @@ public class NBTUtil
         NBTUtil.serializeSpores(entity, spores);
     }
 
-    public static void clearPlayer(
+    public static AwakenAspect.AspectContainer deserializeAspects(
             ItemStack stack
     )
     {
-        stack.set(AwakenDataComponents.AWAKEN_OWNER, "");
-    }
+        AwakenAspect.AspectContainer container = new AwakenAspect.AspectContainer();
+        if (stack.is(Items.AIR) || !stack.has(AwakenDataComponents.AWAKEN_ASPECT_STORAGE))
+            return container;
 
-    public static List<AwakenAspect.AspectInstance> deserializeAspects(
-            ItemStack stack
-    )
-    {
-        if (stack.is(Items.AIR))
-            return List.of();
-
-        List<AwakenAspect.AspectInstance> instances = new ArrayList<>();
-        List<CompoundTag> component = stack.get(AwakenDataComponents.AWAKEN_ASPECT_STORAGE.get());
-        if (component == null)
-            return instances;
-
-        for (CompoundTag tag: component)
-        {
-            if (!tag.contains("id") || !tag.contains("level"))
-                continue;
-
-            AwakenAspect aspect = AwakenRegistries.AWAKEN_ASPECT.getRegistry(ResourceLocation.parse(tag.getString("id")));
-            int level = tag.getInt("level");
-
-            if (aspect == null)
-                continue;
-
-            instances.add(new AwakenAspect.AspectInstance(aspect, level));
-        }
-
-        return mergeAspects(instances);
-    }
-
-    public static ItemEnchantments deserializeEnchantments(
-            ItemStack stack,
-            ItemEnchantments original
-    )
-    {
-        AwakenPrefix prefix = NBTUtil.deserializePrefix(stack);
-        if (prefix == null)
-            return original;
-
-        ImmutableList<Records.EnchantmentHolder> enchs = prefix.getBaseEnchantments();
-        ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(original);
-        enchs
-                .stream()
-                .map(Records.EnchantmentHolder::toInstance)
-                .filter(Objects::nonNull)
-                .forEach(ench -> mutable.set(ench.enchantment, ench.level));
-
-        return mutable.toImmutable();
+        container = stack.get(AwakenDataComponents.AWAKEN_ASPECT_STORAGE);
+        return container;
     }
 
     public static Records.AwakenEpochComponent deserializeEpoch(
@@ -167,37 +123,15 @@ public class NBTUtil
         return data.level();
     }
 
-    public static AwakenInfix.InfixInstance deserializeInfix(
+    public static AwakenInfix.InfixContainer deserializeInfix(
             ItemStack stack
     )
     {
-        Records.AwakenDescriberComponent desc = deserializeDescriber(stack);
-        if (desc == null)
-            return null;
+        AwakenInfix.InfixContainer container;
+        if (!stack.has(AwakenDataComponents.AWAKEN_AFFIX_STORAGE) || (container = Objects.requireNonNull(deserializeAffix(stack)).infix()) == null)
+            return new AwakenInfix.InfixContainer(0);
 
-        if (desc.infix() == null)
-            return null;
-
-        String id = desc.infix().getString("id");
-        int lvl = desc.infix().getInt("level");
-        ResourceLocation path = ResourceLocation.parse(id);
-        AwakenInfix infix = AwakenRegistries.AWAKEN_INFIX.getRegistry(path);
-        if (infix == null)
-            return null;
-
-        return new AwakenInfix.InfixInstance(infix, lvl);
-    }
-
-    public static ServerPlayer deserializePlayer(
-            ItemStack stack
-    )
-    {
-        String id = stack.get(AwakenDataComponents.AWAKEN_OWNER);
-        IntegratedServer server = Minecraft.getInstance().getSingleplayerServer();
-        if (server == null || id == null || id.isBlank())
-            return null;
-
-        return server.getPlayerList().getPlayer(UUID.fromString(id));
+        return container;
     }
 
     public static List<AwakenPollinate.PollinateInstance> deserializePollinates(
@@ -237,30 +171,12 @@ public class NBTUtil
             ItemStack stack
     )
     {
-        Records.AwakenDescriberComponent desc = deserializeDescriber(stack);
-        if (desc == null)
+        AwakenPrefix.PrefixInstance instance;
+        if (!stack.has(AwakenDataComponents.AWAKEN_AFFIX_STORAGE) || (instance = Objects.requireNonNull(deserializeAffix(stack)).prefix()) == null)
             return null;
 
-        if (desc.prefix() == null)
-            return null;
-
-        return deserializePrefix(desc.prefix());
+        return instance;
     }
-
-    public static AwakenPrefix.PrefixInstance deserializePrefix(
-            CompoundTag tag
-    )
-    {
-        String id = tag.getString("id");
-        int lvl = tag.getInt("level");
-        ResourceLocation path = ResourceLocation.parse(id);
-        AwakenPrefix prefix = AwakenRegistries.AWAKEN_PREFIX.getRegistry(path);
-        if (prefix == null)
-            return null;
-
-        return new AwakenPrefix.PrefixInstance(prefix, lvl);
-    }
-
 
     public static Records.AwakenSoulComponent deserializeSoul(
             ItemStack stack
@@ -276,7 +192,7 @@ public class NBTUtil
             ItemStack stack
     )
     {
-        Records.AwakenDescriberComponent desc = deserializeDescriber(stack);
+        Records.AwakenAffixComponent desc = deserializeAffix(stack);
         if (desc == null)
             return null;
 
@@ -348,22 +264,6 @@ public class NBTUtil
         return mergeSpores(spores);
     }
 
-    public static List<AwakenAspect.AspectInstance> mergeAspects(
-            List<AwakenAspect.AspectInstance> aspects
-    )
-    {
-        Object2IntOpenHashMap<AwakenAspect> merged = new Object2IntOpenHashMap<>();
-        List<AwakenAspect.AspectInstance> insts = new ArrayList<>();
-
-        for (AwakenAspect.AspectInstance inst: aspects)
-            merged.addTo(inst.aspect(), inst.amount());
-
-        for (Object2IntMap.Entry<AwakenAspect> entry: merged.object2IntEntrySet())
-            insts.add(new AwakenAspect.AspectInstance(entry.getKey(), entry.getIntValue()));
-
-        return List.copyOf(insts);
-    }
-
     public static List<AwakenSpore.SporeInstance> mergeSpores(
             List<AwakenSpore.SporeInstance> spores
     )
@@ -393,47 +293,23 @@ public class NBTUtil
 
     public static void serializeAspects(
             ItemStack stack,
-            List<AwakenAspect.AspectInstance> instances
+            AwakenAspect.AspectContainer instances
     )
     {
-        if (stack.is(Items.AIR))
+        if (stack.isEmpty())
             return;
 
-        List<AwakenAspect.AspectInstance> merged = mergeAspects(instances);
-        List<CompoundTag> tags = new ArrayList<>();
-        for (AwakenAspect.AspectInstance aspect: merged)
-        {
-            CompoundTag tag = new CompoundTag();
-            tag.putString("id", aspect.aspect().getLocation().toString());
-            tag.putInt("level", Math.abs(aspect.amount()));
-            tags.add(tag);
-        }
-
-        stack.set(AwakenDataComponents.AWAKEN_ASPECT_STORAGE, tags);
+        stack.set(AwakenDataComponents.AWAKEN_ASPECT_STORAGE, instances);
     }
 
     public static void serializeDescriber(
             ItemStack stack,
-            @Nullable AwakenInfix.InfixInstance infix,
+            @Nullable AwakenInfix.InfixContainer infix,
             @Nullable AwakenPrefix.PrefixInstance prefix,
             @Nullable AwakenSuffix.SuffixInstance suffix
     )
     {
-        CompoundTag infixTag = new CompoundTag();
-        CompoundTag prefixTag = new CompoundTag();
         CompoundTag suffixTag = new CompoundTag();
-
-        if (infix != null)
-        {
-            infixTag.putString("id", infix.getLocation().toString());
-            infixTag.putInt("level", Math.abs(infix.getLevel()));
-        }
-
-        if (prefix != null)
-        {
-            prefixTag.putString("id", prefix.getLocation().toString());
-            prefixTag.putInt("level", Math.abs(prefix.getLevel()));
-        }
 
         if (suffix != null)
         {
@@ -441,13 +317,13 @@ public class NBTUtil
             suffixTag.putInt("level", Math.abs(suffix.getLevel()));
         }
 
-        Records.AwakenDescriberComponent component = new Records.AwakenDescriberComponent(
-                infixTag,
-                prefixTag,
+        Records.AwakenAffixComponent component = new Records.AwakenAffixComponent(
+                infix,
+                prefix,
                 suffixTag
         );
 
-        stack.set(AwakenDataComponents.AWAKEN_DESCRIBER_STORAGE, component);
+        stack.set(AwakenDataComponents.AWAKEN_AFFIX_STORAGE, component);
     }
 
     public static void serializeEpoch(
@@ -480,14 +356,6 @@ public class NBTUtil
     )
     {
         stack.set(AwakenDataComponents.AWAKEN_MOOD_STORAGE, mood.getLocation());
-    }
-
-    public static void serializePlayer(
-            ItemStack stack,
-            ServerPlayer player
-    )
-    {
-        stack.set(AwakenDataComponents.AWAKEN_OWNER, player.getUUID().toString());
     }
 
     public static void serializeQuality(
@@ -528,16 +396,6 @@ public class NBTUtil
         entity.setData(AwakenAttachmentTypes.SPORE_ATTACHMENT, List.copyOf(tags));
     }
 
-    public static void setDurability(
-            ItemStack stack,
-            int target
-    )
-    {
-        int max = stack.getMaxDamage();
-        int toSet = Math.max(max, target);
-        stack.set(DataComponents.DAMAGE, toSet);
-    }
-
     public static void setMaxDurability(
             ItemStack stack,
             int target
@@ -546,13 +404,13 @@ public class NBTUtil
         stack.set(DataComponents.MAX_DAMAGE, target);
     }
 
-    private static Records.AwakenDescriberComponent deserializeDescriber(
+    private static Records.AwakenAffixComponent deserializeAffix(
             ItemStack stack
     )
     {
         if (stack.is(Items.AIR))
             return null;
 
-        return stack.get(AwakenDataComponents.AWAKEN_DESCRIBER_STORAGE);
+        return stack.get(AwakenDataComponents.AWAKEN_AFFIX_STORAGE);
     }
 }

@@ -1,7 +1,7 @@
 package com.fomdev.awaken.mixin;
 
 import com.fomdev.awaken.difficulty.DifficultyManager;
-import com.fomdev.awaken.entries.raw.AwakenSpore;
+import com.fomdev.awaken.entries.raw.spore.AwakenSpore;
 import com.fomdev.awaken.register.data.AwakenDataComponents;
 import com.fomdev.awaken.util.HealthUtil;
 import com.fomdev.awaken.util.NBTUtil;

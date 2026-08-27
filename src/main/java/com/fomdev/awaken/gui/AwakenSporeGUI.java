@@ -1,6 +1,6 @@
 package com.fomdev.awaken.gui;
 
-import com.fomdev.awaken.entries.raw.AwakenSpore;
+import com.fomdev.awaken.entries.raw.spore.AwakenSpore;
 import com.fomdev.awaken.util.LocaleUtil;
 import com.fomdev.awaken.util.NBTUtil;
 import net.minecraft.client.DeltaTracker;

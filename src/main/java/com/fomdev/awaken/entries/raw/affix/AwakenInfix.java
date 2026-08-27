@@ -20,7 +20,7 @@ public class AwakenInfix extends Registry
     // WARNING: NO REGISTERING !!!!!!!!!!
     // If registration present -> crash game while used
     public static final AwakenInfix NONE =
-            new AwakenInfix("NULL", null);
+            new AwakenInfix("NULL", new Records.AttributeHolder(null, 0.0F, null));
 
     private final Records.AttributeHolder attribute;
 
@@ -230,11 +230,8 @@ public class AwakenInfix extends Registry
                 );
     }
 
-    public static class InfixContainer
+    public record InfixContainer(IndexMap<InfixSlot> slots, List<Integer> empty)
     {
-        private final IndexMap<InfixSlot> slots;
-        private final List<Integer> empty;
-
         public InfixContainer(
                 IndexMap<InfixSlot> slots,
                 List<Integer> empty
@@ -263,8 +260,8 @@ public class AwakenInfix extends Registry
         }
 
         public boolean set(
-                int slotId,
-                InfixInstance infix
+                    int slotId,
+                    InfixInstance infix
         )
         {
             if (!empty.contains(slotId) || !slots.containsKey(slotId))
@@ -274,11 +271,11 @@ public class AwakenInfix extends Registry
             return true;
         }
 
-        public boolean mergeIfPossible(
+        public boolean merge(
                 InfixInstance infix
         )
         {
-            for (Map.Entry<Integer, InfixSlot> entry: this.slots.entrySet())
+            for (Map.Entry<Integer, InfixSlot> entry : this.slots.entrySet())
             {
                 Integer slotId = entry.getKey();
                 InfixSlot slot = entry.getValue();
@@ -294,16 +291,6 @@ public class AwakenInfix extends Registry
             return add(infix);
         }
 
-        public IndexMap<InfixSlot> getSlots()
-        {
-            return this.slots;
-        }
-
-        public List<Integer> getEmpty()
-        {
-            return this.empty;
-        }
-
         public static final Codec<IndexMap<InfixSlot>> MAP_CODEC =
                 IndexMap.createCodec(InfixSlot.CODEC);
 
@@ -317,12 +304,12 @@ public class AwakenInfix extends Registry
                                         .group(
                                                 MAP_CODEC
                                                         .fieldOf("infixes")
-                                                        .forGetter(InfixContainer::getSlots)
+                                                        .forGetter(InfixContainer::slots)
                                         )
                                         .and(
                                                 Codec.INT.listOf()
                                                         .fieldOf("empties")
-                                                        .forGetter(InfixContainer::getEmpty)
+                                                        .forGetter(InfixContainer::empty)
                                         )
                                         .apply(
                                                 inst,
@@ -333,9 +320,9 @@ public class AwakenInfix extends Registry
         public static final StreamCodec<ByteBuf, InfixContainer> STREAM_CODEC =
                 StreamCodec.composite(
                         MAP_STREAM_CODEC,
-                        InfixContainer::getSlots,
+                        InfixContainer::slots,
                         ByteBufCodecs.INT.apply(ByteBufCodecs.list()),
-                        InfixContainer::getEmpty,
+                        InfixContainer::empty,
                         InfixContainer::new
                 );
     }

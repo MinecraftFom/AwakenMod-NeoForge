@@ -77,10 +77,7 @@ public class KnowledgeHelper
                 player.getRandom()
         );
 
-        NBTUtil.setDurability(
-                stack,
-                durability
-        );
+        stack.setDamageValue(durability);
 
         NBTUtil.setMaxDurability(
                 stack,

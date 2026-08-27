@@ -1,5 +1,6 @@
-package com.fomdev.awaken.entries.raw;
+package com.fomdev.awaken.entries.raw.spore;
 
+import com.fomdev.awaken.entries.raw.AwakenRegistries;
 import com.fomdev.flame.register.Registry;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;

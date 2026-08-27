@@ -1,6 +1,6 @@
 package com.fomdev.awaken.events;
 
-import com.fomdev.awaken.entries.raw.AwakenSpore;
+import com.fomdev.awaken.entries.raw.spore.AwakenSpore;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.register.data.AwakenAttachmentTypes;
 import com.fomdev.awaken.util.HealthUtil;

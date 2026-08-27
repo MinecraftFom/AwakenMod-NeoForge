@@ -1,15 +1,11 @@
 package com.fomdev.awaken.events;
 
-import com.fomdev.awaken.entries.raw.AwakenPollinate;
+import com.fomdev.awaken.entries.raw.spore.AwakenPollinate;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.util.NBTUtil;
-import com.fomdev.awaken.util.Util;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.EquipmentUser;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.ArmorHurtEvent;
@@ -18,8 +14,6 @@ import net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
-
-import java.util.List;
 
 @EventBusSubscriber(modid = Awaken.MODID)
 public class PollinateEffectEvents

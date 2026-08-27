@@ -1,5 +1,7 @@
 package com.fomdev.awaken.util;
 
+import com.fomdev.awaken.entries.raw.affix.AwakenInfix;
+import com.fomdev.awaken.entries.raw.affix.AwakenPrefix;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.core.Holder;
@@ -26,10 +28,10 @@ public class Records
             )
     {}
 
-    public record AwakenDescriberComponent
+    public record AwakenAffixComponent
             (
-                    CompoundTag infix,
-                    CompoundTag prefix,
+                    AwakenInfix.InfixContainer infix,
+                    AwakenPrefix.PrefixInstance prefix,
                     CompoundTag suffix
             )
     {}

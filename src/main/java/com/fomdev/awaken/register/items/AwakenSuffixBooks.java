@@ -1,8 +1,8 @@
 package com.fomdev.awaken.register.items;
 
-import com.fomdev.awaken.entries.raw.AwakenInfix;
-import com.fomdev.awaken.entries.raw.AwakenPrefix;
-import com.fomdev.awaken.entries.raw.AwakenSuffix;
+import com.fomdev.awaken.entries.raw.affix.AwakenInfix;
+import com.fomdev.awaken.entries.raw.affix.AwakenPrefix;
+import com.fomdev.awaken.entries.raw.affix.AwakenSuffix;
 import com.fomdev.awaken.particle.AwakenParticlePlayer;
 import com.fomdev.awaken.util.LocaleUtil;
 import com.fomdev.awaken.util.NBTUtil;
@@ -66,19 +66,14 @@ public class AwakenSuffixBooks extends Item
             return stack;
 
         ItemStack target = entity.getMainHandItem();
-        AwakenInfix.InfixInstance infix = NBTUtil.deserializeInfix(target);
+        AwakenInfix.InfixContainer infix = NBTUtil.deserializeInfix(target);
         AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializePrefix(target);
-        if (infix == null || prefix == null)
-        {
-            player.connection.send(new ClientboundSetActionBarTextPacket(Component.translatable("bar.invalid_item_stack.info").withStyle(ChatFormatting.RED)));
-            return stack;
-        }
 
         NBTUtil.serializeDescriber(target, infix, prefix, suffix);
         if (level instanceof ServerLevel serverLevel)
             serverLevel.players().forEach(p -> serverLevel.sendParticles(p, ParticleTypes.EXPLOSION, true, player.getX(), player.getY(), player.getZ(), 100, 1.0F, 1.0F, 1.0F, 0));
 
-        player.connection.send(new ClientboundSetActionBarTextPacket(Component.translatable("bar.set_suffix.info", LocaleUtil.localizeSuffix(suffix)).withStyle(ChatFormatting.GREEN)));
+        player.connection.send(new ClientboundSetActionBarTextPacket(Component.translatable("bar.set_suffix.info").withStyle(ChatFormatting.GREEN)));
         stack.copyAndClear();
         return ItemStack.EMPTY;
     }
@@ -117,20 +112,5 @@ public class AwakenSuffixBooks extends Item
             return;
 
         player.playSound(SoundEvents.ENCHANTMENT_TABLE_USE);
-    }
-
-    @Override
-    public void appendHoverText(
-            @NotNull ItemStack stack,
-            @NotNull TooltipContext context,
-            @NotNull List<Component> lines,
-            @NotNull TooltipFlag flag
-    )
-    {
-        AwakenSuffix.SuffixInstance suffix = NBTUtil.deserializeSuffix(stack);
-        if (suffix == null)
-            return;
-
-        lines.add(1, Component.translatable("tooltip.suffix.info").append(": ").append(LocaleUtil.localizeSuffix(suffix)));
     }
 }

@@ -1,7 +1,7 @@
 package com.fomdev.awaken.register.awaken;
 
 import com.fomdev.awaken.entries.raw.AwakenRegistries;
-import com.fomdev.awaken.entries.raw.AwakenSpore;
+import com.fomdev.awaken.entries.raw.spore.AwakenSpore;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.register.attribute.AwakenAttributes;
 import com.fomdev.flame.annotation.AutoProxy;

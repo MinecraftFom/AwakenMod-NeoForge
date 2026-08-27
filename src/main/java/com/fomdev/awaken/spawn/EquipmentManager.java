@@ -1,10 +1,11 @@
 package com.fomdev.awaken.spawn;
 
-import com.fomdev.atlas.color.ColorHolder;
-import com.fomdev.atlas.register.data.AtlasDataComponents;
 import com.fomdev.awaken.compat.IronSpellCompat;
 import com.fomdev.awaken.enchant.EnchantManager;
 import com.fomdev.awaken.entries.raw.*;
+import com.fomdev.awaken.entries.raw.affix.AwakenInfix;
+import com.fomdev.awaken.entries.raw.affix.AwakenPrefix;
+import com.fomdev.awaken.entries.raw.affix.AwakenSuffix;
 import com.fomdev.awaken.init.config.AwakenCommon;
 import com.fomdev.awaken.register.data.AwakenDataComponents;
 import com.fomdev.awaken.spawn.shuffle.ShuffledRegistries;
@@ -111,6 +112,72 @@ public class EquipmentManager
     public static boolean shouldShuffleEpoch()
     {
         return random.nextDouble(100) < AwakenCommon.CONFIG.EPOCH_RARITY.get();
+    }
+
+    public static int shuffleAffixCount(
+            int max,
+            float factor,
+            RandomSource random
+    )
+    {
+        return (int) Math.min(max * (random.nextInt(max) / (float) max) * factor, max);
+    }
+
+    public static int shuffleAffixLevel(
+            float factor,
+            RandomSource random
+    )
+    {
+        float factor1 = (float) Math.pow(AwakenCommon.CONFIG.GENERATABLE_MAX.get(), 1.0 / 4.0);
+        float factor2 = factor1 * (float) Math.pow(factor, 1.0 / 5.0);
+        int result1 = (int) factor2;
+        int result2 = Math.max(result1, 1);
+        return random.nextInt(result2) + 1;
+    }
+
+    public static int shuffleAffixMaxCount(
+            int count,
+            int max,
+            float factor,
+            RandomSource random
+    )
+    {
+        int maxCount = (int) (count * factor);
+        maxCount = random.nextInt(maxCount);
+        return Math.clamp(maxCount, count, max);
+    }
+
+    public static AwakenInfix.InfixContainer shuffleAffix$Infix(
+            float diff,
+            float factor,
+            EquipmentSlot slot,
+            RandomSource random
+    )
+    {
+        int max = ShuffledRegistries.WEIGHTED_AWAKEN_INFIX.size(slot);
+        int count = shuffleAffixCount(max, factor, random);
+        int maxCount = shuffleAffixMaxCount(count, max, factor, random);
+        AwakenInfix.InfixContainer container = new AwakenInfix.InfixContainer(maxCount);
+
+        for (int i = 0; i < count; i++)
+        {
+            AwakenInfix infix = ShuffledRegistries.WEIGHTED_AWAKEN_INFIX.calculate(slot, diff, random);
+            int level = shuffleAffixLevel(factor, random);
+            container.merge(new AwakenInfix.InfixInstance(infix, level));
+        }
+
+        return container;
+    }
+
+    public static AwakenPrefix.PrefixInstance shuffleAffix$Prefix(
+            float diff,
+            float factor,
+            RandomSource random
+    )
+    {
+        AwakenPrefix prefix = ShuffledRegistries.WEIGHTED_AWAKEN_PREFIX.calculate(diff, random);
+        int level = shuffleAffixLevel(factor, random);
+        return new AwakenPrefix.PrefixInstance(prefix, level);
     }
 
     public static int shuffleEffectCount(
@@ -297,27 +364,19 @@ public class EquipmentManager
         }
 
         AwakenQuality quality = ShuffledRegistries.WEIGHTED_AWAKEN_QUALITY.calculate(d.floatValue(), random);
-
-        AwakenInfix infix = ShuffledRegistries.WEIGHTED_AWAKEN_INFIX.calculate(slot, d.floatValue(), random);
-        AwakenPrefix prefix = ShuffledRegistries.WEIGHTED_AWAKEN_PREFIX.calculate(d.floatValue(), random);
+        AwakenInfix.InfixContainer infix = shuffleAffix$Infix(d.floatValue(), factor, slot, random);
+        AwakenPrefix.PrefixInstance prefix = shuffleAffix$Prefix(d.floatValue(), factor, random);
         AwakenSuffix suffix = ShuffledRegistries.WEIGHTED_AWAKEN_SUFFIX.calculate(d.floatValue(), random);
 
-        if (Util.ifNull(quality, infix, prefix, suffix))
+        if (Util.ifNull(quality, prefix, suffix))
             return;
 
-        float factor1 = (float) Math.pow(AwakenCommon.CONFIG.GENERATABLE_MAX.get(), 1.0 / 4.0);
-        float factor2 = factor1 * (float) Math.pow(factor, 1.0 / 5.0);
-        int result1 = (int) factor2;
-        int result2 = Math.max(result1, 1);
-        int infixLevel = random.nextInt(result2) + 1;
-        int prefixLevel = random.nextInt(result2) + 1;
-        int suffixLevel = random.nextInt(result2) + 1;
 
         NBTUtil.serializeDescriber(
                 stack,
-                new AwakenInfix.InfixInstance(infix, infixLevel),
-                new AwakenPrefix.PrefixInstance(prefix, prefixLevel),
-                new AwakenSuffix.SuffixInstance(suffix, suffixLevel)
+                infix,
+                prefix,
+                new AwakenSuffix.SuffixInstance(suffix, shuffleAffixLevel(factor, random))
         );
 
         NBTUtil.serializeQuality(

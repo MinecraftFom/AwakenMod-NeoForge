@@ -1,6 +1,9 @@
 package com.fomdev.awaken.mixin;
 
 import com.fomdev.awaken.entries.raw.*;
+import com.fomdev.awaken.entries.raw.affix.AwakenInfix;
+import com.fomdev.awaken.entries.raw.affix.AwakenPrefix;
+import com.fomdev.awaken.entries.raw.affix.AwakenSuffix;
 import com.fomdev.awaken.spawn.EquipmentManager;
 import com.fomdev.awaken.util.NBTUtil;
 import net.minecraft.core.Holder;
@@ -19,7 +22,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Arrays;
-import java.util.List;
 
 @Mixin(IItemStackExtension.class)
 public interface MixinIItemStackExtension
@@ -42,31 +44,38 @@ public interface MixinIItemStackExtension
 
         AwakenPrefix prefix = NBTUtil.deserializePrefix(stack);
         AwakenSuffix suffix = NBTUtil.deserializeSuffix(stack);
-        AwakenInfix infix = NBTUtil.deserializeInfix(stack);
+        AwakenInfix.InfixContainer infixes = NBTUtil.deserializeInfix(stack);
         AwakenQuality quality = NBTUtil.deserializeQuality(stack);
 
         double factor = quality == null? 1D: quality.getFactor();
 
-        if (prefix != null && suffix != null && infix != null)
+        if (prefix != null && suffix != null)
         {
-            Holder<Attribute> attribute = infix.getAttribute().attr();
-            double amount = (suffix.should(attribute)? infix.getAttribute().amount() * suffix.factor(): infix.getAttribute().amount()) * factor;
-            AttributeModifier.Operation operation = infix.getAttribute().operation();
-            EquipmentSlot[] slots = infix.getAttribute().slot();
-            EquipmentSlot slot = EquipmentManager.forSlot(stack);
-            if (Arrays.asList(slots).contains(slot))
-                modifiers = modifiers.withModifierAdded(
-                        attribute,
-                        new AttributeModifier(
-                                ResourceLocation.fromNamespaceAndPath(
-                                        infix.id(),
-                                        attribute.unwrapKey().orElseThrow().location().getPath() + "_" + slot.getName()
-                                ),
-                                amount,
-                                operation
-                        ),
-                        EquipmentSlotGroup.bySlot(slot)
-                );
+            for (AwakenInfix.InfixSlot is: infixes.slots().values())
+            {
+                if (is.isPresent())
+                    continue;
+
+                AwakenInfix.InfixInstance infix = is.getInfix();
+                Holder<Attribute> attribute = infix.getAttribute().attr();
+                double amount = (suffix.should(attribute) ? infix.getAttribute().amount() * suffix.factor() : infix.getAttribute().amount()) * factor;
+                AttributeModifier.Operation operation = infix.getAttribute().operation();
+                EquipmentSlot[] slots = infix.getAttribute().slot();
+                EquipmentSlot slot = EquipmentManager.forSlot(stack);
+                if (Arrays.asList(slots).contains(slot))
+                    modifiers = modifiers.withModifierAdded(
+                            attribute,
+                            new AttributeModifier(
+                                    ResourceLocation.fromNamespaceAndPath(
+                                            infix.id(),
+                                            attribute.unwrapKey().orElseThrow().location().getPath() + "_" + slot.getName()
+                                    ),
+                                    amount,
+                                    operation
+                            ),
+                            EquipmentSlotGroup.bySlot(slot)
+                    );
+            }
         }
 
         if (mood != null)

@@ -2,9 +2,9 @@ package com.fomdev.awaken.mixin;
 
 import com.fomdev.awaken.enchant.EnchantManager;
 import com.fomdev.awaken.entries.raw.AwakenAspect;
-import com.fomdev.awaken.entries.raw.AwakenPrefix;
+import com.fomdev.awaken.entries.raw.affix.AwakenPrefix;
 import com.fomdev.awaken.entries.raw.AwakenQuality;
-import com.fomdev.awaken.entries.raw.AwakenSuffix;
+import com.fomdev.awaken.entries.raw.affix.AwakenSuffix;
 import com.fomdev.awaken.util.NBTUtil;
 import com.fomdev.awaken.util.Records;
 import com.google.common.collect.ImmutableList;
@@ -13,7 +13,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.neoforged.neoforge.common.extensions.IItemExtension;
 import org.spongepowered.asm.mixin.Mixin;
@@ -80,7 +79,7 @@ public interface MixinIItemExtension
         if (key == null)
             return;
 
-        List<AwakenAspect.AspectInstance> available = NBTUtil.deserializeAspects(stack);
+        List<AwakenAspect.AspectInstance> available = NBTUtil.deserializeAspects(stack).getAspects();
         List<AwakenAspect.AspectInstance> required = EnchantManager.get(key.location(), 1);
         boolean flag0;
         boolean flag1;
@@ -103,7 +102,7 @@ public interface MixinIItemExtension
         if (key == null)
             return;
 
-        List<AwakenAspect.AspectInstance> available = NBTUtil.deserializeAspects(stack);
+        List<AwakenAspect.AspectInstance> available = NBTUtil.deserializeAspects(stack).getAspects();
         List<AwakenAspect.AspectInstance> required = EnchantManager.get(key.location(), 1);
         boolean flag0;
         boolean flag1;

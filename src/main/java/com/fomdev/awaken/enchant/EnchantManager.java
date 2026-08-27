@@ -1,6 +1,5 @@
 package com.fomdev.awaken.enchant;
 
-import com.fomdev.awaken.difficulty.DifficultyManager;
 import com.fomdev.awaken.entries.raw.AwakenAspect;
 import com.fomdev.awaken.entries.raw.AwakenRegistries;
 import com.fomdev.awaken.init.config.AwakenCommon;
@@ -8,22 +7,17 @@ import com.fomdev.awaken.register.awaken.AwakenAspects;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.RandomSource;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 
 import java.awt.*;
@@ -84,7 +78,7 @@ public class EnchantManager
 
     public static List<AwakenAspect.AspectInstance> get(ResourceLocation location, int lvl)
     {
-        return aspects.getOrDefault(location, Collections.singletonList(AwakenAspects.ASPECT_DIVERSITY.toInstance(100))).stream().map(v -> v.aspect().toInstance(v.amount() * lvl)).toList();
+        return aspects.getOrDefault(location, Collections.singletonList(AwakenAspects.ASPECT_DIVERSITY.toInstance(100))).stream().map(v -> v.toInstance(v.amount() * lvl)).toList();
     }
 
     public static boolean meetsRequirements(List<AwakenAspect.AspectInstance> available, List<AwakenAspect.AspectInstance> requirements)
@@ -95,7 +89,7 @@ public class EnchantManager
 
             for (AwakenAspect.AspectInstance ava: available)
             {
-                if (ava.aspect() != req.aspect())
+                if (!ava.equals(req))
                     continue;
 
                 if (ava.amount() < req.amount())

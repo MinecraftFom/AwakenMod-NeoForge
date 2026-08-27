@@ -155,4 +155,9 @@ public class AwakenPrefix extends Registry
                             AwakenPrefix::of,
                             AwakenPrefix::getLocation
                     );
+
+    static
+    {
+        NONE.setLocation(Constants.NULL);
+    }
 }

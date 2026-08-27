@@ -76,5 +76,12 @@ public abstract class MixinMob
 
             self.spawnAtLocation(IronSpellCompat.shuffleScrollIfPresent(self.getRandom()));
         }
+
+        if (self.getRandom().nextInt(100) < 5) // 5%
+        {
+            ItemStack aspectStone = AwakenItems.ASPECT_STONE.toStack();
+            NBTUtil.addAspect(aspectStone, EquipmentManager.shuffleAspect(self.getRandom()));
+            self.spawnAtLocation(aspectStone);
+        }
     }
 }

@@ -242,7 +242,7 @@ public class AwakenInfix extends Registry
                 List<Integer> empty
         )
         {
-            this.slots = new IndexMap<>(slots);
+            this.slots = IndexMap.of(slots);
             this.empty = new ArrayList<>(empty);
         }
 

@@ -5,13 +5,9 @@ import com.fomdev.flame.register.Registry;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.common.util.INBTSerializable;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -19,7 +15,7 @@ import java.util.List;
 
 public class AwakenAspect extends Registry
 {
-    private static final AwakenAspect NONE =
+    public static final AwakenAspect NONE =
             new AwakenAspect("NULL", Color.WHITE);
 
     private final Color color;
@@ -128,10 +124,8 @@ public class AwakenAspect extends Registry
                 );
     }
 
-    public static class AspectContainer
+    public record AspectContainer(List<AspectInstance> aspects)
     {
-        private final List<AspectInstance> aspects;
-
         public AspectContainer(
                 List<AspectInstance> aspects
         )
@@ -141,35 +135,30 @@ public class AwakenAspect extends Registry
 
         public AspectContainer()
         {
-            this.aspects = new ArrayList<>();
+            this(new ArrayList<>());
         }
 
         public void merge(
                 AspectInstance instance
         )
         {
-            for (AspectInstance inst: aspects)
+            for (AspectInstance inst : aspects)
                 if (inst.equals(instance))
                     inst.add(inst.amount);
 
             aspects.add(instance);
         }
 
-        public List<AspectInstance> getAspects()
-        {
-            return this.aspects;
-        }
-
         public static final Codec<AspectContainer> CODEC =
                 AspectInstance.CODEC.listOf().xmap(
                         AspectContainer::new,
-                        AspectContainer::getAspects
+                        AspectContainer::aspects
                 );
 
         public static final StreamCodec<ByteBuf, AspectContainer> STREAM_CODEC =
                 AspectInstance.STREAM_CODEC.apply(ByteBufCodecs.list()).map(
                         AspectContainer::new,
-                        AspectContainer::getAspects
+                        AspectContainer::aspects
                 );
     }
 

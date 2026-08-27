@@ -120,7 +120,7 @@ public class EquipmentManager
             RandomSource random
     )
     {
-        return (int) Math.min(max * (random.nextInt(max) / (float) max) * factor, max);
+        return (int) Math.clamp(max * (random.nextInt(max) / (float) max) * factor, 1, max);
     }
 
     public static int shuffleAffixLevel(
@@ -178,6 +178,18 @@ public class EquipmentManager
         AwakenPrefix prefix = ShuffledRegistries.WEIGHTED_AWAKEN_PREFIX.calculate(diff, random);
         int level = shuffleAffixLevel(factor, random);
         return new AwakenPrefix.PrefixInstance(prefix, level);
+    }
+
+    public static AwakenAspect.AspectInstance shuffleAspect(
+            RandomSource random
+    )
+    {
+        List<AwakenAspect> aspects = AwakenRegistries.AWAKEN_ASPECT.getRegistries();
+        if (aspects.isEmpty())
+            return new AwakenAspect.AspectInstance(AwakenAspect.NONE, -1); // Usually, this won't happen, just to make sure some d*****s won't inject my mod
+
+        AwakenAspect aspect = aspects.get(random.nextInt(aspects.size()));
+        return aspect.toInstance(random.nextInt(250) + 1);
     }
 
     public static int shuffleEffectCount(

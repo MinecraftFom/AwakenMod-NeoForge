@@ -79,7 +79,7 @@ public interface MixinIItemExtension
         if (key == null)
             return;
 
-        List<AwakenAspect.AspectInstance> available = NBTUtil.deserializeAspects(stack).getAspects();
+        List<AwakenAspect.AspectInstance> available = NBTUtil.deserializeAspects(stack).aspects();
         List<AwakenAspect.AspectInstance> required = EnchantManager.get(key.location(), 1);
         boolean flag0;
         boolean flag1;
@@ -102,7 +102,7 @@ public interface MixinIItemExtension
         if (key == null)
             return;
 
-        List<AwakenAspect.AspectInstance> available = NBTUtil.deserializeAspects(stack).getAspects();
+        List<AwakenAspect.AspectInstance> available = NBTUtil.deserializeAspects(stack).aspects();
         List<AwakenAspect.AspectInstance> required = EnchantManager.get(key.location(), 1);
         boolean flag0;
         boolean flag1;

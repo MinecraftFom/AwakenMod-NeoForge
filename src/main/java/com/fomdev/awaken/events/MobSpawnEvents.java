@@ -6,7 +6,6 @@ import com.fomdev.awaken.entries.raw.AwakenAspect;
 import com.fomdev.awaken.entries.raw.AwakenRegistries;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.register.data.AwakenAttachmentTypes;
-import com.fomdev.awaken.register.items.AwakenItems;
 import com.fomdev.awaken.spawn.MobSpawnManager;
 import com.fomdev.awaken.util.NBTUtil;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -18,7 +17,6 @@ import net.minecraft.world.entity.monster.CrossbowAttackMob;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
@@ -86,13 +84,6 @@ public class MobSpawnEvents
         Entity source = event.getSource().getEntity();
         LivingEntity target = event.getEntity();
 
-        if (target.getRandom().nextInt(100) < 5) // 5%
-        {
-            ItemStack aspectStone = AwakenItems.ASPECT_STONE.toStack();
-            NBTUtil.addAspect(aspectStone, shuffleAspect(target.getRandom()));
-            target.spawnAtLocation(aspectStone);
-        }
-
         if (!(source instanceof Player player))
             return;
 
@@ -100,7 +91,6 @@ public class MobSpawnEvents
             return;
 
         NBTUtil.addAwakenLevel(player, new BigDecimal(player.getRandom().nextInt((int) target.getMaxHealth())));
-
     }
 
     public static boolean isAwaken(
@@ -108,17 +98,5 @@ public class MobSpawnEvents
     )
     {
         return entity.hasData(AwakenAttachmentTypes.IS_AWAKEN) && entity.getData(AwakenAttachmentTypes.IS_AWAKEN);
-    }
-
-    private static AwakenAspect.AspectInstance shuffleAspect(
-            RandomSource random
-    )
-    {
-        List<AwakenAspect> aspects = AwakenRegistries.AWAKEN_ASPECT.getRegistries();
-        if (aspects.isEmpty())
-            return new AwakenAspect.AspectInstance(null, 0); // Usually, this won't happen, just to make sure some d*****s won't inject my mod
-
-        AwakenAspect aspect = aspects.get(random.nextInt(aspects.size()));
-        return aspect.toInstance(random.nextInt(250) + 1);
     }
 }

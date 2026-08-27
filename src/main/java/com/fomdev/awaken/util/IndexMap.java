@@ -11,10 +11,17 @@ import java.util.Map;
 public class IndexMap<T> extends HashMap<Integer, T>
 {
     public IndexMap(
-            Map<Integer, T> parent
+            Map<String, T> parent
     )
     {
-        super(parent);
+        super(toIntMap(parent));
+    }
+
+    public static <U> IndexMap<U> of(
+            Map<Integer, U> parent
+    )
+    {
+        return new IndexMap<>(toStringMap(parent));
     }
 
     public IndexMap(
@@ -26,16 +33,16 @@ public class IndexMap<T> extends HashMap<Integer, T>
             put(i, empty);
     }
 
-    public Map<Integer, T> serialize()
+    public Map<String, T> serialize()
     {
-        return this;
+        return toStringMap(this);
     }
 
     public static <U> Codec<IndexMap<U>> createCodec(
             Codec<U> codec
     )
     {
-        Codec<Map<Integer, U>> mapCodec = Codec.unboundedMap(Codec.INT, codec);
+        Codec<Map<String, U>> mapCodec = Codec.unboundedMap(Codec.STRING, codec);
         return mapCodec.xmap(
                 IndexMap::new,
                 IndexMap::serialize
@@ -46,10 +53,32 @@ public class IndexMap<T> extends HashMap<Integer, T>
             StreamCodec<ByteBuf, U> streamCodec
     )
     {
-        StreamCodec<ByteBuf, Map<Integer, U>> mapStreamCodec = ByteBufCodecs.map(HashMap::new, ByteBufCodecs.INT, streamCodec);
+        StreamCodec<ByteBuf, Map<String, U>> mapStreamCodec = ByteBufCodecs.map(HashMap::new, ByteBufCodecs.STRING_UTF8, streamCodec);
         return mapStreamCodec.map(
                 IndexMap::new,
                 IndexMap::serialize
         );
+    }
+
+    private static <U> Map<Integer, U> toIntMap(
+            Map<String, U> raw
+    )
+    {
+        Map<Integer, U> result = new HashMap<>();
+        for (Map.Entry<String, U> entry : raw.entrySet())
+            result.put(Integer.parseInt(entry.getKey()), entry.getValue());
+
+        return result;
+    }
+
+    private static <U> Map<String, U> toStringMap(
+            Map<Integer, U> raw
+    )
+    {
+        Map<String, U> result = new HashMap<>();
+        for (Map.Entry<Integer, U> entry: raw.entrySet())
+            result.put("" + entry.getKey(), entry.getValue());
+
+        return result;
     }
 }

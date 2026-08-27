@@ -27,6 +27,6 @@ public class AwakenAspectStone extends Item
             @NotNull TooltipFlag flag
     )
     {
-        components.addAll(1, TooltipUtil.castAspectTooltip(flag, NBTUtil.deserializeAspects(stack).getAspects()));
+        components.addAll(1, TooltipUtil.castAspectTooltip(flag, NBTUtil.deserializeAspects(stack).aspects()));
     }
 }

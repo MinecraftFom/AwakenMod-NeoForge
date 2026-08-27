@@ -69,9 +69,9 @@ public class TooltipRenderEvents
         AwakenQuality quality = NBTUtil.deserializeQuality(stack);
         AwakenAspect.AspectContainer aspects = NBTUtil.deserializeAspects(stack);
 
-        if (aspects != null && !aspects.getAspects().isEmpty() && !stack.is(AwakenItems.ASPECT_STONE))
+        if (aspects != null && !aspects.aspects().isEmpty() && !stack.is(AwakenItems.ASPECT_STONE))
         {
-            list.addAll(1, TooltipUtil.castAspectTooltip(flag, aspects.getAspects()));
+            list.addAll(1, TooltipUtil.castAspectTooltip(flag, aspects.aspects()));
             list.add(1, Component.empty());
         }
 

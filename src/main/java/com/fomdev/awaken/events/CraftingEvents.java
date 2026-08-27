@@ -10,7 +10,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.AnvilUpdateEvent;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @EventBusSubscriber(modid = Awaken.MODID)
@@ -26,7 +25,7 @@ public class CraftingEvents
 
         if ((stack.isDamageableItem() || stack.is(AwakenItems.ASPECT_STONE)) && material.is(AwakenItems.ASPECT_STONE) && material.has(AwakenDataComponents.AWAKEN_ASPECT_STORAGE))
         {
-            List<AwakenAspect.AspectInstance> aspects = NBTUtil.deserializeAspects(material).getAspects();
+            List<AwakenAspect.AspectInstance> aspects = NBTUtil.deserializeAspects(material).aspects();
             AwakenAspect.AspectContainer container = NBTUtil.deserializeAspects(stack);
             int exp = 0;
             for (AwakenAspect.AspectInstance aspect: aspects)

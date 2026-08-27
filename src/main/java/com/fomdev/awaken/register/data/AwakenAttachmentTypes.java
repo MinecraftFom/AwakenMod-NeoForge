@@ -1,5 +1,6 @@
 package com.fomdev.awaken.register.data;
 
+import com.fomdev.awaken.entries.raw.spore.AwakenSpore;
 import com.fomdev.awaken.init.Awaken;
 import com.fomdev.awaken.speech.SpeechInstance;
 import com.fomdev.awaken.util.HealthUtil;
@@ -215,12 +216,12 @@ public class AwakenAttachmentTypes
                             .build()
             );
 
-    public static final Supplier<AttachmentType<List<CompoundTag>>> SPORE_ATTACHMENT =
+    public static final Supplier<AttachmentType<AwakenSpore.SporeContainer>> SPORE_ATTACHMENT =
             REGISTER.register(
                     "awaken_spore",
-                    () -> AttachmentType.builder(() -> List.<CompoundTag>of())
-                            .serialize(CompoundTag.CODEC.listOf())
-                            .sync(ByteBufCodecs.COMPOUND_TAG.apply(ByteBufCodecs.list()))
+                    () -> AttachmentType.builder(() -> new AwakenSpore.SporeContainer(List.<AwakenSpore.SporeInstance>of()))
+                            .serialize(AwakenSpore.SporeContainer.CODEC)
+                            .sync(AwakenSpore.SporeContainer.STREAM_CODEC)
                             .build()
             );
 

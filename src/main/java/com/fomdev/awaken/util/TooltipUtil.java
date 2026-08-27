@@ -353,60 +353,6 @@ public class TooltipUtil
         );
     }
 
-    public static List<Component> castSporeTooltip(
-            TooltipFlag flag,
-            AwakenSpore.SporeInstance spore
-    )
-    {
-        List<Component> components = new ArrayList<>();
-        components
-                .add(
-                        Component
-                                .empty()
-                                .append(
-                                        Component
-                                                .translatable(
-                                                        "tooltip.spore.info"
-                                                )
-                                )
-                                .append(
-                                        ": "
-                                )
-                                .append(
-                                        LocaleUtil.localizeSpore(
-                                                spore.getSpore()
-                                        )
-                                )
-                                .append(
-                                        " (" + spore.getLevel() + ")"
-                                )
-                                .withStyle(ChatFormatting.GRAY)
-                );
-
-        if (flag.hasShiftDown())
-            components
-                    .add(
-                            Component
-                                    .translatable(
-                                            "tooltip.spore.attribute.info",
-                                            Component.translatable(spore.getSpore().getAttribute().value().getDescriptionId()).getString(),
-                                            "" + spore.getSpore().getAmount(spore.getLevel())
-                                    )
-                                    .withStyle(ChatFormatting.GRAY)
-                    );
-        else
-            components
-                    .add(
-                            Component
-                                    .translatable(
-                                            "tooltip.hold_shift.info"
-                                    )
-                                    .withStyle(ChatFormatting.GRAY)
-                    );
-
-        return components;
-    }
-
     public static List<Component> castSuffixTooltip(
             TooltipFlag flag,
             AwakenSuffix.SuffixInstance suffix

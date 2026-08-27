@@ -41,6 +41,14 @@ public class AwakenPrefix extends Registry
         this.baseEnchantments = List.copyOf(baseEnchantments);
     }
 
+    public static AwakenPrefix of(
+            ResourceLocation location
+    )
+    {
+        AwakenPrefix prefix = location.equals(Constants.NULL)? NONE: AwakenRegistries.AWAKEN_PREFIX.getRegistry(location);
+        return prefix == null? NONE: prefix;
+    }
+
     public int getDurability()
     {
         return this.durability;
@@ -56,12 +64,9 @@ public class AwakenPrefix extends Registry
         return ImmutableList.copyOf(this.baseEnchantments);
     }
 
-    public static AwakenPrefix of(
-            ResourceLocation location
-    )
+    public boolean isEmpty()
     {
-        AwakenPrefix prefix = location.equals(Constants.NULL)? NONE: AwakenRegistries.AWAKEN_PREFIX.getRegistry(location);
-        return prefix == null? NONE: prefix;
+        return this.getLocation().equals(Constants.NULL);
     }
 
     public static class PrefixInstance extends AwakenPrefix

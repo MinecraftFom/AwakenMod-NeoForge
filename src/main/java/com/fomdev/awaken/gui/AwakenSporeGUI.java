@@ -29,14 +29,14 @@ public class AwakenSporeGUI implements LayeredDraw.Layer
         if (player == null)
             return;
 
-        List<AwakenSpore.SporeInstance> spores = NBTUtil.deserializeSpores(player);
+        List<AwakenSpore.SporeInstance> spores = NBTUtil.deserializeSpores(player).spores();
         for (int i = 0; i < spores.size(); i++)
         {
             int posx = 10;
             int posy = 10 + DIST * i;
 
             AwakenSpore.SporeInstance spore = spores.get(i);
-            Component component = Component.empty().append(LocaleUtil.localizeSpore(spore.getSpore())).append(": " + spore.getLevel());
+            Component component = Component.empty().append(LocaleUtil.localizeSpore(spore)).append(": " + spore.getLevel());
             graphics.drawString(Minecraft.getInstance().font, component.getString(), posx, posy, 0xFFFFFF);
         }
     }

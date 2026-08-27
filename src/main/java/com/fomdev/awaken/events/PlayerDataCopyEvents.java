@@ -65,7 +65,7 @@ public class PlayerDataCopyEvents
             Player current
     )
     {
-        List<AwakenSpore.SporeInstance> spores = NBTUtil.deserializeSpores(original);
+        AwakenSpore.SporeContainer spores = NBTUtil.deserializeSpores(original);
         NBTUtil.serializeSpores(current, spores);
     }
 }

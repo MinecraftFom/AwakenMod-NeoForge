@@ -53,7 +53,7 @@ public interface MixinIItemStackExtension
         {
             for (AwakenInfix.InfixSlot is: infixes.slots().values())
             {
-                if (is.isPresent())
+                if (!is.isPresent() || is.getInfix().isEmpty())
                     continue;
 
                 AwakenInfix.InfixInstance infix = is.getInfix();

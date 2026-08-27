@@ -47,6 +47,11 @@ public class AwakenInfix extends Registry
         return this.attribute;
     }
 
+    public boolean isEmpty()
+    {
+        return this.getLocation().equals(Constants.NULL);
+    }
+
     public static class InfixInstance extends AwakenInfix implements Comparable<InfixInstance>
     {
         private int level;

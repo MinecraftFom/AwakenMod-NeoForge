@@ -50,23 +50,23 @@ public class AwakenPlantMedicine extends Item
     )
     {
         Records.AwakenMedicineComponent medicine = NBTUtil.deserializeMedicine(stack);
-        List<AwakenSpore.SporeInstance> instances = NBTUtil.deserializeSpores(livingEntity);
-        List<AwakenSpore.SporeInstance> result = new ArrayList<>();
+        List<AwakenSpore.SporeInstance> instances = NBTUtil.deserializeSpores(livingEntity).spores();
+        AwakenSpore.SporeContainer result = new AwakenSpore.SporeContainer();
         ResourceLocation target = ResourceLocation.parse(medicine.immuniseType());
         ItemStack res = stack;
         for (AwakenSpore.SporeInstance inst : instances)
         {
-            if (inst.getSpore().getLocation().equals(target))
+            if (!inst.isEmpty() && inst.getLocation().equals(target))
             {
                 int nlvl = inst.getLevel() - medicine.value();
                 if (nlvl > 0)
-                    result.add(new AwakenSpore.SporeInstance(inst.getSpore(), nlvl));
+                    result.merge(new AwakenSpore.SporeInstance(inst, nlvl));
 
                 res = stack.consumeAndReturn(stack.getCount() - 1, livingEntity);
                 break;
             }
 
-            result.add(inst);
+            result.merge(inst);
         }
 
         NBTUtil.serializeSpores(livingEntity, result);

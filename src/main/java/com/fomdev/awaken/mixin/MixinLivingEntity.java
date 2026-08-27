@@ -88,11 +88,11 @@ public abstract class MixinLivingEntity
         else if (!self.level().isClientSide && self instanceof ServerPlayer player && player.connection == null)
             return;
 
-        List<AwakenSpore.SporeInstance> spores = NBTUtil.deserializeSpores(self);
+        List<AwakenSpore.SporeInstance> spores = NBTUtil.deserializeSpores(self).spores();
         for (AwakenSpore.SporeInstance instance: spores)
         {
-            if (instance.getSpore().getAttribute().is(attribute))
-                original += instance.getSpore().getAmount(instance.getLevel());
+            if (!instance.isEmpty() && instance.getAttribute().is(attribute))
+                original += instance.getAmount(instance.getLevel());
         }
 
         cir.setReturnValue(original);

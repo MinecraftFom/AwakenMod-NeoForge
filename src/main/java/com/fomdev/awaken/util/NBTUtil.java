@@ -59,8 +59,8 @@ public class NBTUtil
             AwakenSpore.SporeInstance instance
     )
     {
-        List<AwakenSpore.SporeInstance> spores = new ArrayList<>(NBTUtil.deserializeSpores(entity));
-        spores.add(instance);
+        AwakenSpore.SporeContainer spores = NBTUtil.deserializeSpores(entity);
+        spores.merge(instance);
         NBTUtil.serializeSpores(entity, spores);
     }
 
@@ -237,31 +237,11 @@ public class NBTUtil
         return AwakenRegistries.AWAKEN_SPIRIT.getRegistry(ResourceLocation.parse(component));
     }
 
-    public static List<AwakenSpore.SporeInstance> deserializeSpores(
+    public static AwakenSpore.SporeContainer deserializeSpores(
             Entity entity
     )
     {
-        List<CompoundTag> component = entity.getData(AwakenAttachmentTypes.SPORE_ATTACHMENT.get());
-        if (component.isEmpty())
-            return List.of();
-
-        List<AwakenSpore.SporeInstance> spores = new ArrayList<>();
-
-        for (CompoundTag tag: component)
-        {
-            if (!tag.contains("id") || !tag.contains("level"))
-                continue;
-
-            AwakenSpore spore = AwakenRegistries.AWAKEN_SPORE.getRegistry(ResourceLocation.parse(tag.getString("id")));
-            int level = tag.getInt("level");
-
-            if (spore == null || level <= 0)
-                continue;
-
-            spores.add(new AwakenSpore.SporeInstance(spore, level));
-        }
-
-        return mergeSpores(spores);
+        return entity.getData(AwakenAttachmentTypes.SPORE_ATTACHMENT.get());
     }
 
     public static List<AwakenSpore.SporeInstance> mergeSpores(
@@ -273,8 +253,8 @@ public class NBTUtil
 
         for (AwakenSpore.SporeInstance inst : spores)
         {
-            int lvl = merged.getOrDefault(inst.getSpore(), 0);
-            merged.put(inst.getSpore(), lvl + inst.getLevel());
+            int lvl = merged.getOrDefault(inst, 0);
+            merged.put(inst, lvl + inst.getLevel());
         }
 
         for (Map.Entry<AwakenSpore, Integer> entry: merged.entrySet())
@@ -376,24 +356,10 @@ public class NBTUtil
 
     public static void serializeSpores(
             Entity entity,
-            List<AwakenSpore.SporeInstance> spores
+            AwakenSpore.SporeContainer spores
     )
     {
-        List<AwakenSpore.SporeInstance> merged = mergeSpores(spores);
-        List<CompoundTag> tags = new ArrayList<>();
-
-        for (AwakenSpore.SporeInstance entry: merged)
-        {
-            String id = entry.getSpore().getLocation().toString();
-            int level = entry.getLevel();
-
-            CompoundTag tag = new CompoundTag();
-            tag.putString("id", id);
-            tag.putInt("level", Math.abs(level));
-            tags.add(tag);
-        }
-
-        entity.setData(AwakenAttachmentTypes.SPORE_ATTACHMENT, List.copyOf(tags));
+        entity.setData(AwakenAttachmentTypes.SPORE_ATTACHMENT, spores);
     }
 
     public static void setMaxDurability(

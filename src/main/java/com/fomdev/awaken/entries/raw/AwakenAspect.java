@@ -33,6 +33,13 @@ public class AwakenAspect extends Registry
         this.color = color;
     }
 
+    public AspectInstance toInstance(
+            int value
+    )
+    {
+        return new AspectInstance(this, value);
+    }
+
     public Color getColor()
     {
         return this.color;
@@ -46,11 +53,9 @@ public class AwakenAspect extends Registry
         return aspect == null? NONE: aspect;
     }
 
-    public AspectInstance toInstance(
-            int value
-    )
+    public boolean isEmpty()
     {
-        return new AspectInstance(this, value);
+        return this.getLocation().equals(Constants.NULL);
     }
 
     public static class AspectInstance extends AwakenAspect

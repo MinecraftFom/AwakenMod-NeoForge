@@ -1,17 +1,31 @@
 package com.fomdev.awaken.entries.raw.spore;
 
 import com.fomdev.awaken.entries.raw.AwakenRegistries;
+import com.fomdev.awaken.util.Constants;
 import com.fomdev.flame.register.Registry;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.neoforged.neoforge.common.util.INBTSerializable;
-import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AwakenSpore extends Registry
 {
+    public static final AwakenSpore NONE = new AwakenSpore("NULL", null)
+    {
+        @Override
+        public double getAmount(int level)
+        {
+            return -1;
+        }
+    };
+
     private final Holder<Attribute> attribute;
 
     public AwakenSpore(
@@ -24,6 +38,14 @@ public abstract class AwakenSpore extends Registry
         this.attribute = attribute;
     }
 
+    public static AwakenSpore of(
+            ResourceLocation location
+    )
+    {
+        AwakenSpore spore = location == Constants.NULL? NONE: AwakenRegistries.AWAKEN_SPORE.getRegistry(location);
+        return spore == null? NONE: spore;
+    }
+
     public abstract double getAmount(
             int level
     );
@@ -33,9 +55,14 @@ public abstract class AwakenSpore extends Registry
         return this.attribute;
     }
 
-    public static class SporeInstance implements INBTSerializable<CompoundTag>
+    public boolean isEmpty()
     {
-        private AwakenSpore spore;
+        return this.getLocation().equals(Constants.NULL);
+    }
+
+    public static class SporeInstance extends AwakenSpore
+    {
+        private final AwakenSpore spore;
         private int level;
 
         public SporeInstance(
@@ -43,35 +70,116 @@ public abstract class AwakenSpore extends Registry
                 int level
         )
         {
+            super(spore.id(), spore.getAttribute());
             this.spore = spore;
             this.level = level;
         }
 
-        @Override
-        public CompoundTag serializeNBT(@NotNull HolderLookup.Provider provider)
+        public void add(
+                int level
+        )
         {
-            CompoundTag self = new CompoundTag();
-            self.putString("id", spore.getLocation().toString());
-            self.putInt("level", level);
-
-            return self;
-        }
-
-        @Override
-        public void deserializeNBT(@NotNull HolderLookup.Provider provider, @NotNull CompoundTag tag)
-        {
-            this.spore = AwakenRegistries.AWAKEN_SPORE.getRegistry(ResourceLocation.parse(tag.getString("id")));
-            this.level = tag.getInt("level");
-        }
-
-        public AwakenSpore getSpore()
-        {
-            return this.spore;
+            this.level += level;
         }
 
         public int getLevel()
         {
             return this.level;
         }
+
+        @Override
+        public double getAmount(int level)
+        {
+            return this.spore.getAmount(level);
+        }
+
+        public AwakenSpore getRepresentation()
+        {
+            return this;
+        }
+
+        public static final Codec<SporeInstance> CODEC =
+                RecordCodecBuilder.create(
+                        inst ->
+                                inst
+                                        .group(
+                                                AwakenSpore.CODEC
+                                                        .fieldOf("spore")
+                                                        .forGetter(SporeInstance::getRepresentation)
+                                        )
+                                        .and(
+                                                Codec.INT
+                                                        .fieldOf("level")
+                                                        .forGetter(SporeInstance::getLevel)
+                                        )
+                                        .apply(
+                                                inst,
+                                                SporeInstance::new
+                                        )
+                );
+
+        public static final StreamCodec<ByteBuf, SporeInstance> STREAM_CODEC =
+                StreamCodec.composite(
+                        AwakenSpore.STREAM_CODEC,
+                        SporeInstance::getRepresentation,
+                        ByteBufCodecs.INT,
+                        SporeInstance::getLevel,
+                        SporeInstance::new
+                );
+    }
+
+    public record SporeContainer(List<SporeInstance> spores)
+    {
+        public SporeContainer(
+                List<SporeInstance> spores
+        )
+        {
+            this.spores = new ArrayList<>(spores);
+        }
+
+        public SporeContainer()
+        {
+            this(new ArrayList<>());
+        }
+
+        public void merge(
+                SporeInstance instance
+        )
+        {
+            for (SporeInstance inst : spores)
+                if (inst.equals(instance))
+                    inst.add(inst.getLevel());
+
+            spores.add(instance);
+        }
+
+        public static final Codec<SporeContainer> CODEC =
+                SporeInstance.CODEC.listOf().xmap(
+                        SporeContainer::new,
+                        SporeContainer::spores
+                );
+
+        public static final StreamCodec<ByteBuf, SporeContainer> STREAM_CODEC =
+                SporeInstance.STREAM_CODEC.apply(ByteBufCodecs.list()).map(
+                        SporeContainer::new,
+                        SporeContainer::spores
+                );
+    }
+
+    public static final Codec<AwakenSpore> CODEC =
+            ResourceLocation.CODEC.xmap(
+                    AwakenSpore::of,
+                    AwakenSpore::getLocation
+            );
+
+    public static final StreamCodec<ByteBuf, AwakenSpore> STREAM_CODEC =
+            ResourceLocation.STREAM_CODEC.map(
+                    AwakenSpore::of,
+                    AwakenSpore::getLocation
+            );
+
+    static
+    {
+        NONE.setLocation(Constants.NULL);
     }
 }

@@ -255,5 +255,7 @@
   "tooltip.enchantment.level.254": "CCLIV",
   "tooltip.enchantment.level.255": "CCLV",
   "tooltip.enchantment.level.256": "INFINITY",
-  "tooltip.enchantment.level.2147483647": "XRSL (AM I A NUMBER?)"
+  "tooltip.enchantment.level.2147483647": "XRSL (AM I A NUMBER?)",
+
+  "tooltip.enchantment.level.1225": "?"
 }

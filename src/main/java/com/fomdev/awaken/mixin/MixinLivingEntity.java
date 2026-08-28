@@ -91,8 +91,8 @@ public abstract class MixinLivingEntity
         List<AwakenSpore.SporeInstance> spores = NBTUtil.deserializeSpores(self).spores();
         for (AwakenSpore.SporeInstance instance: spores)
         {
-            if (!instance.isEmpty() && instance.getAttribute().is(attribute))
-                original += instance.getAmount(instance.getLevel());
+            if (!instance.getRepresentation().isEmpty() && instance.getRepresentation().getAttribute().is(attribute))
+                original += instance.getRepresentation().getAmount(instance.getLevel());
         }
 
         cir.setReturnValue(original);

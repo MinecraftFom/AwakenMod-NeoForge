@@ -54,10 +54,10 @@ public class AwakenPrefixBooks extends Item
         if (!(entity instanceof ServerPlayer player))
             return stack;
 
-        AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializePrefix(stack);
+        AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializeAffix$Prefix(stack);
         ItemStack target = entity.getMainHandItem();
 
-        NBTUtil.modifyPrefix(target, prefix);
+        NBTUtil.serializeAffix$Prefix(target, prefix);
         if (level instanceof ServerLevel serverLevel)
             serverLevel.players().forEach(p -> serverLevel.sendParticles(p, ParticleTypes.EXPLOSION, true, player.getX(), player.getY(), player.getZ(), 100, 1.0F, 1.0F, 1.0F, 0));
 

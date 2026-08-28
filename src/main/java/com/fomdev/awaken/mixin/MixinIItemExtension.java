@@ -31,11 +31,11 @@ public interface MixinIItemExtension
         if (origin <= 0)
             return;
 
-        AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializePrefix(self);
+        AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializeAffix$Prefix(self);
         AwakenQuality quality = NBTUtil.deserializeQuality(self);
 
-        if (prefix != null)
-            origin += prefix.getDurability();
+        if (!prefix.getValue().isEmpty())
+            origin += prefix.getRepresent().getDurability();
 
         double qualityFactor = quality == null? 1: quality.getFactor();
         double result = origin * qualityFactor;
@@ -50,11 +50,9 @@ public interface MixinIItemExtension
             CallbackInfoReturnable<ItemEnchantments> cir
     )
     {
-        AwakenPrefix prefix = NBTUtil.deserializePrefix(stack);
-        if (prefix == null)
-            return;
+        AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializeAffix$Prefix(stack);
 
-        ImmutableList<Records.EnchantmentHolder> enchs = prefix.getBaseEnchantments();
+        ImmutableList<Records.EnchantmentHolder> enchs = prefix.getValue().getBaseEnchantments();
         ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(cir.getReturnValue());
         enchs
                 .stream()

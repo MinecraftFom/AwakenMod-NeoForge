@@ -15,6 +15,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 
@@ -29,6 +30,7 @@ public class Records
             )
     {}
 
+    @Deprecated(since = "0.2.4")
     public record AwakenAffixComponent
             (
                     AwakenInfix.InfixContainer infix,
@@ -58,6 +60,15 @@ public class Records
         )
         {
             return new AwakenAffixComponent(this.infix, this.prefix, suffix);
+        }
+
+        public void save(
+                ItemStack stack
+        )
+        {
+            NBTUtil.serializeAffix$Infix(stack, this.infix);
+            NBTUtil.serializeAffix$Prefix(stack, this.prefix);
+            NBTUtil.serializeAffix$Suffix(stack, this.suffix);
         }
     }
 

@@ -54,10 +54,10 @@ public class AwakenInfixBooks extends Item
         if (!(entity instanceof ServerPlayer player))
             return stack;
 
-        AwakenInfix.InfixContainer infix = NBTUtil.deserializeInfix(stack);
+        AwakenInfix.InfixContainer infix = NBTUtil.deserializeAffix$Infix(stack);
         ItemStack target = entity.getMainHandItem();
 
-        NBTUtil.modifyInfix(target, infix);
+        NBTUtil.serializeAffix$Infix(target, infix);
         if (level instanceof ServerLevel serverLevel)
             serverLevel.players().forEach(p -> serverLevel.sendParticles(p, ParticleTypes.EXPLOSION, true, player.getX(), player.getY(), player.getZ(), 100, 1.0F, 1.0F, 1.0F, 0));
 

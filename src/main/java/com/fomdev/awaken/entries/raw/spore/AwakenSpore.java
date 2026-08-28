@@ -60,7 +60,7 @@ public abstract class AwakenSpore extends Registry
         return this.getLocation().equals(Constants.NULL);
     }
 
-    public static class SporeInstance extends AwakenSpore
+    public static class SporeInstance
     {
         private final AwakenSpore spore;
         private int level;
@@ -70,7 +70,6 @@ public abstract class AwakenSpore extends Registry
                 int level
         )
         {
-            super(spore.id(), spore.getAttribute());
             this.spore = spore;
             this.level = level;
         }
@@ -87,15 +86,9 @@ public abstract class AwakenSpore extends Registry
             return this.level;
         }
 
-        @Override
-        public double getAmount(int level)
-        {
-            return this.spore.getAmount(level);
-        }
-
         public AwakenSpore getRepresentation()
         {
-            return this;
+            return this.spore;
         }
 
         public static final Codec<SporeInstance> CODEC =

@@ -68,7 +68,7 @@ public class LocaleUtil
             AwakenPrefix.PrefixInstance prefix
     )
     {
-        return Component.translatable("prefix." + prefix.id() + ".name").append(" ").append(Component.translatable("tooltip.enchantment.level." + prefix.getLevel()));
+        return Component.translatable("prefix." + prefix.getRepresent().id() + ".name").append(" ").append(Component.translatable("tooltip.enchantment.level." + prefix.getLevel()));
     }
 
     public static Component localizeQuality(

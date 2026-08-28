@@ -63,9 +63,9 @@ public class TooltipRenderEvents
             list.addAll(1, TooltipUtil.castSoulTooltip(NBTUtil.deserializeSoul(stack)));
 
         AwakenMoods mood = NBTUtil.deserializeMood(stack);
-        AwakenInfix.InfixContainer infix = NBTUtil.deserializeInfix(stack);
-        AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializePrefix(stack);
-        AwakenSuffix.SuffixContainer suffix = NBTUtil.deserializeSuffix(stack);
+        AwakenInfix.InfixContainer infix = NBTUtil.deserializeAffix$Infix(stack);
+        AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializeAffix$Prefix(stack);
+        AwakenSuffix.SuffixContainer suffix = NBTUtil.deserializeAffix$Suffix(stack);
         AwakenQuality quality = NBTUtil.deserializeQuality(stack);
         AwakenAspect.AspectContainer aspects = NBTUtil.deserializeAspects(stack);
 
@@ -75,7 +75,7 @@ public class TooltipRenderEvents
             list.add(1, Component.empty());
         }
 
-        if (infix != null && prefix != null && suffix != null)
+        if (!prefix.isEmpty())
         {
             list.addAll(1, TooltipUtil.castSuffixTooltip(flag, suffix));
             list.addAll(1, TooltipUtil.castInfixTooltip(flag, infix));

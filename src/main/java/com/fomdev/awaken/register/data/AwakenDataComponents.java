@@ -40,42 +40,6 @@ public class AwakenDataComponents
                     BigDecimal::new
             );
 
-    public static final Codec<Records.AwakenAffixComponent> AWAKEN_AFFIX_CODEC =
-            RecordCodecBuilder.create(
-                    inst ->
-                            inst
-                                    .group(
-                                            AwakenInfix.InfixContainer.CODEC
-                                                    .fieldOf("infix")
-                                                    .forGetter(Records.AwakenAffixComponent::infix)
-                                    )
-                                    .and(
-                                            AwakenPrefix.PrefixInstance.CODEC
-                                                    .fieldOf("prefix")
-                                                    .forGetter(Records.AwakenAffixComponent::prefix)
-                                    )
-                                    .and(
-                                            AwakenSuffix.SuffixContainer.CODEC
-                                                    .fieldOf("suffix")
-                                                    .forGetter(Records.AwakenAffixComponent::suffix)
-                                    )
-                                    .apply(
-                                            inst,
-                                            Records.AwakenAffixComponent::new
-                                    )
-            );
-
-    public static final StreamCodec<ByteBuf, Records.AwakenAffixComponent> AWAKEN_AFFIX_STREAM_CODEC =
-            StreamCodec.composite(
-                    AwakenInfix.InfixContainer.STREAM_CODEC,
-                    Records.AwakenAffixComponent::infix,
-                    AwakenPrefix.PrefixInstance.STREAM_CODEC,
-                    Records.AwakenAffixComponent::prefix,
-                    AwakenSuffix.SuffixContainer.STREAM_CODEC,
-                    Records.AwakenAffixComponent::suffix,
-                    Records.AwakenAffixComponent::new
-            );
-
     public static final Codec<Records.AwakenEpochComponent> AWAKEN_EPOCH_CODEC =
             RecordCodecBuilder.create(
                     inst ->
@@ -170,13 +134,31 @@ public class AwakenDataComponents
                     Awaken.MODID
             );
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Records.AwakenAffixComponent>> AWAKEN_AFFIX_STORAGE =
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<AwakenInfix.InfixContainer>> AWAKEN_AFFIX_INFIX_STORAGE =
             COMPONENT_REGISTER.registerComponentType(
-                    "awaken_affix",
+                    "awaken_affix_infix",
                     builder ->
                             builder
-                                    .persistent(AWAKEN_AFFIX_CODEC)
-                                    .networkSynchronized(AWAKEN_AFFIX_STREAM_CODEC)
+                                    .persistent(AwakenInfix.InfixContainer.CODEC)
+                                    .networkSynchronized(AwakenInfix.InfixContainer.STREAM_CODEC)
+            );
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<AwakenPrefix.PrefixInstance>> AWAKEN_AFFIX_PREFIX_STORAGE =
+            COMPONENT_REGISTER.registerComponentType(
+                    "awaken_affix_prefix",
+                    builder ->
+                            builder
+                                    .persistent(AwakenPrefix.PrefixInstance.CODEC)
+                                    .networkSynchronized(AwakenPrefix.PrefixInstance.STREAM_CODEC)
+            );
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<AwakenSuffix.SuffixContainer>> AWAKEN_AFFIX_SUFFIX_STORAGE =
+            COMPONENT_REGISTER.registerComponentType(
+                    "awaken_affix_suffix",
+                    builder ->
+                            builder
+                                    .persistent(AwakenSuffix.SuffixContainer.CODEC)
+                                    .networkSynchronized(AwakenSuffix.SuffixContainer.STREAM_CODEC)
             );
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<AwakenAspect.AspectContainer>> AWAKEN_ASPECT_STORAGE =

@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 // I love serialization!
 public class AwakenPrefix extends Registry
@@ -66,14 +67,24 @@ public class AwakenPrefix extends Registry
 
     public boolean isEmpty()
     {
-        return this.getLocation().equals(Constants.NULL);
+        return this.getLocation() == null || this.getLocation().equals(Constants.NULL);
     }
 
-    public static class PrefixInstance extends AwakenPrefix
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (!(obj instanceof AwakenPrefix prefix))
+            return false;
+
+        return this.getLocation().equals(prefix.getLocation());
+    }
+
+    public static class PrefixInstance
     {
         public static final PrefixInstance EMPTY =
                 new PrefixInstance(AwakenPrefix.NONE, -1);
 
+        private final AwakenPrefix prefix;
         private final int level;
 
         public PrefixInstance(
@@ -81,24 +92,48 @@ public class AwakenPrefix extends Registry
                 Integer level
         )
         {
-            super(
-                    parent.id(),
-                    parent.getDurability() * level,
-                    parent.getRankFactor() * (float) Math.pow(level, 1.0 / 4.0),
-                    castEnchantments(parent.getBaseEnchantments(), level)
-            );
             this.level = level;
-            setLocation(parent.getLocation());
+            this.prefix = (parent == null? NONE: parent);
+        }
+
+        public AwakenPrefix getValue()
+        {
+            return new AwakenPrefix(
+                    this.prefix.id,
+                    this.prefix.getDurability() * this.level,
+                    this.prefix.getRankFactor() * (float) Math.pow(level, 1.0 / 4.0),
+                    castEnchantments(this.prefix.getBaseEnchantments(), level)
+            );
         }
 
         public AwakenPrefix getRepresent()
         {
-            return this;
+            return this.prefix;
         }
 
         public int getLevel()
         {
             return this.level;
+        }
+
+        public boolean isEmpty()
+        {
+            return this.prefix.isEmpty();
+        }
+
+        @Override
+        public boolean equals(Object obj)
+        {
+            if (!(obj instanceof PrefixInstance target))
+                return false;
+
+            return this.prefix.equals(target.prefix);
+        }
+
+        @Override
+        public int hashCode()
+        {
+            return Objects.hash(this.prefix, this.level);
         }
 
         private static List<Records.EnchantmentHolder> castEnchantments(

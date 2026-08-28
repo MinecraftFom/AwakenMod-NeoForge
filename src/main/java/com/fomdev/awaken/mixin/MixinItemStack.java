@@ -76,10 +76,10 @@ public abstract class MixinItemStack implements DataComponentHolder
             return;
         }
 
-        AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializePrefix(self);
+        AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializeAffix$Prefix(self);
         MutableComponent component = Component.empty();
 
-        if (prefix != null)
+        if (prefix != null && !prefix.isEmpty())
         {
             Component result = cir.getReturnValue();
             component
@@ -99,21 +99,14 @@ public abstract class MixinItemStack implements DataComponentHolder
             CallbackInfoReturnable<DataComponentMap> cir
     )
     {
+        if (!AwakenDataComponents.AWAKEN_AFFIX_PREFIX_STORAGE.isBound())
+            return;
+
         DataComponentMap original = cir.getReturnValue();
-        ItemStack self = (ItemStack) (Object) this;
-        if (!AwakenDataComponents.AWAKEN_AFFIX_STORAGE.isBound() || !original.has(AwakenDataComponents.AWAKEN_AFFIX_STORAGE.get()))
-            return;
-
-        Records.AwakenAffixComponent desc = original.get(AwakenDataComponents.AWAKEN_AFFIX_STORAGE.get());
-        AwakenPrefix prefix;
-
-        assert desc != null;
-        if (desc.prefix() == null || (prefix = desc.prefix()) == null)
-            return;
-
+        AwakenPrefix.PrefixInstance prefix = original.getOrDefault(AwakenDataComponents.AWAKEN_AFFIX_PREFIX_STORAGE.get(), AwakenPrefix.PrefixInstance.EMPTY);
         ItemEnchantments ie = original.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
         ItemEnchantments.Mutable mie = new ItemEnchantments.Mutable(ie);
-        prefix.getBaseEnchantments()
+        prefix.getRepresent().getBaseEnchantments()
                 .stream()
                 .map(Records.EnchantmentHolder::toInstance)
                 .filter(Objects::nonNull)
@@ -129,26 +122,6 @@ public abstract class MixinItemStack implements DataComponentHolder
         PatchedDataComponentMap map = new PatchedDataComponentMap(original);
         map.set(DataComponents.ENCHANTMENTS, mie.toImmutable());
         cir.setReturnValue(map);
-    }
-
-    @Inject(method = "getEnchantments", at = @At("RETURN"), cancellable = true)
-    private void getEnchantments(
-            CallbackInfoReturnable<ItemEnchantments> cir
-    )
-    {
-        ItemStack stack = (ItemStack) (Object) this;
-        AwakenPrefix prefix = NBTUtil.deserializePrefix(stack);
-        if (prefix == null)
-            return;
-
-        ImmutableList<Records.EnchantmentHolder> enchs = prefix.getBaseEnchantments();
-        ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(cir.getReturnValue());
-        enchs
-                .stream()
-                .map(Records.EnchantmentHolder::toInstance)
-                .filter(Objects::nonNull)
-                .forEach(ench -> mutable.set(ench.enchantment, ench.level));
-        cir.setReturnValue(mutable.toImmutable());
     }
 
     @Inject(method = "getTooltipLines", at = @At("HEAD"), cancellable = true)

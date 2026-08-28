@@ -193,6 +193,8 @@ public class EquipmentManager
          for (int i = 0; i < count; i++)
          {
              AwakenSuffix suffix = ShuffledRegistries.WEIGHTED_AWAKEN_SUFFIX.calculate(slot, diff, random);
+             if (suffix == null)
+                 continue;
              Map<String, String> args = suffix.randomize(diff, factor, random);
              container.add(new AwakenSuffix.SuffixInstance(suffix, args));
          }
@@ -400,14 +402,22 @@ public class EquipmentManager
         AwakenPrefix.PrefixInstance prefix = shuffleAffix$Prefix(d.floatValue(), factor, random);
         AwakenSuffix.SuffixContainer suffix = shuffleAffix$Suffix(d.floatValue(), factor, slot, random);
 
-        if (Util.ifNull(quality, prefix, suffix))
+        if (quality == null)
             return;
 
-
-        NBTUtil.serializeAffix(
+        NBTUtil.serializeAffix$Infix(
                 stack,
-                infix,
-                prefix,
+                infix
+        );
+
+        if (!prefix.isEmpty())
+            NBTUtil.serializeAffix$Prefix(
+                    stack,
+                    prefix
+            );
+
+        NBTUtil.serializeAffix$Suffix(
+                stack,
                 suffix
         );
 

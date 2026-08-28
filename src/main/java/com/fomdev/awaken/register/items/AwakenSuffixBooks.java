@@ -54,10 +54,10 @@ public class AwakenSuffixBooks extends Item
         if (!(entity instanceof ServerPlayer player))
             return stack;
 
-        AwakenSuffix.SuffixContainer suffix = NBTUtil.deserializeSuffix(stack);
+        AwakenSuffix.SuffixContainer suffix = NBTUtil.deserializeAffix$Suffix(stack);
         ItemStack target = entity.getMainHandItem();
 
-        NBTUtil.modifySuffix(stack, suffix);
+        NBTUtil.serializeAffix$Suffix(target, suffix);
         if (level instanceof ServerLevel serverLevel)
             serverLevel.players().forEach(p -> serverLevel.sendParticles(p, ParticleTypes.EXPLOSION, true, player.getX(), player.getY(), player.getZ(), 100, 1.0F, 1.0F, 1.0F, 0));
 

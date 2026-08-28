@@ -56,11 +56,11 @@ public class AwakenPlantMedicine extends Item
         ItemStack res = stack;
         for (AwakenSpore.SporeInstance inst : instances)
         {
-            if (!inst.isEmpty() && inst.getLocation().equals(target))
+            if (!inst.getRepresentation().isEmpty() && inst.getRepresentation().getLocation().equals(target))
             {
                 int nlvl = inst.getLevel() - medicine.value();
                 if (nlvl > 0)
-                    result.merge(new AwakenSpore.SporeInstance(inst, nlvl));
+                    result.merge(new AwakenSpore.SporeInstance(inst.getRepresentation(), nlvl));
 
                 res = stack.consumeAndReturn(stack.getCount() - 1, livingEntity);
                 break;

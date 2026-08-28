@@ -2,8 +2,6 @@ package com.fomdev.awaken.mixin;
 
 import com.fomdev.awaken.entries.raw.*;
 import com.fomdev.awaken.entries.raw.affix.AwakenInfix;
-import com.fomdev.awaken.entries.raw.affix.AwakenPrefix;
-import com.fomdev.awaken.entries.raw.affix.AwakenSuffix;
 import com.fomdev.awaken.spawn.EquipmentManager;
 import com.fomdev.awaken.util.NBTUtil;
 import net.minecraft.core.Holder;
@@ -42,8 +40,7 @@ public interface MixinIItemStackExtension
 
         AwakenMoods mood = NBTUtil.deserializeMood(stack);
 
-        AwakenPrefix prefix = NBTUtil.deserializePrefix(stack);
-        AwakenInfix.InfixContainer infixes = NBTUtil.deserializeInfix(stack);
+        AwakenInfix.InfixContainer infixes = NBTUtil.deserializeAffix$Infix(stack);
         AwakenQuality quality = NBTUtil.deserializeQuality(stack);
 
         double factor = quality == null? 1D: quality.getFactor();

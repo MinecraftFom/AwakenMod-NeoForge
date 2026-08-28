@@ -98,7 +98,7 @@ public class RankHelper
         if (stack.isEmpty())
             return 1.0F;
 
-        AwakenPrefix prefix = NBTUtil.deserializePrefix(stack);
-        return prefix == null? 1.0F: prefix.getRankFactor();
+        AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializeAffix$Prefix(stack);
+        return prefix.getValue().isEmpty()? 1.0F: prefix.getValue().getRankFactor();
     }
 }

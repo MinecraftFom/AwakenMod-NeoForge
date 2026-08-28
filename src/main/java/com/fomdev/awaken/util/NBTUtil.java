@@ -16,7 +16,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -60,6 +59,27 @@ public class NBTUtil
         AwakenSpore.SporeContainer spores = NBTUtil.deserializeSpores(entity);
         spores.merge(instance);
         NBTUtil.serializeSpores(entity, spores);
+    }
+
+    public static AwakenInfix.InfixContainer deserializeAffix$Infix(
+            ItemStack stack
+    )
+    {
+        return stack.getOrDefault(AwakenDataComponents.AWAKEN_AFFIX_INFIX_STORAGE, AwakenInfix.InfixContainer.EMPTY);
+    }
+
+    public static AwakenPrefix.PrefixInstance deserializeAffix$Prefix(
+            ItemStack stack
+    )
+    {
+        return stack.getOrDefault(AwakenDataComponents.AWAKEN_AFFIX_PREFIX_STORAGE, AwakenPrefix.PrefixInstance.EMPTY);
+    }
+
+    public static AwakenSuffix.SuffixContainer deserializeAffix$Suffix(
+            ItemStack stack
+    )
+    {
+        return stack.getOrDefault(AwakenDataComponents.AWAKEN_AFFIX_SUFFIX_STORAGE, AwakenSuffix.SuffixContainer.EMPTY);
     }
 
     public static AwakenAspect.AspectContainer deserializeAspects(
@@ -121,17 +141,6 @@ public class NBTUtil
         return data.level();
     }
 
-    public static AwakenInfix.InfixContainer deserializeInfix(
-            ItemStack stack
-    )
-    {
-        AwakenInfix.InfixContainer container;
-        if (!stack.has(AwakenDataComponents.AWAKEN_AFFIX_STORAGE) || (container = Objects.requireNonNull(deserializeAffix(stack)).infix()) == null)
-            return new AwakenInfix.InfixContainer(0);
-
-        return container;
-    }
-
     public static List<AwakenPollinate.PollinateInstance> deserializePollinates(
             ItemStack stack
     )
@@ -165,17 +174,6 @@ public class NBTUtil
         return pollinates;
     }
 
-    public static AwakenPrefix.PrefixInstance deserializePrefix(
-            ItemStack stack
-    )
-    {
-        AwakenPrefix.PrefixInstance instance;
-        if (!stack.has(AwakenDataComponents.AWAKEN_AFFIX_STORAGE) || (instance = Objects.requireNonNull(deserializeAffix(stack)).prefix()) == null)
-            return null;
-
-        return instance;
-    }
-
     public static Records.AwakenSoulComponent deserializeSoul(
             ItemStack stack
     )
@@ -184,13 +182,6 @@ public class NBTUtil
             stack.set(AwakenDataComponents.AWAKEN_SOUL_STORAGE, new Records.AwakenSoulComponent(0.0F, AwakenCommon.CONFIG.DEFAULT_SOUL.get().floatValue()));
 
         return stack.get(AwakenDataComponents.AWAKEN_SOUL_STORAGE);
-    }
-
-    public static AwakenSuffix.SuffixContainer deserializeSuffix(
-            ItemStack stack
-    )
-    {
-        return NBTUtil.deserializeAffix(stack).suffix();
     }
 
     public static AwakenQuality deserializeQuality(
@@ -228,31 +219,28 @@ public class NBTUtil
         return entity.getData(AwakenAttachmentTypes.SPORE_ATTACHMENT.get());
     }
 
-    public static void modifyInfix(
+    public static void serializeAffix$Infix(
             ItemStack stack,
             AwakenInfix.InfixContainer infix
     )
     {
-        Records.AwakenAffixComponent component = NBTUtil.deserializeAffix(stack);
-        NBTUtil.serializeAffix(stack, component.setInfix(infix));
+        stack.set(AwakenDataComponents.AWAKEN_AFFIX_INFIX_STORAGE, infix);
     }
 
-    public static void modifyPrefix(
+    public static void serializeAffix$Prefix(
             ItemStack stack,
             AwakenPrefix.PrefixInstance prefix
     )
     {
-        Records.AwakenAffixComponent component = NBTUtil.deserializeAffix(stack);
-        NBTUtil.serializeAffix(stack, component.setPrefix(prefix));
+        stack.set(AwakenDataComponents.AWAKEN_AFFIX_PREFIX_STORAGE, prefix);
     }
 
-    public static void modifySuffix(
+    public static void serializeAffix$Suffix(
             ItemStack stack,
             AwakenSuffix.SuffixContainer suffix
     )
     {
-        Records.AwakenAffixComponent component = NBTUtil.deserializeAffix(stack);
-        NBTUtil.serializeAffix(stack, component.setSuffix(suffix));
+        stack.set(AwakenDataComponents.AWAKEN_AFFIX_SUFFIX_STORAGE, suffix);
     }
 
     public static void serializeAwakenLevel(
@@ -272,30 +260,6 @@ public class NBTUtil
             return;
 
         stack.set(AwakenDataComponents.AWAKEN_ASPECT_STORAGE, instances);
-    }
-
-    public static void serializeAffix(
-            ItemStack stack,
-            Records.AwakenAffixComponent component
-    )
-    {
-        stack.set(AwakenDataComponents.AWAKEN_AFFIX_STORAGE, component);
-    }
-
-    public static void serializeAffix(
-            ItemStack stack,
-            @Nullable AwakenInfix.InfixContainer infix,
-            @Nullable AwakenPrefix.PrefixInstance prefix,
-            @Nullable AwakenSuffix.SuffixContainer suffix
-    )
-    {
-        Records.AwakenAffixComponent component = new Records.AwakenAffixComponent(
-                infix == null? AwakenInfix.InfixContainer.EMPTY: infix,
-                prefix == null? AwakenPrefix.PrefixInstance.EMPTY: prefix,
-                suffix == null? AwakenSuffix.SuffixContainer.EMPTY: suffix
-        );
-
-        NBTUtil.serializeAffix(stack, component);
     }
 
     public static void serializeEpoch(
@@ -360,12 +324,5 @@ public class NBTUtil
     )
     {
         stack.set(DataComponents.MAX_DAMAGE, target);
-    }
-
-    private static Records.AwakenAffixComponent deserializeAffix(
-            ItemStack stack
-    )
-    {
-        return stack.getOrDefault(AwakenDataComponents.AWAKEN_AFFIX_STORAGE, Records.AwakenAffixComponent.EMPTY);
     }
 }

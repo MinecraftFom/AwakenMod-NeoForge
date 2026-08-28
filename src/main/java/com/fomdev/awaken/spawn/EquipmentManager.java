@@ -118,6 +118,9 @@ public class EquipmentManager
             RandomSource random
     )
     {
+        if (max <= 0)
+            return 0;
+
         return (int) Math.clamp(max * (random.nextInt(max) / (float) max) * factor, 1, max);
     }
 
@@ -141,6 +144,9 @@ public class EquipmentManager
     )
     {
         int maxCount = (int) (count * factor);
+        if (maxCount <= 0)
+            return 0;
+
         maxCount = random.nextInt(maxCount);
         return Math.clamp(maxCount, count, max);
     }
@@ -179,20 +185,20 @@ public class EquipmentManager
     }
 
      public static AwakenSuffix.SuffixContainer shuffleAffix$Suffix(
+             ItemStack stack,
              float diff,
              float factor,
-             EquipmentSlot slot,
              RandomSource random
      )
      {
-         int max = ShuffledRegistries.WEIGHTED_AWAKEN_INFIX.size(slot);
+         int max = ShuffledRegistries.WEIGHTED_AWAKEN_SUFFIX.size(stack);
          int count = shuffleAffixCount(max, factor, random);
          int maxCount = shuffleAffixMaxCount(count, max, factor, random);
          AwakenSuffix.SuffixContainer container = new AwakenSuffix.SuffixContainer(maxCount);
 
          for (int i = 0; i < count; i++)
          {
-             AwakenSuffix suffix = ShuffledRegistries.WEIGHTED_AWAKEN_SUFFIX.calculate(slot, diff, random);
+             AwakenSuffix suffix = ShuffledRegistries.WEIGHTED_AWAKEN_SUFFIX.calculate(stack, diff, random);
              if (suffix == null)
                  continue;
              Map<String, String> args = suffix.randomize(diff, factor, random);
@@ -400,7 +406,7 @@ public class EquipmentManager
         AwakenQuality quality = ShuffledRegistries.WEIGHTED_AWAKEN_QUALITY.calculate(d.floatValue(), random);
         AwakenInfix.InfixContainer infix = shuffleAffix$Infix(d.floatValue(), factor, slot, random);
         AwakenPrefix.PrefixInstance prefix = shuffleAffix$Prefix(d.floatValue(), factor, random);
-        AwakenSuffix.SuffixContainer suffix = shuffleAffix$Suffix(d.floatValue(), factor, slot, random);
+        AwakenSuffix.SuffixContainer suffix = shuffleAffix$Suffix(stack, d.floatValue(), factor, random);
 
         if (quality == null)
             return;

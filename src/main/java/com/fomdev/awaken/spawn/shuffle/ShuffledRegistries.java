@@ -5,6 +5,7 @@ import com.fomdev.awaken.entries.raw.affix.AwakenInfix;
 import com.fomdev.awaken.entries.raw.affix.AwakenPrefix;
 import com.fomdev.awaken.entries.raw.affix.AwakenSuffix;
 import com.fomdev.awaken.entries.shuffle.EquippedQueue;
+import com.fomdev.awaken.entries.shuffle.SuffixQueue;
 import com.fomdev.awaken.entries.shuffle.WeightedQueue;
 import com.fomdev.awaken.entries.shuffle.WeightedRegistry;
 import com.fomdev.awaken.init.Awaken;
@@ -57,8 +58,8 @@ public class ShuffledRegistries
     public static final WeightedQueue<AwakenQuality> WEIGHTED_AWAKEN_QUALITY =
             new WeightedQueue<>(RES_WEIGHTED_QUALITY);
 
-    public static final EquippedQueue<AwakenSuffix> WEIGHTED_AWAKEN_SUFFIX =
-            new EquippedQueue<>(RES_WEIGHTED_SUFFIX);
+    public static final SuffixQueue WEIGHTED_AWAKEN_SUFFIX =
+            new SuffixQueue(RES_WEIGHTED_SUFFIX);
 
     public static final EquippedQueue<ItemStack> WEIGHTED_AWAKEN_STACK =
             new EquippedQueue<>(RES_WEIGHTED_STACK);

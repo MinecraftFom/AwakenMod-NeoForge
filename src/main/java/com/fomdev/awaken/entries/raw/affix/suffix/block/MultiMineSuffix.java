@@ -4,9 +4,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Map;
 
@@ -21,7 +22,7 @@ public class MultiMineSuffix extends BlockBaseSuffix
     }
 
     private void facingHorizontal(
-            Player player,
+            Entity entity,
             Level level,
             Direction direction,
             BlockPos central,
@@ -37,11 +38,11 @@ public class MultiMineSuffix extends BlockBaseSuffix
         BlockPos bottomRight = central.below(sizeY).relative(right, sizeX).relative(direction, sizeZ * 2);
 
         for (BlockPos pos: BlockPos.betweenClosed(topLeft, bottomRight))
-            level.destroyBlock(pos, true, player);
+            level.destroyBlock(pos, true, entity);
     }
 
     private void facingVertical(
-            Player player,
+            Entity entity,
             Level level,
             Direction direction,
             BlockPos central,
@@ -54,7 +55,7 @@ public class MultiMineSuffix extends BlockBaseSuffix
         BlockPos bottomRight = central.south(sizeX).east(sizeZ).relative(direction, sizeY * 2);
 
         for (BlockPos pos: BlockPos.betweenClosed(topLeft, bottomRight))
-            level.destroyBlock(pos, true, player);
+            level.destroyBlock(pos, true, entity);
     }
 
     @Override
@@ -64,18 +65,18 @@ public class MultiMineSuffix extends BlockBaseSuffix
     }
 
     @Override
-    public void execute(ItemStack stack, Level level, BlockPos pos, Player player, Map<String, String> args)
+    public void executeAsDigger(ItemStack stack, Entity entity, BlockPos pos, BlockState state, Map<String, String> args)
     {
-        Direction direction = player.getDirection();
+        Direction direction = entity.getDirection();
 
         int sizeX = Integer.parseInt(args.get("sizeX"));
         int sizeY = Integer.parseInt(args.get("sizeY"));
         int sizeZ = Integer.parseInt(args.get("sizeZ"));
 
         if (direction == Direction.UP || direction == Direction.DOWN)
-            facingVertical(player, level, direction, pos, sizeX, sizeY, sizeZ);
+            facingVertical(entity, entity.level(), direction, pos, sizeX, sizeY, sizeZ);
         else
-            facingHorizontal(player, level, direction, pos, sizeX, sizeY, sizeZ);
+            facingHorizontal(entity, entity.level(), direction, pos, sizeX, sizeY, sizeZ);
     }
 
     @Override

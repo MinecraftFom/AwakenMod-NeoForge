@@ -13,24 +13,27 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.item.ShieldItem;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 public abstract class AwakenSuffix extends Registry
 {
-    private final List<EquipmentSlot> slot;
+    private final List<ServingTypes> slot;
 
     public AwakenSuffix(
             String id,
-            List<EquipmentSlot> slot
+            List<ServingTypes> slot
     )
     {
         super(id);
@@ -46,7 +49,7 @@ public abstract class AwakenSuffix extends Registry
         return suffix == null? NoneSuffix.NONE: suffix;
     }
 
-    public List<EquipmentSlot> getSlot()
+    public List<ServingTypes> getSlot()
     {
         return this.slot;
     }
@@ -55,13 +58,35 @@ public abstract class AwakenSuffix extends Registry
             Map<String, String> args
     );
 
-    public abstract void execute(
+    public void executeAsDefend(
             ItemStack stack,
-            Level level,
-            BlockPos pos,
-            Player player,
+            Entity victim,
+            DamageSource source,
             Map<String, String> args
-    );
+    ) {}
+
+    public void executeAsDigger(
+            ItemStack stack,
+            Entity entity,
+            BlockPos pos,
+            BlockState block,
+            Map<String, String> args
+    ) {}
+
+    public void executeAsShield(
+            ItemStack stack,
+            Entity entity,
+            DamageSource source,
+            float reduction,
+            Map<String, String> args
+    ) {}
+
+    public void executeAsWeapon(
+            ItemStack stack,
+            Entity entity,
+            Entity target,
+            Map<String, String> args
+    ) {}
 
     public abstract Map<String, String> randomize(
             float diff,
@@ -83,13 +108,10 @@ public abstract class AwakenSuffix extends Registry
         return this.getLocation().equals(suffix.getLocation());
     }
 
-    public static class SuffixInstance
+    public record SuffixInstance(AwakenSuffix suffix, Map<String, String> args)
     {
         public static final SuffixInstance EMPTY =
                 new SuffixInstance(NoneSuffix.NONE, Map.of());
-
-        private final AwakenSuffix suffix;
-        private final Map<String, String> args;
 
         public SuffixInstance(
                 AwakenSuffix suffix,
@@ -98,16 +120,6 @@ public abstract class AwakenSuffix extends Registry
         {
             this.suffix = suffix;
             this.args = Map.copyOf(args);
-        }
-
-        public AwakenSuffix getSuffix()
-        {
-            return this.suffix;
-        }
-
-        public Map<String, String> getArgs()
-        {
-            return this.args;
         }
 
         public Component getDescription()
@@ -122,15 +134,15 @@ public abstract class AwakenSuffix extends Registry
                                         .group(
                                                 AwakenSuffix.CODEC
                                                         .fieldOf("suffix")
-                                                        .forGetter(SuffixInstance::getSuffix)
+                                                        .forGetter(SuffixInstance::suffix)
                                         )
                                         .and(
                                                 Codec.unboundedMap(
-                                                        Codec.STRING,
-                                                        Codec.STRING
-                                                )
+                                                            Codec.STRING,
+                                                                Codec.STRING
+                                                        )
                                                         .fieldOf("args")
-                                                        .forGetter(SuffixInstance::getArgs)
+                                                        .forGetter(SuffixInstance::args)
                                         )
                                         .apply(
                                                 inst,
@@ -141,13 +153,13 @@ public abstract class AwakenSuffix extends Registry
         public static final StreamCodec<ByteBuf, SuffixInstance> STREAM_CODEC =
                 StreamCodec.composite(
                         AwakenSuffix.STREAM_CODEC,
-                        SuffixInstance::getSuffix,
+                        SuffixInstance::suffix,
                         ByteBufCodecs.map(
                                 HashMap::new,
                                 ByteBufCodecs.STRING_UTF8,
                                 ByteBufCodecs.STRING_UTF8
                         ),
-                        SuffixInstance::getArgs,
+                        SuffixInstance::args,
                         SuffixInstance::new
                 );
     }

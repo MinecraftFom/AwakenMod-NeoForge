@@ -12,34 +12,22 @@ import java.util.Map;
 
 public class MultiMineSuffix extends BlockBaseSuffix
 {
-    private final int sizeX;
-    private final int sizeY;
-    private final int sizeZ;
-
     // THE SIZE_X, SIZE_Y, SIZE_Z ARE RADIUS!!!
     public MultiMineSuffix(
-            String id,
-            int sizeX,
-            int sizeY,
-            int sizeZ,
-            int durability
+            String id
     )
     {
-        super(
-                id,
-                durability
-        );
-
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
-        this.sizeZ = sizeZ;
+        super(id);
     }
 
     private void facingHorizontal(
             Player player,
             Level level,
             Direction direction,
-            BlockPos central
+            BlockPos central,
+            int sizeX,
+            int sizeY,
+            int sizeZ
     )
     {
         Direction left = direction.getCounterClockWise();
@@ -56,7 +44,10 @@ public class MultiMineSuffix extends BlockBaseSuffix
             Player player,
             Level level,
             Direction direction,
-            BlockPos central
+            BlockPos central,
+            int sizeX,
+            int sizeY,
+            int sizeZ
     )
     {
         BlockPos topLeft = central.north(sizeX).west(sizeZ);
@@ -77,15 +68,26 @@ public class MultiMineSuffix extends BlockBaseSuffix
     {
         Direction direction = player.getDirection();
 
+        int sizeX = Integer.parseInt(args.get("sizeX"));
+        int sizeY = Integer.parseInt(args.get("sizeY"));
+        int sizeZ = Integer.parseInt(args.get("sizeZ"));
+
         if (direction == Direction.UP || direction == Direction.DOWN)
-            facingVertical(player, level, direction, pos);
+            facingVertical(player, level, direction, pos, sizeX, sizeY, sizeZ);
         else
-            facingHorizontal(player, level, direction, pos);
+            facingHorizontal(player, level, direction, pos, sizeX, sizeY, sizeZ);
     }
 
     @Override
     public Map<String, String> randomize(float diff, float factor, RandomSource random)
     {
-        return Map.of();
+        return Map.of(
+                "sizeX",
+                "" + random.nextInt((int) (factor * 2)),
+                "sizeY",
+                "" + random.nextInt((int) (factor * 2)),
+                "sizeZ",
+                "" + random.nextInt((int) (factor * 2))
+        );
     }
 }

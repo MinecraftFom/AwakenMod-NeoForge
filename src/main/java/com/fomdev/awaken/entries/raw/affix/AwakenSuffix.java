@@ -26,18 +26,15 @@ import java.util.Map;
 
 public abstract class AwakenSuffix extends Registry
 {
-    private final int durability;
     private final List<EquipmentSlot> slot;
 
     public AwakenSuffix(
             String id,
-            int durability,
             List<EquipmentSlot> slot
     )
     {
         super(id);
 
-        this.durability = durability;
         this.slot = slot;
     }
 
@@ -49,10 +46,6 @@ public abstract class AwakenSuffix extends Registry
         return suffix == null? NoneSuffix.NONE: suffix;
     }
 
-    public int addition()
-    {
-        return this.durability;
-    }
     public List<EquipmentSlot> getSlot()
     {
         return this.slot;

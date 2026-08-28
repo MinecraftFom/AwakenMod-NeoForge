@@ -4,7 +4,6 @@ import com.fomdev.awaken.enchant.EnchantManager;
 import com.fomdev.awaken.entries.raw.AwakenAspect;
 import com.fomdev.awaken.entries.raw.affix.AwakenPrefix;
 import com.fomdev.awaken.entries.raw.AwakenQuality;
-import com.fomdev.awaken.entries.raw.affix.AwakenSuffix;
 import com.fomdev.awaken.util.NBTUtil;
 import com.fomdev.awaken.util.Records;
 import com.google.common.collect.ImmutableList;
@@ -33,13 +32,10 @@ public interface MixinIItemExtension
             return;
 
         AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializePrefix(self);
-        AwakenSuffix.SuffixContainer suffix = NBTUtil.deserializeSuffix(self);
         AwakenQuality quality = NBTUtil.deserializeQuality(self);
 
-        assert prefix != null && suffix != null;
-        origin += prefix.getDurability();
-        for (AwakenSuffix.SuffixSlot slot: suffix.slots().values())
-            origin += slot.getSuffix().getSuffix().addition();
+        if (prefix != null)
+            origin += prefix.getDurability();
 
         double qualityFactor = quality == null? 1: quality.getFactor();
         double result = origin * qualityFactor;

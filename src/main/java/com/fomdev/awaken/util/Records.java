@@ -35,7 +35,31 @@ public class Records
                     AwakenPrefix.PrefixInstance prefix,
                     AwakenSuffix.SuffixContainer suffix
             )
-    {}
+    {
+        public static final AwakenAffixComponent EMPTY =
+                new AwakenAffixComponent(AwakenInfix.InfixContainer.EMPTY, AwakenPrefix.PrefixInstance.EMPTY, AwakenSuffix.SuffixContainer.EMPTY);
+
+        public AwakenAffixComponent setInfix(
+                AwakenInfix.InfixContainer infix
+        )
+        {
+            return new AwakenAffixComponent(infix, this.prefix, this.suffix);
+        }
+
+        public AwakenAffixComponent setPrefix(
+                AwakenPrefix.PrefixInstance prefix
+        )
+        {
+            return new AwakenAffixComponent(this.infix, prefix, this.suffix);
+        }
+
+        public AwakenAffixComponent setSuffix(
+                AwakenSuffix.SuffixContainer suffix
+        )
+        {
+            return new AwakenAffixComponent(this.infix, this.prefix, suffix);
+        }
+    }
 
     public record AwakenEpochComponent
             (

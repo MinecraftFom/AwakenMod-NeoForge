@@ -9,8 +9,6 @@ import com.fomdev.awaken.entries.raw.spore.AwakenSpore;
 import com.fomdev.awaken.init.config.AwakenCommon;
 import com.fomdev.awaken.register.data.AwakenAttachmentTypes;
 import com.fomdev.awaken.register.data.AwakenDataComponents;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -188,25 +186,11 @@ public class NBTUtil
         return stack.get(AwakenDataComponents.AWAKEN_SOUL_STORAGE);
     }
 
-    public static AwakenSuffix.SuffixInstance deserializeSuffix(
+    public static AwakenSuffix.SuffixContainer deserializeSuffix(
             ItemStack stack
     )
     {
-        Records.AwakenAffixComponent desc = deserializeAffix(stack);
-        if (desc == null)
-            return null;
-
-        if (desc.suffix() == null)
-            return null;
-
-        String id = desc.suffix().getString("id");
-        int lvl = desc.suffix().getInt("level");
-        ResourceLocation path = ResourceLocation.parse(id);
-        AwakenSuffix suffix = AwakenRegistries.AWAKEN_SUFFIX.getRegistry(path);
-        if (suffix == null)
-            return null;
-
-        return new AwakenSuffix.SuffixInstance(suffix, lvl);
+        return NBTUtil.deserializeAffix(stack).suffix();
     }
 
     public static AwakenQuality deserializeQuality(
@@ -244,23 +228,31 @@ public class NBTUtil
         return entity.getData(AwakenAttachmentTypes.SPORE_ATTACHMENT.get());
     }
 
-    public static List<AwakenSpore.SporeInstance> mergeSpores(
-            List<AwakenSpore.SporeInstance> spores
+    public static void modifyInfix(
+            ItemStack stack,
+            AwakenInfix.InfixContainer infix
     )
     {
-        Map<AwakenSpore, Integer> merged = new HashMap<>();
-        List<AwakenSpore.SporeInstance> insts = new ArrayList<>();
+        Records.AwakenAffixComponent component = NBTUtil.deserializeAffix(stack);
+        NBTUtil.serializeAffix(stack, component.setInfix(infix));
+    }
 
-        for (AwakenSpore.SporeInstance inst : spores)
-        {
-            int lvl = merged.getOrDefault(inst, 0);
-            merged.put(inst, lvl + inst.getLevel());
-        }
+    public static void modifyPrefix(
+            ItemStack stack,
+            AwakenPrefix.PrefixInstance prefix
+    )
+    {
+        Records.AwakenAffixComponent component = NBTUtil.deserializeAffix(stack);
+        NBTUtil.serializeAffix(stack, component.setPrefix(prefix));
+    }
 
-        for (Map.Entry<AwakenSpore, Integer> entry: merged.entrySet())
-            insts.add(new AwakenSpore.SporeInstance(entry.getKey(), entry.getValue()));
-
-        return List.copyOf(insts);
+    public static void modifySuffix(
+            ItemStack stack,
+            AwakenSuffix.SuffixContainer suffix
+    )
+    {
+        Records.AwakenAffixComponent component = NBTUtil.deserializeAffix(stack);
+        NBTUtil.serializeAffix(stack, component.setSuffix(suffix));
     }
 
     public static void serializeAwakenLevel(
@@ -282,28 +274,28 @@ public class NBTUtil
         stack.set(AwakenDataComponents.AWAKEN_ASPECT_STORAGE, instances);
     }
 
-    public static void serializeDescriber(
+    public static void serializeAffix(
+            ItemStack stack,
+            Records.AwakenAffixComponent component
+    )
+    {
+        stack.set(AwakenDataComponents.AWAKEN_AFFIX_STORAGE, component);
+    }
+
+    public static void serializeAffix(
             ItemStack stack,
             @Nullable AwakenInfix.InfixContainer infix,
             @Nullable AwakenPrefix.PrefixInstance prefix,
-            @Nullable AwakenSuffix.SuffixInstance suffix
+            @Nullable AwakenSuffix.SuffixContainer suffix
     )
     {
-        CompoundTag suffixTag = new CompoundTag();
-
-        if (suffix != null)
-        {
-            suffixTag.putString("id", suffix.getLocation().toString());
-            suffixTag.putInt("level", Math.abs(suffix.getLevel()));
-        }
-
         Records.AwakenAffixComponent component = new Records.AwakenAffixComponent(
-                infix,
-                prefix,
-                suffixTag
+                infix == null? AwakenInfix.InfixContainer.EMPTY: infix,
+                prefix == null? AwakenPrefix.PrefixInstance.EMPTY: prefix,
+                suffix == null? AwakenSuffix.SuffixContainer.EMPTY: suffix
         );
 
-        stack.set(AwakenDataComponents.AWAKEN_AFFIX_STORAGE, component);
+        NBTUtil.serializeAffix(stack, component);
     }
 
     public static void serializeEpoch(
@@ -374,9 +366,6 @@ public class NBTUtil
             ItemStack stack
     )
     {
-        if (stack.is(Items.AIR))
-            return null;
-
-        return stack.get(AwakenDataComponents.AWAKEN_AFFIX_STORAGE);
+        return stack.getOrDefault(AwakenDataComponents.AWAKEN_AFFIX_STORAGE, Records.AwakenAffixComponent.EMPTY);
     }
 }

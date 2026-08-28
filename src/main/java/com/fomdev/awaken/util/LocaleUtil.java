@@ -98,10 +98,10 @@ public class LocaleUtil
     }
 
     public static Component localizeSuffix(
-            AwakenSuffix.SuffixInstance suffix
+            AwakenSuffix suffix
     )
     {
-        return Component.translatable("suffix." + suffix.id() + ".name").append(" ").append(Component.translatable("tooltip.enchantment.level." + suffix.getLevel()));
+        return Component.translatable("suffix." + suffix.id() + ".name").append(" ");
     }
 
     public static Component localizeTarget(

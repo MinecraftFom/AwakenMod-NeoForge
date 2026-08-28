@@ -19,7 +19,7 @@ import java.util.List;
 public class AwakenPrefix extends Registry
 {
     // WARNING: NO REGISTERING !!!!!!!!!!
-    // If registration present -> crash game while used
+    // If registration empty -> crash game while used
     public static final AwakenPrefix NONE =
             new AwakenPrefix("0NULL", -1, -1, Collections.emptyList());
 
@@ -71,6 +71,9 @@ public class AwakenPrefix extends Registry
 
     public static class PrefixInstance extends AwakenPrefix
     {
+        public static final PrefixInstance EMPTY =
+                new PrefixInstance(AwakenPrefix.NONE, -1);
+
         private final int level;
 
         public PrefixInstance(

@@ -18,7 +18,7 @@ import java.util.*;
 public class AwakenInfix extends Registry
 {
     // WARNING: NO REGISTERING !!!!!!!!!!
-    // If registration present -> crash game while used
+    // If registration empty -> crash game while used
     public static final AwakenInfix NONE =
             new AwakenInfix("NULL", new Records.AttributeHolder(null, 0.0F, null));
 
@@ -54,6 +54,9 @@ public class AwakenInfix extends Registry
 
     public static class InfixInstance extends AwakenInfix implements Comparable<InfixInstance>
     {
+        public static final InfixInstance EMPTY =
+                new InfixInstance(AwakenInfix.NONE, -1);
+
         private final AwakenInfix infix;
         private final int level;
 
@@ -123,9 +126,6 @@ public class AwakenInfix extends Registry
                         InfixInstance::new
                 );
 
-        public static final InfixInstance EMPTY =
-            new InfixInstance(NONE, -1);
-
         @Override
         public int compareTo(
                 @NotNull AwakenInfix.InfixInstance o
@@ -146,6 +146,9 @@ public class AwakenInfix extends Registry
 
     public static class InfixSlot
     {
+        public static final InfixSlot EMPTY =
+                new InfixSlot();
+
         private InfixInstance infix;
         private boolean present;
 
@@ -239,6 +242,9 @@ public class AwakenInfix extends Registry
 
     public record InfixContainer(IndexMap<InfixSlot> slots, List<Integer> empty)
     {
+        public static final InfixContainer EMPTY =
+                new InfixContainer(0);
+
         public InfixContainer(
                 IndexMap<InfixSlot> slots,
                 List<Integer> empty
@@ -252,7 +258,7 @@ public class AwakenInfix extends Registry
                 int slotCount
         )
         {
-            this(new IndexMap<>(slotCount, new InfixSlot()), Collections.emptyList());
+            this(new IndexMap<>(slotCount, new InfixSlot()), initialize(slotCount));
         }
 
         public boolean add(
@@ -296,6 +302,30 @@ public class AwakenInfix extends Registry
             }
 
             return add(infix);
+        }
+
+        public void extend(
+                int count
+        )
+        {
+            int basement = this.slots.size();
+            for (int i = 0; i < count; i++)
+            {
+                int index = i + basement;
+                this.empty.add(index);
+                this.slots.put(index, InfixSlot.EMPTY);
+            }
+        }
+
+        private static List<Integer> initialize(
+                int count
+        )
+        {
+            List<Integer> slots = new ArrayList<>();
+            for (int i = 0; i < count; i++)
+                slots.add(i);
+
+            return slots;
         }
 
         public static final Codec<IndexMap<InfixSlot>> MAP_CODEC =

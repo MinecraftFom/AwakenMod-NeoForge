@@ -39,10 +39,8 @@ import java.awt.*;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
 
 public class EquipmentManager
 {
@@ -179,6 +177,28 @@ public class EquipmentManager
         int level = shuffleAffixLevel(factor, random);
         return new AwakenPrefix.PrefixInstance(prefix, level);
     }
+
+     public static AwakenSuffix.SuffixContainer shuffleAffix$Suffix(
+             float diff,
+             float factor,
+             EquipmentSlot slot,
+             RandomSource random
+     )
+     {
+         int max = ShuffledRegistries.WEIGHTED_AWAKEN_INFIX.size(slot);
+         int count = shuffleAffixCount(max, factor, random);
+         int maxCount = shuffleAffixMaxCount(count, max, factor, random);
+         AwakenSuffix.SuffixContainer container = new AwakenSuffix.SuffixContainer(maxCount);
+
+         for (int i = 0; i < count; i++)
+         {
+             AwakenSuffix suffix = ShuffledRegistries.WEIGHTED_AWAKEN_SUFFIX.calculate(slot, diff, random);
+             Map<String, String> args = suffix.randomize(diff, factor, random);
+             container.add(new AwakenSuffix.SuffixInstance(suffix, args));
+         }
+
+         return container;
+     }
 
     public static AwakenAspect.AspectInstance shuffleAspect(
             RandomSource random
@@ -378,17 +398,17 @@ public class EquipmentManager
         AwakenQuality quality = ShuffledRegistries.WEIGHTED_AWAKEN_QUALITY.calculate(d.floatValue(), random);
         AwakenInfix.InfixContainer infix = shuffleAffix$Infix(d.floatValue(), factor, slot, random);
         AwakenPrefix.PrefixInstance prefix = shuffleAffix$Prefix(d.floatValue(), factor, random);
-        AwakenSuffix suffix = ShuffledRegistries.WEIGHTED_AWAKEN_SUFFIX.calculate(d.floatValue(), random);
+        AwakenSuffix.SuffixContainer suffix = shuffleAffix$Suffix(d.floatValue(), factor, slot, random);
 
         if (Util.ifNull(quality, prefix, suffix))
             return;
 
 
-        NBTUtil.serializeDescriber(
+        NBTUtil.serializeAffix(
                 stack,
                 infix,
                 prefix,
-                new AwakenSuffix.SuffixInstance(suffix, shuffleAffixLevel(factor, random))
+                suffix
         );
 
         NBTUtil.serializeQuality(

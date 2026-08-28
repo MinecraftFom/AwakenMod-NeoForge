@@ -57,8 +57,8 @@ public class ShuffledRegistries
     public static final WeightedQueue<AwakenQuality> WEIGHTED_AWAKEN_QUALITY =
             new WeightedQueue<>(RES_WEIGHTED_QUALITY);
 
-    public static final WeightedQueue<AwakenSuffix> WEIGHTED_AWAKEN_SUFFIX =
-            new WeightedQueue<>(RES_WEIGHTED_SUFFIX);
+    public static final EquippedQueue<AwakenSuffix> WEIGHTED_AWAKEN_SUFFIX =
+            new EquippedQueue<>(RES_WEIGHTED_SUFFIX);
 
     public static final EquippedQueue<ItemStack> WEIGHTED_AWAKEN_STACK =
             new EquippedQueue<>(RES_WEIGHTED_STACK);

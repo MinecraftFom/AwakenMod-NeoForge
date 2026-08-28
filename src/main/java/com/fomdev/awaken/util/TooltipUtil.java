@@ -54,7 +54,7 @@ public class TooltipUtil
                                 .append(
                                         "" + instance.amount()
                                 )
-                                .withStyle(ChatFormatting.GRAY)
+                                .withColor(instance.getColor().getRGB())
                 );
         else
             components.add(Component.translatable("tooltip.hold_shift.info").withStyle(ChatFormatting.GRAY));
@@ -244,11 +244,9 @@ public class TooltipUtil
                                     .append(
                                             Component
                                                     .translatable(
-                                                            "tooltip.prefix.effect.info"
+                                                            "tooltip.durability.additional.info",
+                                                            prefix.getDurability()
                                                     )
-                                    )
-                                    .append(
-                                            ": "
                                     )
                                     .withStyle(ChatFormatting.GRAY)
                     );
@@ -257,11 +255,7 @@ public class TooltipUtil
                             Component
                                     .empty()
                                     .append(
-                                            Component
-                                                    .translatable(
-                                                            "tooltip.durability.additional.info",
-                                                            prefix.getDurability()
-                                                    )
+                                            Component.translatable("tooltip.prefix.factor,info", prefix.getRankFactor())
                                     )
                                     .withStyle(ChatFormatting.GRAY)
                     );
@@ -355,61 +349,11 @@ public class TooltipUtil
 
     public static List<Component> castSuffixTooltip(
             TooltipFlag flag,
-            AwakenSuffix.SuffixInstance suffix
+            AwakenSuffix.SuffixContainer suffix
     )
     {
-        List<Component> components = new ArrayList<>();
-        components
-                .add(
-                        Component
-                                .empty()
-                                .append(
-                                        Component
-                                                .translatable(
-                                                        "tooltip.suffix.info"
-                                                )
-                                )
-                                .append(
-                                        ": "
-                                )
-                                .append(
-                                        LocaleUtil.localizeSuffix(suffix)
-                                )
-                                .withStyle(ChatFormatting.GRAY)
-                );
-
-        if (flag.hasShiftDown())
-        {
-            components
-                    .add(
-                            Component
-                                    .translatable(
-                                            "tooltip.suffix.attribute.info",
-                                            Component.translatable(suffix.getTarget().value().getDescriptionId()).getString(),
-                                            "" + suffix.factor()
-                                    )
-                                    .withStyle(ChatFormatting.GRAY)
-                    );
-            components
-                    .add(
-                            Component
-                                    .translatable(
-                                            "tooltip.durability.additional.info",
-                                            suffix.addition()
-                                    )
-                                    .withStyle(ChatFormatting.GRAY)
-                    );
-        } else
-            components
-                    .add(
-                            Component
-                                    .translatable(
-                                            "tooltip.hold_shift.info"
-                                    )
-                                    .withStyle(ChatFormatting.GRAY)
-                    );
-
-        return components;
+        // TODO: FINISH
+        return List.of();
     }
 
     private static List<Component> translateEffects(

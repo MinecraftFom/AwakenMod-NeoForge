@@ -3,7 +3,6 @@ package com.fomdev.awaken.entries.raw;
 import com.fomdev.awaken.entries.raw.affix.AwakenInfix;
 import com.fomdev.awaken.entries.raw.affix.AwakenPrefix;
 import com.fomdev.awaken.entries.raw.affix.AwakenSuffix;
-import com.fomdev.awaken.entries.raw.affix.AwakenSuffixRegistry;
 import com.fomdev.awaken.entries.raw.level.AwakenLevel;
 import com.fomdev.awaken.entries.raw.spore.AwakenPollinate;
 import com.fomdev.awaken.entries.raw.spore.AwakenSpore;
@@ -46,7 +45,7 @@ public class AwakenRegistries
             createKey(SIG_AWAKEN_SPIRIT);
     public static final ResourceKey<Registry<AwakenSpore>> RES_AWAKEN_SPORE =
             createKey(SIG_AWAKEN_SPORE);
-    public static final ResourceKey<Registry<AwakenSuffix<?>>> RES_AWAKEN_SUFFIX =
+    public static final ResourceKey<Registry<AwakenSuffix>> RES_AWAKEN_SUFFIX =
             createKey(SIG_AWAKEN_SUFFIX);
 
     public static final FreezingRegistry<AwakenAspect> AWAKEN_ASPECT =
@@ -67,8 +66,8 @@ public class AwakenRegistries
             new FreezingRegistry<>(RES_AWAKEN_SPIRIT);
     public static final FreezingRegistry<AwakenSpore> AWAKEN_SPORE =
             new FreezingRegistry<>(RES_AWAKEN_SPORE);
-    public static final AwakenSuffixRegistry AWAKEN_SUFFIX =
-            new AwakenSuffixRegistry(RES_AWAKEN_SUFFIX);
+    public static final FreezingRegistry<AwakenSuffix> AWAKEN_SUFFIX =
+            new FreezingRegistry<>(RES_AWAKEN_SUFFIX);
 
     public static void register(
             IEventBus bus

@@ -32,15 +32,14 @@ public interface MixinIItemExtension
         if (origin <= 0)
             return;
 
-        AwakenPrefix prefix = NBTUtil.deserializePrefix(self);
-        AwakenSuffix suffix = NBTUtil.deserializeSuffix(self);
+        AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializePrefix(self);
+        AwakenSuffix.SuffixContainer suffix = NBTUtil.deserializeSuffix(self);
         AwakenQuality quality = NBTUtil.deserializeQuality(self);
 
-        if (prefix != null)
-            origin += prefix.getDurability();
-
-        if (suffix != null)
-            origin += suffix.addition();
+        assert prefix != null && suffix != null;
+        origin += prefix.getDurability();
+        for (AwakenSuffix.SuffixSlot slot: suffix.slots().values())
+            origin += slot.getSuffix().getSuffix().addition();
 
         double qualityFactor = quality == null? 1: quality.getFactor();
         double result = origin * qualityFactor;

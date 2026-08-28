@@ -3,11 +3,14 @@ package com.fomdev.awaken.entries.raw.affix.suffix.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.event.level.BlockEvent;
 
-public class MultiMineSuffix extends BlockBaseSuffix<BlockEvent.BreakEvent>
+import java.util.Map;
+
+public class MultiMineSuffix extends BlockBaseSuffix
 {
     private final int sizeX;
     private final int sizeY;
@@ -24,34 +27,12 @@ public class MultiMineSuffix extends BlockBaseSuffix<BlockEvent.BreakEvent>
     {
         super(
                 id,
-                durability,
-                Component.translatable(
-                        "tooltip.suffix.multimine.info",
-                        sizeX,
-                        sizeY,
-                        sizeZ
-                )
+                durability
         );
 
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.sizeZ = sizeZ;
-    }
-
-    @Override
-    public void onEvent(
-            BlockEvent.BreakEvent event
-    )
-    {
-        BlockPos center = event.getPos();
-        Player player = event.getPlayer();
-        Direction direction = player.getDirection();
-        Level level = player.level();
-
-        if (direction == Direction.UP || direction == Direction.DOWN)
-            facingVertical(player, level, direction, center);
-        else
-            facingHorizontal(player, level, direction, center);
     }
 
     private void facingHorizontal(
@@ -83,5 +64,28 @@ public class MultiMineSuffix extends BlockBaseSuffix<BlockEvent.BreakEvent>
 
         for (BlockPos pos: BlockPos.betweenClosed(topLeft, bottomRight))
             level.destroyBlock(pos, true, player);
+    }
+
+    @Override
+    public Component getDescription(Map<String, String> args)
+    {
+        return null;
+    }
+
+    @Override
+    public void execute(ItemStack stack, Level level, BlockPos pos, Player player, Map<String, String> args)
+    {
+        Direction direction = player.getDirection();
+
+        if (direction == Direction.UP || direction == Direction.DOWN)
+            facingVertical(player, level, direction, pos);
+        else
+            facingHorizontal(player, level, direction, pos);
+    }
+
+    @Override
+    public Map<String, String> randomize(float diff, float factor, RandomSource random)
+    {
+        return Map.of();
     }
 }

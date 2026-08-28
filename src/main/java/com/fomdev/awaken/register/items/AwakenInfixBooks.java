@@ -1,8 +1,6 @@
 package com.fomdev.awaken.register.items;
 
 import com.fomdev.awaken.entries.raw.affix.AwakenInfix;
-import com.fomdev.awaken.entries.raw.affix.AwakenPrefix;
-import com.fomdev.awaken.entries.raw.affix.AwakenSuffix;
 import com.fomdev.awaken.particle.AwakenParticlePlayer;
 import com.fomdev.awaken.util.NBTUtil;
 import net.minecraft.ChatFormatting;
@@ -57,11 +55,9 @@ public class AwakenInfixBooks extends Item
             return stack;
 
         AwakenInfix.InfixContainer infix = NBTUtil.deserializeInfix(stack);
-        AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializePrefix(stack);
-        AwakenSuffix.SuffixInstance suffix = NBTUtil.deserializeSuffix(stack);
         ItemStack target = entity.getMainHandItem();
 
-        NBTUtil.serializeDescriber(target, infix, prefix, suffix);
+        NBTUtil.modifyInfix(target, infix);
         if (level instanceof ServerLevel serverLevel)
             serverLevel.players().forEach(p -> serverLevel.sendParticles(p, ParticleTypes.EXPLOSION, true, player.getX(), player.getY(), player.getZ(), 100, 1.0F, 1.0F, 1.0F, 0));
 

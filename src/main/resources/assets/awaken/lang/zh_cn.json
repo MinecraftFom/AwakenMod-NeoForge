@@ -45,7 +45,6 @@
   "tooltip.pollinate.info": "花粉",
   "tooltip.pollinate.when.info": "当 %s 时, 给予 %s %s %s",
   "tooltip.prefix.info": "前缀",
-  "tooltip.prefix.effect.info": "效果",
   "tooltip.quality.info": "品质",
   "tooltip.quality.factor.info": "倍率",
   "tooltip.slot.available.info": "可以在 %s 上使用",

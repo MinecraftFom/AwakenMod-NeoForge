@@ -65,7 +65,7 @@ public class TooltipRenderEvents
         AwakenMoods mood = NBTUtil.deserializeMood(stack);
         AwakenInfix.InfixContainer infix = NBTUtil.deserializeInfix(stack);
         AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializePrefix(stack);
-        AwakenSuffix.SuffixInstance suffix = NBTUtil.deserializeSuffix(stack);
+        AwakenSuffix.SuffixContainer suffix = NBTUtil.deserializeSuffix(stack);
         AwakenQuality quality = NBTUtil.deserializeQuality(stack);
         AwakenAspect.AspectContainer aspects = NBTUtil.deserializeAspects(stack);
 

@@ -1,10 +1,7 @@
 package com.fomdev.awaken.register.items;
 
-import com.fomdev.awaken.entries.raw.affix.AwakenInfix;
-import com.fomdev.awaken.entries.raw.affix.AwakenPrefix;
 import com.fomdev.awaken.entries.raw.affix.AwakenSuffix;
 import com.fomdev.awaken.particle.AwakenParticlePlayer;
-import com.fomdev.awaken.util.LocaleUtil;
 import com.fomdev.awaken.util.NBTUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
@@ -19,12 +16,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public class AwakenSuffixBooks extends Item
 {
@@ -60,16 +54,10 @@ public class AwakenSuffixBooks extends Item
         if (!(entity instanceof ServerPlayer player))
             return stack;
 
-        AwakenSuffix.SuffixInstance suffix = NBTUtil.deserializeSuffix(stack);
-
-        if (suffix == null)
-            return stack;
-
+        AwakenSuffix.SuffixContainer suffix = NBTUtil.deserializeSuffix(stack);
         ItemStack target = entity.getMainHandItem();
-        AwakenInfix.InfixContainer infix = NBTUtil.deserializeInfix(target);
-        AwakenPrefix.PrefixInstance prefix = NBTUtil.deserializePrefix(target);
 
-        NBTUtil.serializeDescriber(target, infix, prefix, suffix);
+        NBTUtil.modifySuffix(stack, suffix);
         if (level instanceof ServerLevel serverLevel)
             serverLevel.players().forEach(p -> serverLevel.sendParticles(p, ParticleTypes.EXPLOSION, true, player.getX(), player.getY(), player.getZ(), 100, 1.0F, 1.0F, 1.0F, 0));
 

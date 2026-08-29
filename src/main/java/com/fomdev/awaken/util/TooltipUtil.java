@@ -15,6 +15,7 @@ import net.minecraft.world.item.TooltipFlag;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class TooltipUtil
 {
@@ -135,6 +136,7 @@ public class TooltipUtil
         return components;
     }
 
+    @Deprecated
     public static List<Component> castInfixTooltip(
             TooltipFlag flag,
             AwakenInfix.InfixContainer infix
@@ -352,8 +354,18 @@ public class TooltipUtil
             AwakenSuffix.SuffixContainer suffix
     )
     {
-        // TODO: FINISH
-        return List.of();
+        List<Component> components = new ArrayList<>();
+
+        if (flag.hasShiftDown())
+            for (int i = 0; i < suffix.slots().size(); i++)
+            {
+                AwakenSuffix.SuffixSlot slot = suffix.slots().get(i);
+                components.add(
+                        Component.translatable("tooltip.suffix.slot.info", i).append(slot.isPresent()? slot.getSuffix().getDescription(): Component.translatable("tooltip.suffix.slot.empty.info"))
+                );
+            }
+
+        return components;
     }
 
     private static List<Component> translateEffects(

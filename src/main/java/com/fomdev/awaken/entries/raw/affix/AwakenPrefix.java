@@ -147,7 +147,8 @@ public class AwakenPrefix extends Registry
                             .map(inst ->
                                     new Records.EnchantmentHolder(
                                             inst.enchantment(),
-                                            inst.level() * (int) Math.sqrt(level))
+                                            inst.level() * level
+                                    )
                             )
                             .toList()
             );

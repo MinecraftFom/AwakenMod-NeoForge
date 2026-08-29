@@ -23,6 +23,28 @@ import java.util.*;
 
 public class NBTUtil
 {
+    public static boolean addAffix$Infix(
+            ItemStack stack,
+            AwakenInfix.InfixInstance instance
+    )
+    {
+        AwakenInfix.InfixContainer container = NBTUtil.deserializeAffix$Infix(stack);
+        boolean flag0 = container.add(instance);
+        NBTUtil.serializeAffix$Infix(stack, container);
+        return flag0;
+    }
+
+    public static boolean addAffix$Suffix(
+            ItemStack stack,
+            AwakenSuffix.SuffixInstance instance
+    )
+    {
+        AwakenSuffix.SuffixContainer container = NBTUtil.deserializeAffix$Suffix(stack);
+        boolean flag0 = container.add(instance);
+        NBTUtil.serializeAffix$Suffix(stack, container);
+        return flag0;
+    }
+
     public static void addAspect(
             ItemStack stack,
             AwakenAspect.AspectInstance instance
@@ -217,6 +239,26 @@ public class NBTUtil
     )
     {
         return entity.getData(AwakenAttachmentTypes.SPORE_ATTACHMENT.get());
+    }
+
+    public static void extendAffix$Infix(
+            ItemStack stack,
+            int count
+    )
+    {
+        AwakenInfix.InfixContainer container = NBTUtil.deserializeAffix$Infix(stack);
+        container.extend(count);
+        NBTUtil.serializeAffix$Infix(stack, container);
+    }
+
+    public static void extendAffix$Suffix(
+            ItemStack stack,
+            int count
+    )
+    {
+        AwakenSuffix.SuffixContainer container = NBTUtil.deserializeAffix$Suffix(stack);
+        container.extend(count);
+        NBTUtil.serializeAffix$Suffix(stack, container);
     }
 
     public static void serializeAffix$Infix(

@@ -106,7 +106,7 @@ public abstract class MixinItemStack implements DataComponentHolder
         AwakenPrefix.PrefixInstance prefix = original.getOrDefault(AwakenDataComponents.AWAKEN_AFFIX_PREFIX_STORAGE.get(), AwakenPrefix.PrefixInstance.EMPTY);
         ItemEnchantments ie = original.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
         ItemEnchantments.Mutable mie = new ItemEnchantments.Mutable(ie);
-        prefix.getRepresent().getBaseEnchantments()
+        prefix.getValue().getBaseEnchantments()
                 .stream()
                 .map(Records.EnchantmentHolder::toInstance)
                 .filter(Objects::nonNull)

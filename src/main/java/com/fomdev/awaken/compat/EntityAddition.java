@@ -2,8 +2,10 @@ package com.fomdev.awaken.compat;
 
 import com.fomdev.awaken.spawn.MobSpawnManager;
 import com.github.L_Ender.cataclysm.init.ModEntities;
+import divinerpg.registries.EntityRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.tslat.aoa3.common.registration.entity.AoAMonsters;
 import net.tslat.aoa3.common.registration.worldgen.AoADimensions;
 import twilightforest.init.TFDimension;
@@ -14,6 +16,16 @@ import java.util.function.Consumer;
 
 public class EntityAddition
 {
+    // For divine rpg
+    private static final ResourceLocation D_RPG_APALACHIA = ResourceLocation.parse("divinerpg:apalachia");
+    private static final ResourceLocation D_RPG_ARCANA = ResourceLocation.parse("divinerpg:arcana");
+    private static final ResourceLocation D_RPG_EDEN = ResourceLocation.parse("divinerpg:eden");
+    private static final ResourceLocation D_RPG_ICEIKA = ResourceLocation.parse("divinerpg:iceika");
+    private static final ResourceLocation D_RPG_MORTUM = ResourceLocation.parse("divinerpg:mortum");
+    private static final ResourceLocation D_RPG_SKYTHERN = ResourceLocation.parse("divinerpg:skythern");
+    private static final ResourceLocation D_RPG_VETHEA = ResourceLocation.parse("divinerpg:vethea");
+    private static final ResourceLocation D_RPG_WILDWOOD = ResourceLocation.parse("divinerpg:wildwood");
+
     public static void activeIfAoa3Installed()
     {
         Consumer<ResourceLocation> registerer = loc -> {
@@ -133,6 +145,22 @@ public class EntityAddition
         registerer.accept(ModEntities.URCHINKIN.getId());
         registerer.accept(ModEntities.DROWNED_HOST.getId());
         registerer.accept(ModEntities.SYMBIOCTO.getId());
+    }
+
+    public static void activeIfDivingRPGInstalled()
+    {
+        Consumer<ResourceLocation> registerer = loc -> {
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(D_RPG_APALACHIA, l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(D_RPG_ARCANA, l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(D_RPG_EDEN, l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(D_RPG_ICEIKA, l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(D_RPG_MORTUM, l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(D_RPG_SKYTHERN, l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(D_RPG_VETHEA, l -> new ArrayList<>()).add(loc);
+            MobSpawnManager.LEVELED_ENTITIES.computeIfAbsent(D_RPG_WILDWOOD, l -> new ArrayList<>()).add(loc);
+        };
+
+        EntityRegistry.ENTITIES.getEntries().stream().map(DeferredHolder::getId).forEach(registerer);
     }
 
     public static void activeIfTFInstalled()

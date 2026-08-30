@@ -46,6 +46,12 @@ public class CompatManager
             Awaken.LOGGER.info(".");
         }
 
+        if (ModList.get().isLoaded("divinerpg"))
+        {
+            EntityAddition.activeIfDivingRPGInstalled();
+            Awaken.LOGGER.info("Hello. Nice to meet you! Dealt telepathy to mod DivingRPG!");
+        }
+
         InfixAddition.init();
     }
 }

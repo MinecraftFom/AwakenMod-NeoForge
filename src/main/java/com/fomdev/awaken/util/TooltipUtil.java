@@ -257,7 +257,7 @@ public class TooltipUtil
                             Component
                                     .empty()
                                     .append(
-                                            Component.translatable("tooltip.prefix.factor,info", prefix.getRepresent().getRankFactor())
+                                            Component.translatable("tooltip.prefix.factor.info", prefix.getRepresent().getRankFactor())
                                     )
                                     .withStyle(ChatFormatting.GRAY)
                     );

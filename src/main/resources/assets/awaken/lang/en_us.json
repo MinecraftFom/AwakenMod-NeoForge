@@ -60,6 +60,7 @@
   "tooltip.pollinate.when.info": "When %s, give %s %s %s",
 
   "tooltip.prefix.info": "Prefix",
+  "tooltip.prefix.factor.info": "Multiply the rank with %s",
 
   "tooltip.quality.info": "Quality",
   "tooltip.quality.factor.info": "Factor",

@@ -47,7 +47,7 @@ public class MobSpawnManager
             RandomSource random
     )
     {
-        int n = random.nextInt(diff.multiply(new BigDecimal(factor)).intValue());
+        int n = random.nextInt(Math.max(diff.multiply(new BigDecimal(factor)).intValue(), 1));
         BigDecimal n2 = diff.divide(new BigDecimal(factor * 10), RoundingMode.HALF_UP);
         BigDecimal n3 = new BigDecimal(AwakenCommon.CONFIG.CARRIER_GENERATION.get());
         return n2.compareTo(new BigDecimal(n)) < 0 && n3.compareTo(diff) <= 0;

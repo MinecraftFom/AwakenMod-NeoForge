@@ -1,7 +1,6 @@
 package com.fomdev.awaken.mixin;
 
 import com.fomdev.awaken.enchant.EnchantManager;
-import com.mojang.serialization.Codec;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
@@ -17,6 +16,7 @@ import java.util.function.UnaryOperator;
 @Mixin(DataComponents.class)
 public class MixinDataComponents
 {
+    @SuppressWarnings("unchecked")
     @Inject(method = "register", at = @At("HEAD"), cancellable = true)
     private static <T> void onRegister(
             String name,
@@ -27,22 +27,17 @@ public class MixinDataComponents
         if (!name.equals("enchantments") && !name.equals("stored_enchantments"))
             return;
 
+        UnaryOperator<DataComponentType.Builder<ItemEnchantments>> b;
         if (name.equals("enchantments"))
         {
-            UnaryOperator<DataComponentType.Builder<ItemEnchantments>> b =
-                    (bd) -> bd.persistent(EnchantManager.CODEC).networkSynchronized(EnchantManager.STREAM_CODEC).cacheEncoding();
+            b = (bd) -> bd.persistent(EnchantManager.CODEC).networkSynchronized(EnchantManager.STREAM_CODEC).cacheEncoding();
 
-            cir.setReturnValue(
-                    (DataComponentType<T>) Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, name, (b.apply(DataComponentType.builder())).build())
-            );
-        } else if (name.equals("stored_enchantments"))
-        {
-            UnaryOperator<DataComponentType.Builder<ItemEnchantments>> b =
-                    (bd) -> bd.persistent(EnchantManager.CODEC).networkSynchronized(EnchantManager.STREAM_CODEC).cacheEncoding();
+        } else {
+            b = (bd) -> bd.persistent(EnchantManager.CODEC).networkSynchronized(EnchantManager.STREAM_CODEC).cacheEncoding();
 
-            cir.setReturnValue(
-                    (DataComponentType<T>) Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, name, (b.apply(DataComponentType.builder()).build()))
-            );
         }
+        cir.setReturnValue(
+                (DataComponentType<T>) Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, name, (b.apply(DataComponentType.builder())).build())
+        );
     }
 }

@@ -20,6 +20,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.event.entity.living.ArmorHurtEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent;
+import net.neoforged.neoforge.event.level.BlockEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,32 +64,26 @@ public abstract class AwakenSuffix extends Registry
 
     public void executeAsDefend(
             ItemStack stack,
-            Entity victim,
-            DamageSource source,
-            Map<String, String> args
+            Map<String, String> args,
+            ArmorHurtEvent event
     ) {}
 
     public void executeAsDigger(
             ItemStack stack,
-            Entity entity,
-            BlockPos pos,
-            BlockState block,
-            Map<String, String> args
+            Map<String, String> args,
+            BlockEvent.BreakEvent event
     ) {}
 
     public void executeAsShield(
             ItemStack stack,
-            Entity entity,
-            DamageSource source,
-            float reduction,
-            Map<String, String> args
+            Map<String, String> args,
+            LivingShieldBlockEvent event
     ) {}
 
     public void executeAsWeapon(
             ItemStack stack,
-            Entity entity,
-            Entity target,
-            Map<String, String> args
+            Map<String, String> args,
+            LivingIncomingDamageEvent event
     ) {}
 
     public abstract Map<String, String> randomize(

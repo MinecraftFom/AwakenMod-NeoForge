@@ -1,11 +1,7 @@
 package com.fomdev.awaken.mixin;
 
-import com.fomdev.awaken.difficulty.DifficultyManager;
 import com.fomdev.awaken.knowledge.KnowledgeHelper;
-import com.fomdev.awaken.util.NBTUtil;
-import com.fomdev.awaken.util.Records;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -19,14 +15,10 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import javax.annotation.Nullable;
-import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.Optional;
 

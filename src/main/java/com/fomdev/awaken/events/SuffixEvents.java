@@ -32,7 +32,7 @@ public class SuffixEvents
                     continue;
 
                 SuffixInstance suffix = suffixSlot.getSuffix();
-                suffix.suffix().executeAsDefend(stack, event.getEntity(), event.getDamageSource(), suffix.args());
+                suffix.suffix().executeAsDefend(stack, suffix.args(), event);
             }
         }
     }
@@ -51,7 +51,7 @@ public class SuffixEvents
                 continue;
 
             SuffixInstance suffix = suffixSlot.getSuffix();
-            suffix.suffix().executeAsDigger(stack, event.getPlayer(), event.getPos(), event.getState(), suffix.args());
+            suffix.suffix().executeAsDigger(stack, suffix.args(), event);
         }
     }
 
@@ -69,7 +69,7 @@ public class SuffixEvents
                 continue;
 
             SuffixInstance suffix = suffixSlot.getSuffix();
-            suffix.suffix().executeAsShield(stack, event.getEntity(), event.getDamageSource(), event.getBlockedDamage(), suffix.args());
+            suffix.suffix().executeAsShield(stack, suffix.args(), event);
         }
     }
 
@@ -90,7 +90,7 @@ public class SuffixEvents
                 continue;
 
             SuffixInstance suffix = suffixSlot.getSuffix();
-            suffix.suffix().executeAsWeapon(stack, event.getSource().getEntity(), event.getEntity(), suffix.args());
+            suffix.suffix().executeAsWeapon(stack, suffix.args(), event);
         }
     }
 }

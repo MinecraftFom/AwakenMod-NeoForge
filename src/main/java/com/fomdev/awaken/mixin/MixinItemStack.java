@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-@Mixin(ItemStack.class)
+@Mixin(value = ItemStack.class, priority = 1)
 public abstract class MixinItemStack implements DataComponentHolder
 {
     @Shadow

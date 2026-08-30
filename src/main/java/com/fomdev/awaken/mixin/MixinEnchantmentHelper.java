@@ -10,7 +10,9 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +22,12 @@ import java.util.stream.Stream;
 @Mixin(EnchantmentHelper.class)
 public class MixinEnchantmentHelper
 {
-    /**
-     * @author Fom477
-     * @reason why not?
-     */
-    @Overwrite
-    public static List<EnchantmentInstance> getAvailableEnchantmentResults(
+    @Inject(method = "getAvailableEnchantmentResults", at = @At("HEAD"), cancellable = true)
+    private static void getAvailableEnchantmentResults(
             int cost,
             ItemStack stack,
-            Stream<Holder<Enchantment>> enchantment
+            Stream<Holder<Enchantment>> enchantment,
+            CallbackInfoReturnable<List<EnchantmentInstance>> cir
     )
     {
         List<EnchantmentInstance> list = new ArrayList<>();
@@ -59,29 +58,28 @@ public class MixinEnchantmentHelper
                     }
         });
 
-        return list;
+        cir.cancel();
+        cir.setReturnValue(list);
     }
 
-    /**
-     * @author Fom477
-     * @reason Change the limit
-     */
-    @Overwrite
-    public static int getEnchantmentCost(
+    @Inject(method = "getEnchantmentCost", at = @At("HEAD"), cancellable = true)
+    private static void getEnchantmentCost(
             RandomSource random,
             int enchantNum,
             int power,
-            ItemStack stack
+            ItemStack stack,
+            CallbackInfoReturnable<Integer> cir
     )
     {
         int i = stack.getEnchantmentValue();
         if (i <= 0)
-            return 0;
+            return;
 
+        cir.cancel();
         if (power > AwakenCommon.CONFIG.MAX_ENCHANT_ABILITY.get())
             power = AwakenCommon.CONFIG.MAX_ENCHANT_ABILITY.get();
 
         int j = random.nextInt(8) + 1 + (power >> 1) + random.nextInt(power + 1);
-        return enchantNum == 0? Math.max(j / 3, 1): (enchantNum == 1? j * 2 / 3 + 1: Math.max(j, power * 2));
+        cir.setReturnValue(enchantNum == 0? Math.max(j / 3, 1): (enchantNum == 1? j * 2 / 3 + 1: Math.max(j, power * 2)));
     }
 }

@@ -2,6 +2,7 @@ package com.fomdev.awaken.compat;
 
 import com.fomdev.awaken.spawn.shuffle.ShuffledRegistries;
 import com.github.L_Ender.cataclysm.init.ModItems;
+import divinerpg.registries.ItemRegistry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
@@ -161,6 +162,11 @@ public class ItemAddition
         registerMainhand(AoAWeapons.SUNSHINE_BOW.toStack(), 20.0F, 10000.0F);
         registerMainhand(AoAWeapons.VOID_BOW.toStack(), 20.0F, 10000.0F);
         registerMainhand(AoAWeapons.WITHER_BOW.toStack(), 20.0F, 10000.0F);
+    }
+
+    public static void activeIfDivingRPGInstalled()
+    {
+//        registerMainhand(ItemRegistry.);
     }
 
     public static void activeIfCataclysmInstalled()

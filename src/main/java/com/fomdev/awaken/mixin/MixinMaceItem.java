@@ -2,7 +2,6 @@ package com.fomdev.awaken.mixin;
 
 import com.fomdev.awaken.ai.UseMaceGoal;
 import net.minecraft.core.Direction;
-import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -11,7 +10,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MaceItem;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -19,12 +17,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(MaceItem.class)
 public class MixinMaceItem
 {
-    @Shadow
-    public static boolean canSmashAttack(LivingEntity entity)
-    {
-        throw new UnsupportedOperationException("Implemented via mixin");
-    }
-
     @Inject(method = "hurtEnemy", at = @At("HEAD"), cancellable = true)
     private void hurtEnemy(
             ItemStack stack,

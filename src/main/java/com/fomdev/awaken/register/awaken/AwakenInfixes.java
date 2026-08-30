@@ -126,7 +126,6 @@ public class AwakenInfixes
         );
     }
 
-
     private static AwakenInfix register(
             AwakenInfix infix,
             float chance,

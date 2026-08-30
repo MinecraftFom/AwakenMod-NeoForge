@@ -451,7 +451,7 @@ public class EquipmentManager
             RandomSource random
     )
     {
-        int n = random.nextInt(diff.max(new BigDecimal("1")).intValue()) + (int) factor;
+        int n = random.nextInt(Math.max(diff.intValue(), 1)) + (int) factor;
         return Math.clamp(n, 1, 7);
     }
 

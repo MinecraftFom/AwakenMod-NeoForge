@@ -82,7 +82,13 @@ public class RankHelper
         BigDecimal factor3 = new BigDecimal(random.nextFloat());
         return new BigDecimal(factor).multiply(
                 factor3
-                        .remainder(factor2)
+                        .remainder(
+                                factor2
+                                        .sqrt(new MathContext(2))
+                                        .sqrt(new MathContext(2))
+                                        .sqrt(new MathContext(2))
+                                        .sqrt(new MathContext(2))
+                        )
                         .sqrt(new MathContext(2))
                         .sqrt(new MathContext(2))
                         .sqrt(new MathContext(2))

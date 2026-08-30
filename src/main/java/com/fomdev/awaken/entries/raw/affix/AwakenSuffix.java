@@ -185,7 +185,7 @@ public abstract class AwakenSuffix extends Registry
 
         public void remove()
         {
-            this.suffix = new SuffixInstance(NoneSuffix.NONE, Map.of());
+            this.suffix = SuffixInstance.EMPTY;
             this.present = false;
         }
 

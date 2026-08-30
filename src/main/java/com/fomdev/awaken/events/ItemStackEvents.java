@@ -51,10 +51,10 @@ public class ItemStackEvents
             serverPlayer.connection.send(new ClientboundSetActionBarTextPacket(
                     Component.translatable(
                             "bar.block.cant_pickup.info",
-                            diff,
-                            epoch.requiredMinDifficulty(),
                             awakenLevel,
-                            epoch.requiredAwakenLevel()
+                            epoch.requiredAwakenLevel(),
+                            diff,
+                            epoch.requiredMinDifficulty()
                     )
             ));
         }

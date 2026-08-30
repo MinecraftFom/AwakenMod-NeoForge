@@ -243,7 +243,9 @@ public class AwakenCommand
         if (stack.isEmpty() || infix.isEmpty())
             return -1;
 
-        NBTUtil.addAffix$Infix(stack, new AwakenInfix.InfixInstance(infix, level));
+        if (!NBTUtil.addAffix$Infix(stack, new AwakenInfix.InfixInstance(infix, level)))
+            return -1;
+
         return Command.SINGLE_SUCCESS;
     }
 

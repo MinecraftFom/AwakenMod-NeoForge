@@ -49,7 +49,7 @@ public class AwakenInfix extends Registry
 
     public boolean isEmpty()
     {
-        return this.getLocation().equals(Constants.NULL);
+        return this.getLocation() == null || this.getLocation().equals(Constants.NULL);
     }
 
     public static class InfixInstance extends AwakenInfix implements Comparable<InfixInstance>
@@ -157,7 +157,7 @@ public class AwakenInfix extends Registry
         )
         {
             this.infix = infix;
-            this.present = infix == NONE;
+            this.present = !infix.isEmpty();
         }
 
         public InfixSlot()
@@ -216,7 +216,11 @@ public class AwakenInfix extends Registry
         )
         {
             if (!compare(target))
+            {
+                this.set(target);
+                this.present = true;
                 return;
+            }
 
             switch (this.infix.compareTo(target))
             {
@@ -268,8 +272,12 @@ public class AwakenInfix extends Registry
             if (empty.isEmpty())
                 return false;
 
-            int slotId = empty.removeFirst();
-            return set(slotId, infix);
+            int slotId = empty.getFirst();
+            boolean flag0 = set(slotId, infix);
+            if (flag0)
+                empty.remove(Integer.valueOf(slotId));
+
+            return flag0;
         }
 
         public boolean set(
@@ -280,6 +288,7 @@ public class AwakenInfix extends Registry
             if (!empty.contains(slotId) || !slots.containsKey(slotId))
                 return false;
 
+            empty.remove(Integer.valueOf(slotId));
             slots.get(slotId).upgrade(infix);
             return true;
         }

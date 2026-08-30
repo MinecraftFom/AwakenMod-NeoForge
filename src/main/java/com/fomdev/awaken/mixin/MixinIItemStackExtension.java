@@ -54,21 +54,23 @@ public interface MixinIItemStackExtension
             Holder<Attribute> attribute = infix.getAttribute().attr();
             double amount = infix.getAttribute().amount() * factor;
             AttributeModifier.Operation operation = infix.getAttribute().operation();
-            EquipmentSlot[] slots = infix.getAttribute().slot();
+
             EquipmentSlot slot = EquipmentManager.forSlot(stack);
-            if (Arrays.asList(slots).contains(slot))
-                modifiers = modifiers.withModifierAdded(
-                        attribute,
-                        new AttributeModifier(
-                                ResourceLocation.fromNamespaceAndPath(
-                                        infix.id(),
-                                        attribute.unwrapKey().orElseThrow().location().getPath() + "_" + slot.getName()
-                                ),
-                                amount,
-                                operation
-                        ),
-                        EquipmentSlotGroup.bySlot(slot)
-                );
+            if (!Arrays.stream(infix.getRepresent().getAttribute().slot()).toList().contains(slot))
+                continue;
+
+            modifiers = modifiers.withModifierAdded(
+                    attribute,
+                    new AttributeModifier(
+                            ResourceLocation.fromNamespaceAndPath(
+                                    infix.id(),
+                                    attribute.unwrapKey().orElseThrow().location().getPath() + "_" + slot.getName()
+                            ),
+                            amount,
+                            operation
+                    ),
+                    EquipmentSlotGroup.bySlot(slot)
+            );
         }
 
         if (mood != null)

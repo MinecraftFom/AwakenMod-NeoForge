@@ -110,6 +110,7 @@ dependencies {
     implementation "curse.maven:apotheosis-313970:8564919"
     implementation "curse.maven:apothic-attributes-898963:8502288"
     implementation "curse.maven:placebo-283644:8463693"
+    implementation "curse.maven:patchouli-306770:7730942"
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {

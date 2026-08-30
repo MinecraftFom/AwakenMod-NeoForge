@@ -119,7 +119,7 @@ public class AwakenInfixes
         register(
                 new AwakenInfix(
                         id,
-                        new Records.AttributeHolder(target, amount, AttributeModifier.Operation.ADD_VALUE, slots)
+                        new Records.AttributeHolder(target, amount, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, slots)
                 ),
                 chance,
                 diff

@@ -247,7 +247,7 @@ public class TooltipUtil
                                             Component
                                                     .translatable(
                                                             "tooltip.durability.additional.info",
-                                                            prefix.getRepresent().getDurability()
+                                                            prefix.getValue().getDurability()
                                                     )
                                     )
                                     .withStyle(ChatFormatting.GRAY)
@@ -257,7 +257,7 @@ public class TooltipUtil
                             Component
                                     .empty()
                                     .append(
-                                            Component.translatable("tooltip.prefix.factor.info", prefix.getRepresent().getRankFactor())
+                                            Component.translatable("tooltip.prefix.factor.info", prefix.getValue().getRankFactor())
                                     )
                                     .withStyle(ChatFormatting.GRAY)
                     );
